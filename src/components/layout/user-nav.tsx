@@ -10,17 +10,29 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { UserAvatarProfile } from '@/components/user-avatar-profile';
-import { SignOutButton, useUser } from '@clerk/nextjs';
+import { useEffect, useState } from 'react';
+import { createSupabaseClient } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+
 export function UserNav() {
-  const { user } = useUser();
+  const [user, setUser] = useState<any>(null);
   const router = useRouter();
+  useEffect(() => {
+    const supabase = createSupabaseClient();
+    supabase.auth.getUser().then((result: any) => setUser(result.data.user));
+  }, []);
   if (user) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
-            <UserAvatarProfile user={user} />
+            <UserAvatarProfile
+              user={{
+                fullName: user.user_metadata?.name || user.email || '',
+                emailAddresses: [{ emailAddress: user.email || '' }],
+                imageUrl: user.user_metadata?.avatar_url || ''
+              }}
+            />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -32,10 +44,10 @@ export function UserNav() {
           <DropdownMenuLabel className='font-normal'>
             <div className='flex flex-col space-y-1'>
               <p className='text-sm leading-none font-medium'>
-                {user.fullName}
+                {user.user_metadata?.name || user.email}
               </p>
               <p className='text-muted-foreground text-xs leading-none'>
-                {user.emailAddresses[0].emailAddress}
+                {user.email}
               </p>
             </div>
           </DropdownMenuLabel>
@@ -49,8 +61,14 @@ export function UserNav() {
             <DropdownMenuItem>New Team</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <SignOutButton redirectUrl='/auth/sign-in' />
+          <DropdownMenuItem
+            onClick={async () => {
+              const supabase = createSupabaseClient();
+              await supabase.auth.signOut();
+              router.push('/login');
+            }}
+          >
+            Sair
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

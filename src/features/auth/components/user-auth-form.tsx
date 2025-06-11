@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
@@ -66,6 +66,29 @@ export default function UserAuthForm() {
     setLoading(false);
     if (error) toast.error(error.message);
   };
+
+  useEffect(() => {
+    const fetchAndSetSeller = async () => {
+      const {
+        data: { session }
+      } = await supabase.auth.getSession();
+      if (session?.user?.id) {
+        const { data: seller, error } = await supabase
+          .from('sellers')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+        if (!seller || error) {
+          toast.error('No seller found for this user.');
+          // Optionally, redirect or handle as needed
+        } else {
+          // You can set seller data in state/context here
+          // Example: setSeller(seller);
+        }
+      }
+    };
+    fetchAndSetSeller();
+  }, []);
 
   if (showSignUp) {
     return (

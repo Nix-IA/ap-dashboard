@@ -18,6 +18,7 @@ import * as z from 'zod';
 import { supabase } from '@/lib/supabase';
 
 const formSchema = z.object({
+  name: z.string().min(2, { message: 'Please enter your name' }),
   email: z.string().email({ message: 'Enter a valid email address' }),
   password: z
     .string()
@@ -30,26 +31,50 @@ export default function UserSignUpForm() {
   const [loading, setLoading] = useState(false);
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: '', password: '' }
+    defaultValues: { name: '', email: '', password: '' }
   });
 
   const onSubmit = async (data: UserFormValue) => {
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email: data.email,
-      password: data.password
+      password: data.password,
+      options: {
+        data: {
+          name: data.name
+        }
+      }
     });
     setLoading(false);
     if (error) {
       toast.error(error.message);
-    } else {
-      toast.success('Account created! Check your email to confirm.');
+      return;
     }
+    toast.success('Account created! Check your email to confirm.');
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-2'>
+        {/* Adiciona campo de nome ao formulário */}
+        <FormField
+          control={form.control}
+          name='name'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input
+                  type='text'
+                  placeholder='Enter your name...'
+                  disabled={loading}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name='email'

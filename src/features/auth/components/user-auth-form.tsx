@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 import GithubSignInButton from './github-auth-button';
+import UserSignUpForm from './user-signup-form';
 import { supabase } from '@/lib/supabase';
 
 const formSchema = z.object({
@@ -31,6 +32,7 @@ export default function UserAuthForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
   const [loading, setLoading] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
   const defaultValues = {
     email: '',
     password: ''
@@ -55,6 +57,28 @@ export default function UserAuthForm() {
       window.location.href = '/dashboard/overview';
     }
   };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google'
+    });
+    setLoading(false);
+    if (error) toast.error(error.message);
+  };
+
+  if (showSignUp) {
+    return (
+      <>
+        <UserSignUpForm />
+        <div className='mt-4 flex flex-col gap-2'>
+          <Button variant='outline' onClick={() => setShowSignUp(false)}>
+            Already have an account? Login
+          </Button>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -108,17 +132,35 @@ export default function UserAuthForm() {
           </Button>
         </form>
       </Form>
-      <div className='relative'>
+      <div className='relative my-4'>
         <div className='absolute inset-0 flex items-center'>
           <span className='w-full border-t' />
         </div>
         <div className='relative flex justify-center text-xs uppercase'>
           <span className='bg-background text-muted-foreground px-2'>
-            Or continue with
+            Ou continue com
           </span>
         </div>
       </div>
-      <GithubSignInButton />
+      <Button
+        className='mb-2 w-full'
+        variant='outline'
+        type='button'
+        onClick={handleGoogleLogin}
+      >
+        <svg className='mr-2 h-4 w-4' viewBox='0 0 24 24'>
+          <path
+            fill='#EA4335'
+            d='M12 10.8V14.4H17.1C16.8 15.7 15.6 17.4 12 17.4C8.7 17.4 6 14.7 6 12C6 9.3 8.7 6.6 12 6.6C13.7 6.6 15 7.3 15.7 7.9L18.2 5.4C16.7 4.1 14.6 3 12 3C6.5 3 2 7.5 2 12C2 16.5 6.5 21 12 21C17.5 21 22 16.5 22 12C22 11.3 21.9 10.7 21.8 10.1H12Z'
+          />
+        </svg>
+        Continue with Google
+      </Button>
+      <div className='mt-4 flex flex-col gap-2'>
+        <Button variant='outline' onClick={() => setShowSignUp(true)}>
+          Don&apos;t have an account? Create one
+        </Button>
+      </div>
     </>
   );
 }

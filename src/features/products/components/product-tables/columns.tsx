@@ -8,30 +8,14 @@ import Image from 'next/image';
 import { CellAction } from './cell-action';
 import { CATEGORY_OPTIONS } from './options';
 
-export const columns: ColumnDef<Product>[] = [
-  {
-    accessorKey: 'photo_url',
-    header: 'IMAGE',
-    cell: ({ row }) => {
-      return (
-        <div className='relative aspect-square'>
-          <Image
-            src={row.getValue('photo_url')}
-            alt={row.getValue('name')}
-            fill
-            className='rounded-lg'
-          />
-        </div>
-      );
-    }
-  },
+export const columns: ColumnDef<any>[] = [
   {
     id: 'name',
     accessorKey: 'name',
     header: ({ column }: { column: Column<Product, unknown> }) => (
       <DataTableColumnHeader column={column} title='Name' />
     ),
-    cell: ({ cell }) => <div>{cell.getValue<Product['name']>()}</div>,
+    cell: ({ cell }) => <div>{String(cell.getValue() ?? '')}</div>,
     meta: {
       label: 'Name',
       placeholder: 'Search products...',
@@ -41,38 +25,73 @@ export const columns: ColumnDef<Product>[] = [
     enableColumnFilter: true
   },
   {
-    id: 'category',
-    accessorKey: 'category',
+    id: 'status',
+    accessorKey: 'status',
     header: ({ column }: { column: Column<Product, unknown> }) => (
-      <DataTableColumnHeader column={column} title='Category' />
+      <DataTableColumnHeader column={column} title='Status' />
+    ),
+    cell: ({ cell }) => (
+      <div className='capitalize'>{String(cell.getValue() ?? '')}</div>
+    ),
+    enableColumnFilter: true
+  },
+  {
+    id: 'price',
+    accessorKey: 'price',
+    header: ({ column }: { column: Column<Product, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Price' />
+    ),
+    cell: ({ cell }) => <div>${String(cell.getValue() ?? '')}</div>,
+    enableColumnFilter: false
+  },
+  {
+    id: 'platform',
+    accessorKey: 'platform',
+    header: ({ column }: { column: Column<Product, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Platform' />
+    ),
+    cell: ({ cell }) => <div>{String(cell.getValue() ?? '')}</div>,
+    enableColumnFilter: true
+  },
+  {
+    id: 'landing_page',
+    accessorKey: 'landing_page',
+    header: ({ column }: { column: Column<Product, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Landing Page' />
     ),
     cell: ({ cell }) => {
-      const status = cell.getValue<Product['category']>();
-      const Icon = status === 'active' ? CheckCircle2 : XCircle;
-
+      const url = String(cell.getValue() ?? '');
       return (
-        <Badge variant='outline' className='capitalize'>
-          <Icon />
-          {status}
-        </Badge>
+        <a
+          href={url}
+          target='_blank'
+          rel='noopener noreferrer'
+          className='text-blue-600 underline'
+        >
+          {url}
+        </a>
       );
     },
-    enableColumnFilter: true,
-    meta: {
-      label: 'categories',
-      variant: 'multiSelect',
-      options: CATEGORY_OPTIONS
-    }
+    enableColumnFilter: false
   },
   {
-    accessorKey: 'price',
-    header: 'PRICE'
+    id: 'created_at',
+    accessorKey: 'created_at',
+    header: ({ column }: { column: Column<Product, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Created At' />
+    ),
+    cell: ({ cell }) => <div>{String(cell.getValue() ?? '')}</div>,
+    enableColumnFilter: false
   },
   {
-    accessorKey: 'description',
-    header: 'DESCRIPTION'
+    id: 'updated_at',
+    accessorKey: 'updated_at',
+    header: ({ column }: { column: Column<Product, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Updated At' />
+    ),
+    cell: ({ cell }) => <div>{String(cell.getValue() ?? '')}</div>,
+    enableColumnFilter: false
   },
-
   {
     id: 'actions',
     cell: ({ row }) => <CellAction data={row.original} />

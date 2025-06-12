@@ -36,27 +36,32 @@ export default function UserSignUpForm() {
 
   const onSubmit = async (data: UserFormValue) => {
     setLoading(true);
-    const { data: signUpData, error } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: {
-        data: {
-          name: data.name
+    try {
+      const { data: signUpData, error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            name: data.name
+          }
         }
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
       }
-    });
-    setLoading(false);
-    if (error) {
-      toast.error(error.message);
-      return;
+      toast.success('Account created! Check your email to confirm.');
+      form.reset();
+    } catch (err) {
+      toast.error('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    toast.success('Account created! Check your email to confirm.');
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-2'>
-        {/* Adiciona campo de nome ao formulário */}
         <FormField
           control={form.control}
           name='name'

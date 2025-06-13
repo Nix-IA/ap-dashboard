@@ -30,6 +30,14 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
+    title: 'Whatsapp Instances',
+    url: '/dashboard/whatsapp',
+    icon: 'whatsapp',
+    shortcut: ['w', 'w'],
+    isActive: false,
+    items: []
+  },
+  {
     title: 'Account',
     url: '#', // Placeholder as there is no direct link for the parent
     icon: 'billing',

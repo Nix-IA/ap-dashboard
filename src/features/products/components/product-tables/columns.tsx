@@ -97,3 +97,7 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => <CellAction data={row.original} />
   }
 ];
+
+// Filter out rows with status 'removed' before passing to the table
+export const filterProductRows = (rows: any[]) =>
+  rows.filter((row) => String(row.status).toLowerCase() !== 'removed');

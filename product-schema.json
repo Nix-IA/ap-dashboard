@@ -1,0 +1,181 @@
+{
+    "type": "object",
+    "properties": {
+        "product": {
+            "type": "object",
+            "description": "Informações principais sobre o produto. Extraia apenas se explicitamente mencionado na página. Se não encontrar, solicite ao seller. Não inventar.",
+            "properties": {
+                "basic_info": {
+                    "type": "object",
+                    "description": "Informações básicas para identificação do produto.",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Nome oficial do produto. Se não encontrar na página, solicite ao seller."
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Descrição curta e clara do produto. Se não encontrar, solicite ao seller."
+                        },
+                        "landing_page_url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "URL da página principal de vendas do produto."
+                        },
+                        "image_url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "URL da imagem, ícone ou thumbnail do produto. Preferir imagens quadradas. Se não houver, solicitar ao seller."
+                        }
+                    }
+                },
+                "product_details": {
+                    "type": "object",
+                    "description": "Detalhes adicionais sobre o produto.",
+                    "properties": {
+                        "goal": {
+                            "type": "string",
+                            "description": "Objetivo do produto. Se não estiver explícito, solicitar ao seller."
+                        },
+                        "main_benefits": {
+                            "type": "string",
+                            "description": "Principais benefícios oferecidos pelo produto. Extraia apenas se explícito na página."
+                        },
+                        "target_audience": {
+                            "type": "string",
+                            "description": "Público-alvo ideal. Extraia se estiver descrito ou solicite ao seller."
+                        },
+                        "problems_solved": {
+                            "type": "string",
+                            "description": "Problemas que o produto resolve. Preencher apenas se explícito ou informado pelo seller."
+                        }
+                    }
+                },
+                "delivery_information": {
+                    "type": "string",
+                    "description": "Descrição de o que e como o lead irá receber após a compra. Se não estiver claro na página, solicitar ao seller."
+                }
+            }
+        },
+        "sales_info": {
+            "type": "object",
+            "description": "Bloco principal de informações comerciais. TODOS os atributos comerciais devem estar DENTRO deste objeto, incluindo ofertas, cupons, formas de pagamento e suporte.",
+            "properties": {
+                "platform": {
+                    "type": "string",
+                    "enum": [
+                        "hotmart",
+                        "kiwify"
+                    ],
+                    "description": "Plataforma de venda do produto. Se não informado claramente, solicitar ao seller. Deve SEMPRE estar DENTRO de sales_info."
+                },
+                "sales_offers": {
+                    "type": "object",
+                    "description": "Informações de ofertas e cupons disponíveis para compra. Deve SEMPRE estar DENTRO de sales_info.",
+                    "properties": {
+                        "offers": {
+                            "type": "array",
+                            "description": "Lista de ofertas com título, preço e checkout. Extraia SOMENTE se estiver explícito. Nunca crie informações não mencionadas. Deve SEMPRE estar DENTRO de sales_info.sales_offers.",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Título da oferta."
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Descrição opcional da oferta."
+                                    },
+                                    "price": {
+                                        "type": "string",
+                                        "description": "Preço do produto."
+                                    },
+                                    "checkout_url": {
+                                        "type": "string",
+                                        "format": "uri",
+                                        "description": "URL de checkout direto."
+                                    }
+                                }
+                            }
+                        },
+                        "discount_coupons": {
+                            "type": "array",
+                            "description": "Lista de cupons de desconto disponíveis. Preencher APENAS se explicitamente encontrados. Deve estar dentro de sales_info.sales_offers.",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Título do desconto."
+                                    },
+                                    "discount_value": {
+                                        "type": "string",
+                                        "description": "Valor ou percentual do desconto."
+                                    },
+                                    "coupon_code": {
+                                        "type": "string",
+                                        "description": "Código do cupom."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "sales_support": {
+                    "type": "object",
+                    "description": "Formas de pagamento e suporte comercial. ESTE OBJETO DEVE ESTAR SEMPRE DENTRO de sales_info. Nunca extraia sales_support fora de sales_info.",
+                    "properties": {
+                        "payment_methods": {
+                            "type": "array",
+                            "description": "Formas de pagamento aceitas (CREDIT_CARD, PIX, BILLET). Deve estar SEMPRE dentro de sales_info.sales_support.",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "CREDIT_CARD",
+                                    "PIX",
+                                    "BILLET"
+                                ]
+                            }
+                        },
+                        "faq": {
+                            "type": "array",
+                            "description": "Perguntas frequentes com respostas. Preencher SOMENTE se estiver claramente estruturado como FAQ. Deve estar dentro de sales_info.sales_support.",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "question": {
+                                        "type": "string",
+                                        "description": "Texto da pergunta."
+                                    },
+                                    "answer": {
+                                        "type": "string",
+                                        "description": "Texto da resposta."
+                                    }
+                                }
+                            }
+                        },
+                        "other_relevant_urls": {
+                            "type": "array",
+                            "description": "Outras URLs úteis relacionadas a bônus, suporte, termos, etc. Extraia SOMENTE se forem claramente mencionadas. Deve estar dentro de sales_info.sales_support.",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "page_title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "url": {
+                                        "type": "string",
+                                        "format": "uri"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }

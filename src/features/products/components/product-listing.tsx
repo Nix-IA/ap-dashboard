@@ -1,7 +1,9 @@
 'use client';
 
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { ProductOnboardingDialog } from './product-onboarding-dialog';
 import { ProductTable } from './product-tables';
 import { columns, filterProductRows } from './product-tables/columns';
 
@@ -15,6 +17,9 @@ export default function ProductListingPage() {
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [status, setStatus] = useState<'all' | 'active' | 'inactive'>('all');
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [onboardingData, setOnboardingData] = useState<any>(null);
+  const router = useRouter();
 
   const fetchProducts = useCallback(
     async (page: number, search: string, status: string) => {
@@ -96,9 +101,36 @@ export default function ProductListingPage() {
       </div>
     );
 
+  // Handler to start onboarding
+  const handleStartOnboarding = () => {
+    setOnboardingOpen(true);
+  };
+
+  // Handler when extraction is done
+  const handleExtracted = (data: any) => {
+    setOnboardingOpen(false);
+    setOnboardingData(data);
+    // Save onboarding data to localStorage for the form to pick up
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('agentpay_product_onboarding', JSON.stringify(data));
+    }
+    router.push('/dashboard/product/new?onboarding=1');
+  };
+
+  // Handler to skip onboarding
+  const handleSkip = () => {
+    setOnboardingOpen(false);
+    setOnboardingData(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('agentpay_product_onboarding');
+    }
+    router.push('/dashboard/product/new');
+  };
+
   return (
     <div>
       <div className='mb-4 flex flex-col items-center gap-2 md:flex-row'>
+        {/* Remove the Register Product button here, keep only search, status, etc. */}
         <input
           type='text'
           placeholder='Search products...'
@@ -138,6 +170,7 @@ export default function ProductListingPage() {
           <option value='inactive'>Inactive</option>
         </select>
       </div>
+
       <ProductTable
         data={filteredProducts}
         totalItems={filteredTotal}
@@ -167,6 +200,12 @@ export default function ProductListingPage() {
           </button>
         </div>
       )}
+      <ProductOnboardingDialog
+        open={onboardingOpen}
+        onClose={() => setOnboardingOpen(false)}
+        onExtracted={handleExtracted}
+        onSkip={handleSkip}
+      />
     </div>
   );
 }

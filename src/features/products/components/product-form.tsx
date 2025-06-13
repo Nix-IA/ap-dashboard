@@ -1,26 +1,25 @@
 'use client';
 
-import { FileUploader } from '@/components/file-uploader';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogFooter
+  DialogTitle
 } from '@/components/ui/dialog';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { useRef, useEffect, useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 const PAYMENT_OPTIONS = [
   { label: 'Credit Card', value: 'credit_card' },
   { label: 'Pix', value: 'pix' },
-  { label: 'Billet', value: 'boleto' }
+  { label: 'Billet', value: 'billet' }
 ];
 const PLATFORM_OPTIONS = [
   { label: 'Hotmart', value: 'hotmart' },
@@ -67,6 +66,57 @@ const DEFAULT_PRODUCT: {
   other_relevant_urls: []
 };
 
+// Transforma o schema do endpoint para o shape do formulário DEFAULT_PRODUCT
+function mapProductSchemaToForm(data: any): typeof DEFAULT_PRODUCT {
+  if (!data) return { ...DEFAULT_PRODUCT };
+  return {
+    status: 'inactive',
+    name: data.product?.basic_info?.name || '',
+    description: data.product?.basic_info?.description || '',
+    landing_page: data.product?.basic_info?.landing_page_url || '',
+    objective: data.product?.product_details?.goal || '',
+    benefits: data.product?.product_details?.main_benefits || '',
+    target_audience: data.product?.product_details?.target_audience || '',
+    problems_solved: data.product?.product_details?.problems_solved || '',
+    payment_methods:
+      data.sales_info?.sales_support?.payment_methods?.map((m: string) =>
+        m.toLowerCase()
+      ) || [],
+    faq: Array.isArray(data.sales_info?.sales_support?.faq)
+      ? data.sales_info.sales_support.faq
+          .map((f: any) => `${f.question}\n${f.answer}`)
+          .join('\n\n')
+      : '',
+    offers: Array.isArray(data.sales_info?.sales_offers?.offers)
+      ? data.sales_info.sales_offers.offers.map((o: any) => ({
+          title: o.title || '',
+          description: o.description || '',
+          price: o.price || '',
+          url: o.checkout_url || ''
+        }))
+      : [{ title: '', description: '', price: '', url: '' }],
+    coupons: Array.isArray(data.sales_info?.sales_offers?.discount_coupons)
+      ? data.sales_info.sales_offers.discount_coupons.map((c: any) => ({
+          title: c.title || '',
+          discount: c.discount_value || '',
+          code: c.coupon_code || ''
+        }))
+      : [{ title: '', discount: '', code: '' }],
+    platform: data.sales_info?.platform || '',
+    webhook: '', // webhook is generated later
+    delivery_information: data.product?.delivery_information || '',
+    other_relevant_urls: Array.isArray(
+      data.sales_info?.sales_support?.other_relevant_urls
+    )
+      ? data.sales_info.sales_support.other_relevant_urls.map((u: any) => ({
+          page_title: u.page_title || '',
+          description: u.description || '',
+          url: u.url || ''
+        }))
+      : []
+  };
+}
+
 export default function ProductForm({
   initialData,
   pageTitle,
@@ -92,6 +142,9 @@ export default function ProductForm({
   const [activeTab, setActiveTab] = useState('product');
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Add a ref for the description field
   const descriptionRef = useRef<HTMLDivElement>(null);
@@ -123,11 +176,13 @@ export default function ProductForm({
   }, [onboarding]);
 
   useEffect(() => {
-    // Prefill form with onboarding data or initialData
+    // Prefill form with onboarding data ou initialData
     if (onboardingData) {
-      setForm((prev) => ({ ...prev, ...onboardingData }));
+      setForm(mapProductSchemaToForm(onboardingData));
+      setInitialForm(mapProductSchemaToForm(onboardingData));
     } else if (initialData) {
       setForm((prev) => ({ ...prev, ...initialData }));
+      setInitialForm((prev) => ({ ...prev, ...initialData }));
     }
   }, [onboardingData, initialData]);
 
@@ -317,10 +372,90 @@ export default function ProductForm({
     return errors;
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function saveProductToSupabase(productJson: any) {
+    // Extract summary fields
+    const summary = {
+      name: form.name,
+      platform: form.platform,
+      landing_page_url: form.landing_page,
+      checkout_url: form.offers[0]?.url || '',
+      price: form.offers[0]?.price || '',
+      status: form.status || 'inactive'
+    };
+    // Get user session for seller_id
+    const {
+      data: { session }
+    } = await supabase.auth.getSession();
+    if (!session?.user?.id) {
+      throw new Error('Not authenticated');
+    }
+    const seller_id = session.user.id;
+    let product_id = initialData?.id;
+    let productRes;
+    if (product_id) {
+      // Edit flow: update
+      productRes = await supabase
+        .from('products')
+        .update({ ...summary })
+        .eq('id', product_id)
+        .select('id')
+        .single();
+    } else {
+      // New flow: insert
+      productRes = await supabase
+        .from('products')
+        .insert([{ ...summary, seller_id }])
+        .select('id')
+        .single();
+      product_id = productRes.data?.id;
+    }
+    if (productRes.error || !product_id) {
+      throw new Error(productRes.error?.message || 'Failed to save product');
+    }
+    // Save to knowledge_base (content as string)
+    let kbRes;
+    const contentString = JSON.stringify(productJson);
+    if (initialData?.knowledge_base_id) {
+      // Edit flow: update knowledge_base
+      kbRes = await supabase
+        .from('knowledge_base')
+        .update({
+          product_id,
+          type: 'json',
+          status: 'active',
+          content: contentString
+        })
+        .eq('id', initialData.knowledge_base_id)
+        .select('id')
+        .single();
+    } else {
+      // New flow: insert knowledge_base
+      kbRes = await supabase
+        .from('knowledge_base')
+        .insert([
+          {
+            product_id,
+            type: 'json',
+            status: 'active',
+            content: contentString
+          }
+        ])
+        .select('id')
+        .single();
+    }
+    if (kbRes.error) {
+      // Rollback product insert if new
+      if (!initialData?.id && product_id) {
+        await supabase.from('products').delete().eq('id', product_id);
+      }
+      throw new Error(kbRes.error?.message || 'Failed to save product details');
+    }
+    return { product_id, knowledge_base_id: kbRes.data?.id };
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitAttempted(true);
-    // Ensure description is up to date
     if (descriptionRef.current) {
       setForm((prev) => ({
         ...prev,
@@ -333,7 +468,6 @@ export default function ProductForm({
       setShowValidationModal(true);
       return;
     }
-
     // --- SERIALIZE TO SCHEMA ---
     const productJson = {
       product: {
@@ -341,7 +475,7 @@ export default function ProductForm({
           name: form.name,
           description: form.description,
           landing_page_url: form.landing_page,
-          image_url: '' // Not present in form, leave blank or add if implemented
+          image_url: ''
         },
         product_details: {
           goal: form.objective,
@@ -372,16 +506,29 @@ export default function ProductForm({
           payment_methods: form.payment_methods.map((m) => {
             if (m === 'credit_card') return 'CREDIT_CARD';
             if (m === 'pix') return 'PIX';
-            if (m === 'boleto') return 'BILLET';
+            if (m === 'billet') return 'BILLET';
             return m;
           }),
-          faq: form.faq ? JSON.parse(form.faq) : [], // If FAQ is a stringified array, else []
+          faq: form.faq ? JSON.parse(form.faq) : [],
           other_relevant_urls: form.other_relevant_urls
         }
       }
     };
-    console.log('Product JSON for DB:', productJson);
-    // TODO: submit productJson to backend
+    setIsSaving(true);
+    setSaveError(null);
+    setSaveSuccess(false);
+    try {
+      const { product_id, knowledge_base_id } =
+        await saveProductToSupabase(productJson);
+      setIsSaving(false);
+      setSaveSuccess(true);
+      setTimeout(() => {
+        router.push('/dashboard/product');
+      }, 1200);
+    } catch (err: any) {
+      setIsSaving(false);
+      setSaveError(err.message || 'Failed to save product');
+    }
   }
 
   // Add a flag to determine if webhook should be shown
@@ -498,7 +645,7 @@ export default function ProductForm({
   };
 
   return (
-    <form onSubmit={onSubmit} className='mx-auto max-w-3xl'>
+    <form onSubmit={handleSubmit} className='mx-auto max-w-3xl'>
       <Card>
         <CardHeader>
           <CardTitle>{pageTitle}</CardTitle>
@@ -1374,6 +1521,18 @@ export default function ProductForm({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {isSaving && (
+        <div className='text-primary mt-2 text-sm'>Saving product...</div>
+      )}
+      {saveError && (
+        <div className='text-destructive mt-2 text-sm'>{saveError}</div>
+      )}
+      {saveSuccess && (
+        <div className='mt-2 text-sm text-green-600'>
+          Product saved successfully!
+        </div>
+      )}
 
       <div className='text-muted-foreground mb-2 text-xs'>
         Fields marked with <span className='text-destructive'>*</span> are

@@ -185,108 +185,7 @@ export const columns: ColumnDef<any>[] = [
   {
     id: 'actions',
     header: '',
-    cell: ({ row }) => {
-      // React hooks cannot be used here; convert to a stateless action or move to a component
-      // const [open, setOpen] = React.useState(false);
-      // const [loading, setLoading] = React.useState(false);
-      // const [error, setError] = React.useState('');
-      // const handleRemove = async () => {
-      //   setLoading(true);
-      //   setError('');
-      //   try {
-      //     const apiUrl = process.env.NEXT_PUBLIC_WHATSAPP_API_URL;
-      //     const apiKey = process.env.NEXT_PUBLIC_WHATSAPP_API_KEY;
-      //     const instanceName =
-      //       row.original.instance_name || row.original.name || row.original.id;
-      //     const res = await fetch(`${apiUrl}instance/delete/${instanceName}`, {
-      //       method: 'DELETE',
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //         auth: 'apikey',
-      //         apikey: apiKey || ''
-      //       }
-      //     });
-      //     if (!res.ok) {
-      //       setError('Failed to remove instance.');
-      //       setLoading(false);
-      //       return;
-      //     }
-      //     setTimeout(() => {
-      //       window.location.reload();
-      //     }, 1000);
-      //   } catch (e) {
-      //     setError('Failed to remove instance.');
-      //     setLoading(false);
-      //   }
-      // };
-      // return (
-      //   <TooltipProvider>
-      //     <AlertDialog open={open} onOpenChange={setOpen}>
-      //       <Tooltip>
-      //         <TooltipTrigger asChild>
-      //           <AlertDialogTrigger asChild>
-      //             <button
-      //               title='Remove WhatsApp instance'
-      //               className='px-2 py-1 text-red-500 hover:text-red-700'
-      //               aria-label='Remove WhatsApp instance'
-      //             >
-      //               <svg
-      //                 xmlns='http://www.w3.org/2000/svg'
-      //                 className='h-4 w-4'
-      //                 fill='none'
-      //                 viewBox='0 0 24 24'
-      //                 stroke='currentColor'
-      //               >
-      //                 <path
-      //                   strokeLinecap='round'
-      //                   strokeLinejoin='round'
-      //                   strokeWidth={2}
-      //                   d='M6 18L18 6M6 6l12 12'
-      //                 />
-      //               </svg>
-      //             </button>
-      //           </AlertDialogTrigger>
-      //         </TooltipTrigger>
-      //         <TooltipContent side='top' align='center'>
-      //           Remove WhatsApp instance
-      //         </TooltipContent>
-      //       </Tooltip>
-      //       <AlertDialogContent>
-      //         <AlertDialogHeader>
-      //           <AlertDialogTitle>
-      //             Are you sure you want to remove this WhatsApp instance?
-      //           </AlertDialogTitle>
-      //           <AlertDialogDescription>
-      //             This action cannot be undone.
-      //           </AlertDialogDescription>
-      //         </AlertDialogHeader>
-      //         {error && (
-      //           <div className='mb-2 text-sm text-red-500'>{error}</div>
-      //         )}
-      //         <AlertDialogFooter>
-      //           <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
-      //           <button
-      //             className='flex items-center gap-2 rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 focus:ring-red-600 disabled:opacity-50'
-      //             disabled={loading}
-      //             onClick={handleRemove}
-      //             type='button'
-      //           >
-      //             {loading ? (
-      //               <>
-      //                 <Loader2 className='h-4 w-4 animate-spin' />
-      //                 Removing instance...
-      //               </>
-      //             ) : (
-      //               'Remove'
-      //             )}
-      //           </button>
-      //         </AlertDialogFooter>
-      //       </AlertDialogContent>
-      //     </AlertDialog>
-      //   </TooltipProvider>
-      // );
-      return null;
-    },
+    cell: ActionCell,
     enableColumnFilter: false
   }
 ];
@@ -294,3 +193,105 @@ export const columns: ColumnDef<any>[] = [
 // Filter out rows with status 'removed' before passing to the table
 export const filterWhatsappRows = (rows: any[]) =>
   rows.filter((row) => String(row.status).toLowerCase() !== 'removed');
+
+// ActionCell component moved outside to allow hooks
+function ActionCell({ row }: { row: any }) {
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
+
+  const handleRemove = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_WHATSAPP_API_URL;
+      const apiKey = process.env.NEXT_PUBLIC_WHATSAPP_API_KEY;
+      const instanceName =
+        row.original.instance_name || row.original.name || row.original.id;
+      const res = await fetch(`${apiUrl}instance/delete/${instanceName}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          auth: 'apikey',
+          apikey: apiKey || ''
+        }
+      });
+      if (!res.ok) {
+        setError('Failed to remove instance.');
+        setLoading(false);
+        return;
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (e) {
+      setError('Failed to remove instance.');
+      setLoading(false);
+    }
+  };
+
+  return (
+    <TooltipProvider>
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <AlertDialogTrigger asChild>
+              <button
+                title='Remove WhatsApp instance'
+                className='px-2 py-1 text-red-500 hover:text-red-700'
+                aria-label='Remove WhatsApp instance'
+              >
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='h-4 w-4'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M6 18L18 6M6 6l12 12'
+                  />
+                </svg>
+              </button>
+            </AlertDialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent side='top' align='center'>
+            Remove WhatsApp instance
+          </TooltipContent>
+        </Tooltip>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you sure you want to remove this WhatsApp instance?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {error && <div className='mb-2 text-sm text-red-500'>{error}</div>}
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
+            <button
+              className='flex items-center gap-2 rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 focus:ring-red-600 disabled:opacity-50'
+              disabled={loading}
+              onClick={handleRemove}
+              type='button'
+            >
+              {loading ? (
+                <>
+                  <Loader2 className='h-4 w-4 animate-spin' />
+                  Removing instance...
+                </>
+              ) : (
+                'Remove'
+              )}
+            </button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </TooltipProvider>
+  );
+}

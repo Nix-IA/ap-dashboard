@@ -1,17 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose
+  DialogHeader,
+  DialogTitle
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { useRef, useState } from 'react';
 
 interface ProductOnboardingDialogProps {
   open: boolean;
@@ -30,10 +29,14 @@ export function ProductOnboardingDialog({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [confirmSkip, setConfirmSkip] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const handleExtract = async () => {
     setLoading(true);
     setError('');
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
     try {
       const res = await fetch(
         'https://webhook.agentpay.com.br/webhook/onboarding/extract-data-from-pages',
@@ -44,22 +47,45 @@ export function ProductOnboardingDialog({
             data: {
               links: [{ page_type: 'LANDING_PAGE', link: url }]
             }
-          })
+          }),
+          signal: abortController.signal
         }
       );
       if (!res.ok) throw new Error('Failed to extract product data.');
       const data = await res.json();
-      onExtracted(data);
+      if (!abortController.signal.aborted) {
+        onExtracted(data);
+      }
     } catch (e: any) {
+      if (e.name === 'AbortError') return;
       setError(e.message || 'Unknown error');
     } finally {
       setLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
+  // Handler para fechar o modal (cancelar extração)
+  const handleRequestClose = (open: boolean) => {
+    if (!open && loading) {
+      setConfirmCancel(true);
+    } else if (!open) {
+      onClose();
+    }
+  };
+
+  // Handler para confirmar o cancelamento
+  const confirmCancelExtraction = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    setConfirmCancel(false);
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+    <Dialog open={open} onOpenChange={handleRequestClose} modal>
+      <DialogContent onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Enter your product sales page URL</DialogTitle>
           <DialogDescription>
@@ -68,7 +94,26 @@ export function ProductOnboardingDialog({
             and ensures accuracy.
           </DialogDescription>
         </DialogHeader>
-        {!confirmSkip ? (
+        {confirmCancel ? (
+          <>
+            <div className='mb-4 text-sm'>
+              Are you sure you want to cancel the automatic extraction of data
+              from the sales page and fill in the product manually?
+            </div>
+            <DialogFooter>
+              <Button
+                onClick={() => setConfirmCancel(false)}
+                variant='outline'
+                autoFocus
+              >
+                No, go back
+              </Button>
+              <Button onClick={confirmCancelExtraction} variant='destructive'>
+                Yes, cancel extraction
+              </Button>
+            </DialogFooter>
+          </>
+        ) : !confirmSkip ? (
           <>
             <Input
               placeholder='https://your-landing-page.com'
@@ -78,14 +123,10 @@ export function ProductOnboardingDialog({
             />
             {error && <div className='text-destructive text-sm'>{error}</div>}
             <DialogFooter>
-              <Button onClick={onClose} variant='outline' disabled={loading}>
+              <Button onClick={() => setConfirmCancel(true)} variant='outline'>
                 Cancel
               </Button>
-              <Button
-                onClick={() => setConfirmSkip(true)}
-                variant='ghost'
-                disabled={loading}
-              >
+              <Button onClick={() => setConfirmSkip(true)} variant='ghost'>
                 Skip and fill manually
               </Button>
               <Button onClick={handleExtract} disabled={!url || loading}>
@@ -100,14 +141,10 @@ export function ProductOnboardingDialog({
               will need to fill in all product information manually.
             </div>
             <DialogFooter>
-              <Button
-                onClick={() => setConfirmSkip(false)}
-                variant='outline'
-                disabled={loading}
-              >
+              <Button onClick={() => setConfirmSkip(false)} variant='outline'>
                 Back
               </Button>
-              <Button onClick={onSkip} variant='default' disabled={loading}>
+              <Button onClick={onSkip} variant='default'>
                 Yes, continue without URL
               </Button>
             </DialogFooter>

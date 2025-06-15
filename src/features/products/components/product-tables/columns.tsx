@@ -1,12 +1,8 @@
 'use client';
-import { Badge } from '@/components/ui/badge';
 import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-header';
 import { Product } from '@/constants/data';
 import { Column, ColumnDef } from '@tanstack/react-table';
-import { CheckCircle2, Text, XCircle } from 'lucide-react';
-import Image from 'next/image';
-import { CellAction } from './cell-action';
-import { CATEGORY_OPTIONS } from './options';
+import { Text } from 'lucide-react';
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -91,10 +87,6 @@ export const columns: ColumnDef<any>[] = [
     ),
     cell: ({ cell }) => <div>{String(cell.getValue() ?? '')}</div>,
     enableColumnFilter: false
-  },
-  {
-    id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />
   }
 ];
 

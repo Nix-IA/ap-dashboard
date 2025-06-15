@@ -9,20 +9,58 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Product } from '@/constants/data';
-import { IconEdit, IconDotsVertical, IconTrash } from '@tabler/icons-react';
+import { supabase } from '@/lib/supabase';
+import { IconDotsVertical, IconEdit, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { mapProductSchemaToForm } from '../product-form';
 
 interface CellActionProps {
   data: Product;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const onConfirm = async () => {};
+
+  const handleUpdate = async () => {
+    setLoading(true);
+    // Busca o knowledge_base mais recente para o produto
+    const { data: kbData, error } = await supabase
+      .from('knowledge_base')
+      .select('*')
+      .eq('product_id', data.id)
+      .eq('type', 'json')
+      .order('updated_at', { ascending: false })
+      .limit(1)
+      .single();
+    setLoading(false);
+    if (error || !kbData) {
+      // fallback: redireciona para edição normal
+      router.push(`/dashboard/product/${data.id}`);
+      return;
+    }
+    let initialData = null;
+    try {
+      initialData = mapProductSchemaToForm(JSON.parse(kbData.content));
+    } catch (e) {
+      initialData = null;
+    }
+    // Redireciona para a página de edição, passando initialData via querystring (ou sessionStorage/localStorage)
+    if (initialData) {
+      // Salva no sessionStorage para ser lido na tela de edição
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem(
+          'agentpay_product_edit',
+          JSON.stringify(initialData)
+        );
+      }
+    }
+    router.push(`/dashboard/product/${data.id}`);
+  };
 
   return (
     <>
@@ -42,9 +80,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align='end'>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/product/${data.id}`)}
-          >
+          <DropdownMenuItem onClick={handleUpdate}>
             <IconEdit className='mr-2 h-4 w-4' /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>

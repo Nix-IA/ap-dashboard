@@ -67,7 +67,7 @@ const DEFAULT_PRODUCT: {
 };
 
 // Transforma o schema do endpoint para o shape do formulário DEFAULT_PRODUCT
-function mapProductSchemaToForm(data: any): typeof DEFAULT_PRODUCT {
+export function mapProductSchemaToForm(data: any): typeof DEFAULT_PRODUCT {
   if (!data) return { ...DEFAULT_PRODUCT };
   return {
     status: 'inactive',
@@ -185,6 +185,21 @@ export default function ProductForm({
       setInitialForm((prev) => ({ ...prev, ...initialData }));
     }
   }, [onboardingData, initialData]);
+
+  useEffect(() => {
+    // Carrega knowledge_base do sessionStorage se existir
+    if (typeof window !== 'undefined') {
+      const sessionData = sessionStorage.getItem('agentpay_product_edit');
+      if (sessionData) {
+        try {
+          const parsed = JSON.parse(sessionData);
+          setForm(parsed);
+          setInitialForm(parsed);
+          sessionStorage.removeItem('agentpay_product_edit');
+        } catch {}
+      }
+    }
+  }, []);
 
   // Deep compare utility
   function deepEqual(a: any, b: any): boolean {

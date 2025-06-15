@@ -1,7 +1,5 @@
 'use client';
 
-import { DataTable } from '@/components/ui/table/data-table';
-
 import { ColumnDef } from '@tanstack/react-table';
 interface ProductTableParams<TData, TValue> {
   data: TData[];
@@ -123,7 +121,14 @@ export function ProductTable<TData extends { id?: string | number }, TValue>({
             data.map((row, i) => (
               <tr
                 key={row.id ?? i}
-                className='hover:bg-gray-50 dark:hover:bg-zinc-800'
+                className='cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-800'
+                onClick={(e) => {
+                  // Evita que clique em links (landing page) dispare o detalhe do produto
+                  if ((e.target as HTMLElement).closest('a')) return;
+                  if (row.id) {
+                    window.location.href = `/dashboard/product/${row.id}`;
+                  }
+                }}
               >
                 {columns.map((col, j) => {
                   // STATUS COLUMN

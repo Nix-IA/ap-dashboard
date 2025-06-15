@@ -667,588 +667,320 @@ export default function ProductForm({
           <CardTitle>{pageTitle}</CardTitle>
         </CardHeader>
         <CardContent className='max-h-[80vh] overflow-y-auto'>
-          <div className='mx-auto w-full max-w-[600px] min-w-[600px]'>
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className='w-full'
-            >
-              <TabsList className='mb-4'>
-                <TabsTrigger value='product'>Product</TabsTrigger>
-                <TabsTrigger value='sales'>Sales</TabsTrigger>
-                <TabsTrigger value='integrations'>Integrations</TabsTrigger>
-              </TabsList>
-              <TabsContent value='product'>
-                {/* Product Section */}
-                <section className='space-y-6'>
-                  <div>
-                    <label className='mb-1 block font-medium'>
-                      Name{' '}
-                      <span className='text-destructive' title='Required'>
-                        *
-                      </span>
-                    </label>
-                    <Input
-                      ref={refs.name}
-                      name='name'
-                      value={form.name}
-                      onChange={handleChange}
-                      placeholder='Product name'
-                      className={
-                        submitAttempted && !form.name.trim()
-                          ? 'border-destructive focus:ring-destructive'
-                          : undefined
-                      }
-                      autoComplete='off'
-                    />
-                    {submitAttempted && !form.name.trim() && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        Name is required.
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className='mb-1 block font-medium'>
-                      Main Page{' '}
-                      <span className='text-destructive' title='Required'>
-                        *
-                      </span>
-                    </label>
-                    <Input
-                      ref={refs.landing_page}
-                      name='landing_page'
-                      value={form.landing_page}
-                      onChange={handleChange}
-                      placeholder='Paste here...'
-                      className={
-                        submitAttempted &&
-                        (!form.landing_page.trim() ||
-                          !isValidUrl(form.landing_page.trim()))
-                          ? 'border-destructive focus:ring-destructive'
-                          : undefined
-                      }
-                    />
-                    {submitAttempted && !form.landing_page.trim() && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        Main Page URL is required.
-                      </div>
-                    )}
-                    {submitAttempted &&
-                      form.landing_page.trim() &&
-                      !isValidUrl(form.landing_page.trim()) && (
-                        <div className='text-destructive mt-1 text-xs'>
-                          Enter a valid URL (starting with http:// or https://).
-                        </div>
-                      )}
-                  </div>
-                  <div className='mt-2'>
-                    <label className='mb-1 block font-medium'>
-                      Description{' '}
-                      <span className='text-destructive' title='Required'>
-                        *
-                      </span>
-                    </label>
-                    <div
-                      ref={descriptionRef}
-                      contentEditable
-                      suppressContentEditableWarning
-                      className='bg-background focus:ring-primary min-h-[100px] rounded-md border p-2 focus:ring-2 focus:outline-none'
-                      style={{
-                        whiteSpace: 'pre-wrap',
-                        backgroundColor: 'inherit'
-                      }}
-                      onBlur={handleDescriptionBlur}
-                      dangerouslySetInnerHTML={{ __html: form.description }}
-                      aria-label='Product description (rich text allowed)'
-                    />
-                    <div className='text-muted-foreground mt-1 text-xs'>
-                      You can use formatting (bullets, bold, etc). Pasting from
-                      Word/Google Docs will preserve formatting.
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className='w-full'
+          >
+            <TabsList className='mb-4'>
+              <TabsTrigger value='product'>Product</TabsTrigger>
+              <TabsTrigger value='sales'>Sales</TabsTrigger>
+              <TabsTrigger value='integrations'>Integrations</TabsTrigger>
+            </TabsList>
+            <TabsContent value='product'>
+              {/* Product Section */}
+              <section className='space-y-6'>
+                <div>
+                  <label className='mb-1 block font-medium'>
+                    Name{' '}
+                    <span className='text-destructive' title='Required'>
+                      *
+                    </span>
+                  </label>
+                  <Input
+                    ref={refs.name}
+                    name='name'
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder='Product name'
+                    className={
+                      submitAttempted && !form.name.trim()
+                        ? 'border-destructive focus:ring-destructive'
+                        : undefined
+                    }
+                    autoComplete='off'
+                  />
+                  {submitAttempted && !form.name.trim() && (
+                    <div className='text-destructive mt-1 text-xs'>
+                      Name is required.
                     </div>
-                    {submitAttempted &&
-                      (!form.description.trim() ||
-                        form.description === '<br>') && (
-                        <div className='text-destructive mt-1 text-xs'>
-                          Description is required.
-                        </div>
-                      )}
-                  </div>
-                  <div>
-                    <label className='mb-1 block font-medium'>
-                      Objective{' '}
-                      <span className='text-destructive' title='Required'>
-                        *
-                      </span>
-                    </label>
-                    <Textarea
-                      ref={refs.objective}
-                      name='objective'
-                      value={form.objective}
-                      onChange={handleChange}
-                      placeholder='Type here...'
-                      rows={2}
-                      className={
-                        submitAttempted && !form.objective.trim()
-                          ? 'border-destructive focus:ring-destructive'
-                          : undefined
-                      }
-                    />
-                    {submitAttempted && !form.objective.trim() && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        Objective is required.
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className='mb-1 block font-medium'>
-                      Benefits{' '}
-                      <span className='text-destructive' title='Required'>
-                        *
-                      </span>
-                    </label>
-                    <Textarea
-                      ref={refs.benefits}
-                      name='benefits'
-                      value={form.benefits}
-                      onChange={handleChange}
-                      placeholder='Type here...'
-                      rows={2}
-                      className={
-                        submitAttempted && !form.benefits.trim()
-                          ? 'border-destructive focus:ring-destructive'
-                          : undefined
-                      }
-                    />
-                    {submitAttempted && !form.benefits.trim() && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        Benefits are required.
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className='mb-1 block font-medium'>
-                      Target Audience{' '}
-                      <span className='text-destructive' title='Required'>
-                        *
-                      </span>
-                    </label>
-                    <Textarea
-                      ref={refs.target_audience}
-                      name='target_audience'
-                      value={form.target_audience}
-                      onChange={handleChange}
-                      placeholder='Type here...'
-                      rows={2}
-                      className={
-                        submitAttempted && !form.target_audience.trim()
-                          ? 'border-destructive focus:ring-destructive'
-                          : undefined
-                      }
-                    />
-                    {submitAttempted && !form.target_audience.trim() && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        Target Audience is required.
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className='mb-1 block font-medium'>
-                      Problems Solved{' '}
-                      <span className='text-destructive' title='Required'>
-                        *
-                      </span>
-                    </label>
-                    <Textarea
-                      ref={refs.problems_solved}
-                      name='problems_solved'
-                      value={form.problems_solved}
-                      onChange={handleChange}
-                      placeholder='Type here...'
-                      rows={2}
-                      className={
-                        submitAttempted && !form.problems_solved.trim()
-                          ? 'border-destructive focus:ring-destructive'
-                          : undefined
-                      }
-                    />
-                    {submitAttempted && !form.problems_solved.trim() && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        Problems Solved is required.
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className='mb-1 block font-medium'>
-                      Delivery Information{' '}
-                      <span className='text-destructive' title='Required'>
-                        *
-                      </span>
-                    </label>
-                    <Textarea
-                      ref={refs.delivery_information}
-                      name='delivery_information'
-                      value={form.delivery_information}
-                      onChange={handleChange}
-                      placeholder='Describe what and how the customer will receive after purchase.'
-                      className={
-                        submitAttempted && !form.delivery_information.trim()
-                          ? 'border-destructive focus:ring-destructive'
-                          : undefined
-                      }
-                      rows={2}
-                    />
-                    {submitAttempted && !form.delivery_information.trim() && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        Delivery information is required.
-                      </div>
-                    )}
-                  </div>
-                </section>
-              </TabsContent>
-              <TabsContent value='sales'>
-                {/* Sales Section */}
-                <section className='space-y-6'>
-                  <div className='mb-6'>
-                    <label className='mb-1 block font-medium'>
-                      Payment Methods
-                    </label>
-                    <div
-                      className={`flex gap-4${isPaymentMissing ? 'border-destructive rounded-md border p-2' : ''}`}
-                    >
-                      {PAYMENT_OPTIONS.map((opt) => (
-                        <label
-                          key={opt.value}
-                          className='flex items-center gap-1'
-                        >
-                          <input
-                            type='checkbox'
-                            name='payment_methods'
-                            value={opt.value}
-                            checked={form.payment_methods.includes(opt.value)}
-                            onChange={handleChange}
-                          />
-                          {opt.label}
-                        </label>
-                      ))}
+                  )}
+                </div>
+                <div>
+                  <label className='mb-1 block font-medium'>
+                    Main Page{' '}
+                    <span className='text-destructive' title='Required'>
+                      *
+                    </span>
+                  </label>
+                  <Input
+                    ref={refs.landing_page}
+                    name='landing_page'
+                    value={form.landing_page}
+                    onChange={handleChange}
+                    placeholder='Paste here...'
+                    className={
+                      submitAttempted &&
+                      (!form.landing_page.trim() ||
+                        !isValidUrl(form.landing_page.trim()))
+                        ? 'border-destructive focus:ring-destructive'
+                        : undefined
+                    }
+                  />
+                  {submitAttempted && !form.landing_page.trim() && (
+                    <div className='text-destructive mt-1 text-xs'>
+                      Main Page URL is required.
                     </div>
-                    {isPaymentMissing && (
+                  )}
+                  {submitAttempted &&
+                    form.landing_page.trim() &&
+                    !isValidUrl(form.landing_page.trim()) && (
                       <div className='text-destructive mt-1 text-xs'>
-                        At least one Payment Method is required.
+                        Enter a valid URL (starting with http:// or https://).
                       </div>
                     )}
+                </div>
+                <div className='mt-2'>
+                  <label className='mb-1 block font-medium'>
+                    Description{' '}
+                    <span className='text-destructive' title='Required'>
+                      *
+                    </span>
+                  </label>
+                  <div
+                    ref={descriptionRef}
+                    contentEditable
+                    suppressContentEditableWarning
+                    className='bg-background focus:ring-primary min-h-[100px] rounded-md border p-2 focus:ring-2 focus:outline-none'
+                    style={{
+                      whiteSpace: 'pre-wrap',
+                      backgroundColor: 'inherit'
+                    }}
+                    onBlur={handleDescriptionBlur}
+                    dangerouslySetInnerHTML={{ __html: form.description }}
+                    aria-label='Product description (rich text allowed)'
+                  />
+                  <div className='text-muted-foreground mt-1 text-xs'>
+                    You can use formatting (bullets, bold, etc). Pasting from
+                    Word/Google Docs will preserve formatting.
                   </div>
-                  <div className='mb-6'>
-                    <label className='mb-1 block font-medium'>FAQ</label>
-                    <Textarea
-                      name='faq'
-                      value={form.faq}
-                      onChange={handleChange}
-                      placeholder='Describe the most frequent questions'
-                      rows={2}
-                    />
-                    <div className='text-muted-foreground mt-1 text-xs'>
-                      Write questions and answers in Q&amp;A style. Example:
-                      <br />
-                      Q: How do I access the product?
-                      <br />
-                      A: You will receive an email with access instructions
-                      after purchase.
+                  {submitAttempted &&
+                    (!form.description.trim() ||
+                      form.description === '<br>') && (
+                      <div className='text-destructive mt-1 text-xs'>
+                        Description is required.
+                      </div>
+                    )}
+                </div>
+                <div>
+                  <label className='mb-1 block font-medium'>
+                    Objective{' '}
+                    <span className='text-destructive' title='Required'>
+                      *
+                    </span>
+                  </label>
+                  <Textarea
+                    ref={refs.objective}
+                    name='objective'
+                    value={form.objective}
+                    onChange={handleChange}
+                    placeholder='Type here...'
+                    rows={2}
+                    className={
+                      submitAttempted && !form.objective.trim()
+                        ? 'border-destructive focus:ring-destructive'
+                        : undefined
+                    }
+                  />
+                  {submitAttempted && !form.objective.trim() && (
+                    <div className='text-destructive mt-1 text-xs'>
+                      Objective is required.
                     </div>
-                  </div>
-                  <div className='mb-6'>
-                    <label className='mb-1 block font-medium'>Offers</label>
-                    <div
-                      className={`mb-6${isOfferMissing ? 'border-destructive rounded-md border p-2' : ''}`}
-                    >
-                      {form.offers.map((offer, idx) => (
-                        <Card key={idx} className='bg-muted mb-4 p-4'>
-                          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                            <div>
-                              <label
-                                className={`block text-sm font-medium mb-1${offerFieldErrors[idx]?.title ? 'text-destructive' : ''}`}
-                              >
-                                Title{' '}
-                                <span className='text-destructive'>*</span>
-                              </label>
-                              <Input
-                                value={offer.title}
-                                onChange={(e) =>
-                                  handleOfferChange(
-                                    idx,
-                                    'title',
-                                    e.target.value
-                                  )
-                                }
-                                placeholder='Offer title'
-                                className={
-                                  offerFieldErrors[idx]?.title
-                                    ? 'border-destructive focus:ring-destructive'
-                                    : ''
-                                }
-                              />
-                              {offerFieldErrors[idx]?.title && (
-                                <div className='text-destructive mt-1 text-xs'>
-                                  Title is required.
-                                </div>
-                              )}
-                            </div>
-                            <div>
-                              <label
-                                className={`block text-sm font-medium mb-1${offerFieldErrors[idx]?.price ? 'text-destructive' : ''}`}
-                              >
-                                Price{' '}
-                                <span className='text-destructive'>*</span>
-                              </label>
-                              <Input
-                                value={offer.price}
-                                onChange={(e) =>
-                                  handleOfferChange(
-                                    idx,
-                                    'price',
-                                    e.target.value
-                                  )
-                                }
-                                placeholder='e.g. R$67, 12xR$9,90 or R$47/month'
-                                className={
-                                  offerFieldErrors[idx]?.price
-                                    ? 'border-destructive focus:ring-destructive'
-                                    : ''
-                                }
-                              />
-                              {offerFieldErrors[idx]?.price && (
-                                <div className='text-destructive mt-1 text-xs'>
-                                  Price is required.
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          <div className='mt-2'>
-                            <label className='mb-1 block text-sm font-medium'>
-                              Description
-                            </label>
-                            <Textarea
-                              value={offer.description}
-                              onChange={(e) =>
-                                handleOfferChange(
-                                  idx,
-                                  'description',
-                                  e.target.value
-                                )
-                              }
-                              placeholder='Offer description (optional)'
-                              rows={2}
-                            />
-                          </div>
-                          <div className={`mt-2`}>
-                            <label
-                              className={`block text-sm font-medium mb-1${offerFieldErrors[idx]?.url || (submitAttempted && offer.url && !isValidUrl(offer.url)) ? 'text-destructive' : ''}`}
-                            >
-                              Offer Page{' '}
-                              <span className='text-destructive'>*</span>
-                            </label>
-                            <Input
-                              value={offer.url}
-                              onChange={(e) =>
-                                handleOfferChange(idx, 'url', e.target.value)
-                              }
-                              placeholder='Offer URL'
-                              className={
-                                offerFieldErrors[idx]?.url ||
-                                (submitAttempted &&
-                                  offer.url &&
-                                  !isValidUrl(offer.url))
-                                  ? 'border-destructive focus:ring-destructive'
-                                  : ''
-                              }
-                            />
-                            {offerFieldErrors[idx]?.url && (
-                              <div className='text-destructive mt-1 text-xs'>
-                                Offer Page URL is required.
-                              </div>
-                            )}
-                            {submitAttempted &&
-                              offer.url &&
-                              !isValidUrl(offer.url) && (
-                                <div className='text-destructive mt-1 text-xs'>
-                                  Enter a valid URL (starting with http:// or
-                                  https://).
-                                </div>
-                              )}
-                          </div>
-                          {form.offers.length > 1 && (
-                            <Button
-                              type='button'
-                              variant='destructive'
-                              className='mt-2'
-                              onClick={() => setShowRemoveOffer(idx)}
-                            >
-                              Remove
-                            </Button>
-                          )}
-                          <Dialog
-                            open={showRemoveOffer === idx}
-                            onOpenChange={() => setShowRemoveOffer(null)}
-                          >
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Remove offer?</DialogTitle>
-                              </DialogHeader>
-                              <p>Are you sure you want to remove this offer?</p>
-                              <DialogFooter>
-                                <Button
-                                  variant='outline'
-                                  onClick={() => setShowRemoveOffer(null)}
-                                >
-                                  Cancel
-                                </Button>
-                                <Button
-                                  variant='destructive'
-                                  onClick={() => {
-                                    removeOffer(idx);
-                                    setShowRemoveOffer(null);
-                                  }}
-                                >
-                                  Remove
-                                </Button>
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-                        </Card>
-                      ))}
-                      <Button
-                        type='button'
-                        variant='secondary'
-                        onClick={addOffer}
-                        className='w-full'
+                  )}
+                </div>
+                <div>
+                  <label className='mb-1 block font-medium'>
+                    Benefits{' '}
+                    <span className='text-destructive' title='Required'>
+                      *
+                    </span>
+                  </label>
+                  <Textarea
+                    ref={refs.benefits}
+                    name='benefits'
+                    value={form.benefits}
+                    onChange={handleChange}
+                    placeholder='Type here...'
+                    rows={2}
+                    className={
+                      submitAttempted && !form.benefits.trim()
+                        ? 'border-destructive focus:ring-destructive'
+                        : undefined
+                    }
+                  />
+                  {submitAttempted && !form.benefits.trim() && (
+                    <div className='text-destructive mt-1 text-xs'>
+                      Benefits are required.
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className='mb-1 block font-medium'>
+                    Target Audience{' '}
+                    <span className='text-destructive' title='Required'>
+                      *
+                    </span>
+                  </label>
+                  <Textarea
+                    ref={refs.target_audience}
+                    name='target_audience'
+                    value={form.target_audience}
+                    onChange={handleChange}
+                    placeholder='Type here...'
+                    rows={2}
+                    className={
+                      submitAttempted && !form.target_audience.trim()
+                        ? 'border-destructive focus:ring-destructive'
+                        : undefined
+                    }
+                  />
+                  {submitAttempted && !form.target_audience.trim() && (
+                    <div className='text-destructive mt-1 text-xs'>
+                      Target Audience is required.
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className='mb-1 block font-medium'>
+                    Problems Solved{' '}
+                    <span className='text-destructive' title='Required'>
+                      *
+                    </span>
+                  </label>
+                  <Textarea
+                    ref={refs.problems_solved}
+                    name='problems_solved'
+                    value={form.problems_solved}
+                    onChange={handleChange}
+                    placeholder='Type here...'
+                    rows={2}
+                    className={
+                      submitAttempted && !form.problems_solved.trim()
+                        ? 'border-destructive focus:ring-destructive'
+                        : undefined
+                    }
+                  />
+                  {submitAttempted && !form.problems_solved.trim() && (
+                    <div className='text-destructive mt-1 text-xs'>
+                      Problems Solved is required.
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className='mb-1 block font-medium'>
+                    Delivery Information{' '}
+                    <span className='text-destructive' title='Required'>
+                      *
+                    </span>
+                  </label>
+                  <Textarea
+                    ref={refs.delivery_information}
+                    name='delivery_information'
+                    value={form.delivery_information}
+                    onChange={handleChange}
+                    placeholder='Describe what and how the customer will receive after purchase.'
+                    className={
+                      submitAttempted && !form.delivery_information.trim()
+                        ? 'border-destructive focus:ring-destructive'
+                        : undefined
+                    }
+                    rows={2}
+                  />
+                  {submitAttempted && !form.delivery_information.trim() && (
+                    <div className='text-destructive mt-1 text-xs'>
+                      Delivery information is required.
+                    </div>
+                  )}
+                </div>
+              </section>
+            </TabsContent>
+            <TabsContent value='sales'>
+              {/* Sales Section */}
+              <section className='space-y-6'>
+                <div className='mb-6'>
+                  <label className='mb-1 block font-medium'>
+                    Payment Methods
+                  </label>
+                  <div
+                    className={`flex gap-4${isPaymentMissing ? 'border-destructive rounded-md border p-2' : ''}`}
+                  >
+                    {PAYMENT_OPTIONS.map((opt) => (
+                      <label
+                        key={opt.value}
+                        className='flex items-center gap-1'
                       >
-                        + Add
-                      </Button>
-                      {isOfferMissing && (
-                        <div className='text-destructive mt-1 text-xs'>
-                          At least one Offer is required.
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className='mb-6'>
-                    <label className='mb-1 block font-medium'>Coupons</label>
-                    {form.coupons.map((coupon, idx) => (
-                      <Card key={idx} className='bg-muted mb-4 p-4'>
-                        <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
-                          <div>
-                            <label className='block text-sm'>Title</label>
-                            <Input
-                              value={coupon.title}
-                              onChange={(e) =>
-                                handleCouponChange(idx, 'title', e.target.value)
-                              }
-                              placeholder='Coupon title'
-                            />
-                          </div>
-                          <div>
-                            <label className='block text-sm'>Discount</label>
-                            <Input
-                              value={coupon.discount}
-                              onChange={(e) =>
-                                handleCouponChange(
-                                  idx,
-                                  'discount',
-                                  e.target.value
-                                )
-                              }
-                              placeholder='e.g. 20%'
-                            />
-                          </div>
-                          <div>
-                            <label className='block text-sm'>Code</label>
-                            <Input
-                              value={coupon.code}
-                              onChange={(e) =>
-                                handleCouponChange(idx, 'code', e.target.value)
-                              }
-                              placeholder='e.g. LAN20'
-                            />
-                          </div>
-                        </div>
-                        {form.coupons.length > 1 && (
-                          <Button
-                            type='button'
-                            variant='destructive'
-                            className='mt-2'
-                            onClick={() => setShowRemoveCoupon(idx)}
-                          >
-                            Remove
-                          </Button>
-                        )}
-                        <Dialog
-                          open={showRemoveCoupon === idx}
-                          onOpenChange={() => setShowRemoveCoupon(null)}
-                        >
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Remove coupon?</DialogTitle>
-                            </DialogHeader>
-                            <p>Are you sure you want to remove this coupon?</p>
-                            <DialogFooter>
-                              <Button
-                                variant='outline'
-                                onClick={() => setShowRemoveCoupon(null)}
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                variant='destructive'
-                                onClick={() => {
-                                  removeCoupon(idx);
-                                  setShowRemoveCoupon(null);
-                                }}
-                              >
-                                Remove
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                      </Card>
+                        <input
+                          type='checkbox'
+                          name='payment_methods'
+                          value={opt.value}
+                          checked={form.payment_methods.includes(opt.value)}
+                          onChange={handleChange}
+                        />
+                        {opt.label}
+                      </label>
                     ))}
-                    <Button
-                      type='button'
-                      variant='secondary'
-                      onClick={addCoupon}
-                      className='w-full'
-                    >
-                      + Add
-                    </Button>
                   </div>
-                  <div className='mb-6'>
-                    <label className='mb-1 block font-medium'>
-                      Other Relevant URLs
-                    </label>
-                    {form.other_relevant_urls.map((urlObj, idx) => (
-                      <Card key={idx} className='bg-muted mb-2 p-3'>
+                  {isPaymentMissing && (
+                    <div className='text-destructive mt-1 text-xs'>
+                      At least one Payment Method is required.
+                    </div>
+                  )}
+                </div>
+                <div className='mb-6'>
+                  <label className='mb-1 block font-medium'>FAQ</label>
+                  <Textarea
+                    name='faq'
+                    value={form.faq}
+                    onChange={handleChange}
+                    placeholder='Describe the most frequent questions'
+                    rows={2}
+                  />
+                  <div className='text-muted-foreground mt-1 text-xs'>
+                    Write questions and answers in Q&amp;A style. Example:
+                    <br />
+                    Q: How do I access the product?
+                    <br />
+                    A: You will receive an email with access instructions after
+                    purchase.
+                  </div>
+                </div>
+                <div className='mb-6'>
+                  <label className='mb-1 block font-medium'>Offers</label>
+                  <div
+                    className={`mb-6${isOfferMissing ? 'border-destructive rounded-md border p-2' : ''}`}
+                  >
+                    {form.offers.map((offer, idx) => (
+                      <Card key={idx} className='bg-muted mb-4 p-4'>
                         <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                           <div>
                             <label
-                              className={`block text-sm font-medium mb-1${otherUrlFieldErrors[idx]?.page_title ? 'text-destructive' : ''}`}
+                              className={`block text-sm font-medium mb-1${offerFieldErrors[idx]?.title ? 'text-destructive' : ''}`}
                             >
                               Title <span className='text-destructive'>*</span>
                             </label>
                             <Input
-                              value={urlObj.page_title || ''}
+                              value={offer.title}
                               onChange={(e) =>
-                                handleOtherUrlChange(
-                                  idx,
-                                  'page_title',
-                                  e.target.value
-                                )
+                                handleOfferChange(idx, 'title', e.target.value)
                               }
-                              placeholder='e.g. Terms of Service'
+                              placeholder='Offer title'
                               className={
-                                otherUrlFieldErrors[idx]?.page_title
+                                offerFieldErrors[idx]?.title
                                   ? 'border-destructive focus:ring-destructive'
                                   : ''
                               }
                             />
-                            {otherUrlFieldErrors[idx]?.page_title && (
+                            {offerFieldErrors[idx]?.title && (
                               <div className='text-destructive mt-1 text-xs'>
                                 Title is required.
                               </div>
@@ -1256,25 +988,25 @@ export default function ProductForm({
                           </div>
                           <div>
                             <label
-                              className={`block text-sm font-medium mb-1${otherUrlFieldErrors[idx]?.url ? 'text-destructive' : ''}`}
+                              className={`block text-sm font-medium mb-1${offerFieldErrors[idx]?.price ? 'text-destructive' : ''}`}
                             >
-                              URL <span className='text-destructive'>*</span>
+                              Price <span className='text-destructive'>*</span>
                             </label>
                             <Input
-                              value={urlObj.url || ''}
+                              value={offer.price}
                               onChange={(e) =>
-                                handleOtherUrlChange(idx, 'url', e.target.value)
+                                handleOfferChange(idx, 'price', e.target.value)
                               }
-                              placeholder='https://...'
+                              placeholder='e.g. R$67, 12xR$9,90 or R$47/month'
                               className={
-                                otherUrlFieldErrors[idx]?.url
+                                offerFieldErrors[idx]?.price
                                   ? 'border-destructive focus:ring-destructive'
                                   : ''
                               }
                             />
-                            {otherUrlFieldErrors[idx]?.url && (
+                            {offerFieldErrors[idx]?.price && (
                               <div className='text-destructive mt-1 text-xs'>
-                                Valid URL is required.
+                                Price is required.
                               </div>
                             )}
                           </div>
@@ -1284,49 +1016,85 @@ export default function ProductForm({
                             Description
                           </label>
                           <Textarea
-                            value={urlObj.description || ''}
+                            value={offer.description}
                             onChange={(e) =>
-                              handleOtherUrlChange(
+                              handleOfferChange(
                                 idx,
                                 'description',
                                 e.target.value
                               )
                             }
-                            placeholder='e.g. Terms and conditions for buyers.'
+                            placeholder='Offer description (optional)'
                             rows={2}
                           />
                         </div>
-                        {form.other_relevant_urls.length > 1 && (
+                        <div className={`mt-2`}>
+                          <label
+                            className={`block text-sm font-medium mb-1${offerFieldErrors[idx]?.url || (submitAttempted && offer.url && !isValidUrl(offer.url)) ? 'text-destructive' : ''}`}
+                          >
+                            Offer Page{' '}
+                            <span className='text-destructive'>*</span>
+                          </label>
+                          <Input
+                            value={offer.url}
+                            onChange={(e) =>
+                              handleOfferChange(idx, 'url', e.target.value)
+                            }
+                            placeholder='Offer URL'
+                            className={
+                              offerFieldErrors[idx]?.url ||
+                              (submitAttempted &&
+                                offer.url &&
+                                !isValidUrl(offer.url))
+                                ? 'border-destructive focus:ring-destructive'
+                                : ''
+                            }
+                          />
+                          {offerFieldErrors[idx]?.url && (
+                            <div className='text-destructive mt-1 text-xs'>
+                              Offer Page URL is required.
+                            </div>
+                          )}
+                          {submitAttempted &&
+                            offer.url &&
+                            !isValidUrl(offer.url) && (
+                              <div className='text-destructive mt-1 text-xs'>
+                                Enter a valid URL (starting with http:// or
+                                https://).
+                              </div>
+                            )}
+                        </div>
+                        {form.offers.length > 1 && (
                           <Button
                             type='button'
                             variant='destructive'
                             className='mt-2'
-                            onClick={() => setShowRemoveOtherUrl(idx)}
+                            onClick={() => setShowRemoveOffer(idx)}
                           >
                             Remove
                           </Button>
                         )}
                         <Dialog
-                          open={showRemoveOtherUrl === idx}
-                          onOpenChange={() => setShowRemoveOtherUrl(null)}
+                          open={showRemoveOffer === idx}
+                          onOpenChange={() => setShowRemoveOffer(null)}
                         >
                           <DialogContent>
                             <DialogHeader>
-                              <DialogTitle>Remove URL?</DialogTitle>
+                              <DialogTitle>Remove offer?</DialogTitle>
                             </DialogHeader>
-                            <p>Are you sure you want to remove this URL?</p>
+                            <p>Are you sure you want to remove this offer?</p>
                             <DialogFooter>
                               <Button
                                 variant='outline'
-                                onClick={() => setShowRemoveOtherUrl(null)}
+                                onClick={() => setShowRemoveOffer(null)}
                               >
                                 Cancel
                               </Button>
                               <Button
                                 variant='destructive'
                                 onClick={() => {
-                                  removeOtherUrl(idx);
-                                  setShowRemoveOtherUrl(null);
+                                  removeOffer(idx);
+                                  setShowRemoveOffer(null);
                                 }}
                               >
                                 Remove
@@ -1339,147 +1107,364 @@ export default function ProductForm({
                     <Button
                       type='button'
                       variant='secondary'
-                      onClick={addOtherUrl}
+                      onClick={addOffer}
                       className='w-full'
                     >
                       + Add
                     </Button>
-                    {isOtherUrlMissing && (
+                    {isOfferMissing && (
                       <div className='text-destructive mt-1 text-xs'>
-                        Each entry must have a title and a valid URL.
+                        At least one Offer is required.
                       </div>
                     )}
                   </div>
-                </section>
-              </TabsContent>
-              <TabsContent value='integrations'>
-                {/* Integrations Section */}
-                <section className='space-y-6'>
-                  <div className='flex flex-col gap-6'>
-                    <div>
-                      <label className='mb-1 block font-medium'>
-                        Platform{' '}
-                        <span className='text-destructive' title='Required'>
-                          *
-                        </span>
-                      </label>
-                      <div
-                        className={`mb-6${isPlatformMissing ? 'border-destructive rounded-md border p-2' : ''}`}
+                </div>
+                <div className='mb-6'>
+                  <label className='mb-1 block font-medium'>Coupons</label>
+                  {form.coupons.map((coupon, idx) => (
+                    <Card key={idx} className='bg-muted mb-4 p-4'>
+                      <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+                        <div>
+                          <label className='block text-sm'>Title</label>
+                          <Input
+                            value={coupon.title}
+                            onChange={(e) =>
+                              handleCouponChange(idx, 'title', e.target.value)
+                            }
+                            placeholder='Coupon title'
+                          />
+                        </div>
+                        <div>
+                          <label className='block text-sm'>Discount</label>
+                          <Input
+                            value={coupon.discount}
+                            onChange={(e) =>
+                              handleCouponChange(
+                                idx,
+                                'discount',
+                                e.target.value
+                              )
+                            }
+                            placeholder='e.g. 20%'
+                          />
+                        </div>
+                        <div>
+                          <label className='block text-sm'>Code</label>
+                          <Input
+                            value={coupon.code}
+                            onChange={(e) =>
+                              handleCouponChange(idx, 'code', e.target.value)
+                            }
+                            placeholder='e.g. LAN20'
+                          />
+                        </div>
+                      </div>
+                      {form.coupons.length > 1 && (
+                        <Button
+                          type='button'
+                          variant='destructive'
+                          className='mt-2'
+                          onClick={() => setShowRemoveCoupon(idx)}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                      <Dialog
+                        open={showRemoveCoupon === idx}
+                        onOpenChange={() => setShowRemoveCoupon(null)}
                       >
-                        <div className='flex gap-4'>
-                          <label className='flex items-center gap-1'>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Remove coupon?</DialogTitle>
+                          </DialogHeader>
+                          <p>Are you sure you want to remove this coupon?</p>
+                          <DialogFooter>
+                            <Button
+                              variant='outline'
+                              onClick={() => setShowRemoveCoupon(null)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              variant='destructive'
+                              onClick={() => {
+                                removeCoupon(idx);
+                                setShowRemoveCoupon(null);
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </Card>
+                  ))}
+                  <Button
+                    type='button'
+                    variant='secondary'
+                    onClick={addCoupon}
+                    className='w-full'
+                  >
+                    + Add
+                  </Button>
+                </div>
+                <div className='mb-6'>
+                  <label className='mb-1 block font-medium'>
+                    Other Relevant URLs
+                  </label>
+                  {form.other_relevant_urls.map((urlObj, idx) => (
+                    <Card key={idx} className='bg-muted mb-2 p-3'>
+                      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                        <div>
+                          <label
+                            className={`block text-sm font-medium mb-1${otherUrlFieldErrors[idx]?.page_title ? 'text-destructive' : ''}`}
+                          >
+                            Title <span className='text-destructive'>*</span>
+                          </label>
+                          <Input
+                            value={urlObj.page_title || ''}
+                            onChange={(e) =>
+                              handleOtherUrlChange(
+                                idx,
+                                'page_title',
+                                e.target.value
+                              )
+                            }
+                            placeholder='e.g. Terms of Service'
+                            className={
+                              otherUrlFieldErrors[idx]?.page_title
+                                ? 'border-destructive focus:ring-destructive'
+                                : ''
+                            }
+                          />
+                          {otherUrlFieldErrors[idx]?.page_title && (
+                            <div className='text-destructive mt-1 text-xs'>
+                              Title is required.
+                            </div>
+                          )}
+                        </div>
+                        <div>
+                          <label
+                            className={`block text-sm font-medium mb-1${otherUrlFieldErrors[idx]?.url ? 'text-destructive' : ''}`}
+                          >
+                            URL <span className='text-destructive'>*</span>
+                          </label>
+                          <Input
+                            value={urlObj.url || ''}
+                            onChange={(e) =>
+                              handleOtherUrlChange(idx, 'url', e.target.value)
+                            }
+                            placeholder='https://...'
+                            className={
+                              otherUrlFieldErrors[idx]?.url
+                                ? 'border-destructive focus:ring-destructive'
+                                : ''
+                            }
+                          />
+                          {otherUrlFieldErrors[idx]?.url && (
+                            <div className='text-destructive mt-1 text-xs'>
+                              Valid URL is required.
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className='mt-2'>
+                        <label className='mb-1 block text-sm font-medium'>
+                          Description
+                        </label>
+                        <Textarea
+                          value={urlObj.description || ''}
+                          onChange={(e) =>
+                            handleOtherUrlChange(
+                              idx,
+                              'description',
+                              e.target.value
+                            )
+                          }
+                          placeholder='e.g. Terms and conditions for buyers.'
+                          rows={2}
+                        />
+                      </div>
+                      {form.other_relevant_urls.length > 1 && (
+                        <Button
+                          type='button'
+                          variant='destructive'
+                          className='mt-2'
+                          onClick={() => setShowRemoveOtherUrl(idx)}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                      <Dialog
+                        open={showRemoveOtherUrl === idx}
+                        onOpenChange={() => setShowRemoveOtherUrl(null)}
+                      >
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Remove URL?</DialogTitle>
+                          </DialogHeader>
+                          <p>Are you sure you want to remove this URL?</p>
+                          <DialogFooter>
+                            <Button
+                              variant='outline'
+                              onClick={() => setShowRemoveOtherUrl(null)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              variant='destructive'
+                              onClick={() => {
+                                removeOtherUrl(idx);
+                                setShowRemoveOtherUrl(null);
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </Card>
+                  ))}
+                  <Button
+                    type='button'
+                    variant='secondary'
+                    onClick={addOtherUrl}
+                    className='w-full'
+                  >
+                    + Add
+                  </Button>
+                  {isOtherUrlMissing && (
+                    <div className='text-destructive mt-1 text-xs'>
+                      Each entry must have a title and a valid URL.
+                    </div>
+                  )}
+                </div>
+              </section>
+            </TabsContent>
+            <TabsContent value='integrations'>
+              {/* Integrations Section */}
+              <section className='space-y-6'>
+                <div className='flex flex-col gap-6'>
+                  <div>
+                    <label className='mb-1 block font-medium'>
+                      Platform{' '}
+                      <span className='text-destructive' title='Required'>
+                        *
+                      </span>
+                    </label>
+                    <div
+                      className={`mb-6${isPlatformMissing ? 'border-destructive rounded-md border p-2' : ''}`}
+                    >
+                      <div className='flex gap-4'>
+                        <label className='flex items-center gap-1'>
+                          <input
+                            type='radio'
+                            name='platform'
+                            value=''
+                            checked={form.platform === ''}
+                            onChange={handleChange}
+                            disabled
+                            className='opacity-50'
+                          />
+                          <span className='text-muted-foreground'>
+                            Select a platform
+                          </span>
+                        </label>
+                        {PLATFORM_OPTIONS.map((opt) => (
+                          <label
+                            key={opt.value}
+                            className='flex items-center gap-1'
+                          >
                             <input
                               type='radio'
                               name='platform'
-                              value=''
-                              checked={form.platform === ''}
+                              value={opt.value}
+                              checked={form.platform === opt.value}
                               onChange={handleChange}
-                              disabled
-                              className='opacity-50'
                             />
-                            <span className='text-muted-foreground'>
-                              Select a platform
-                            </span>
+                            {opt.label}
                           </label>
-                          {PLATFORM_OPTIONS.map((opt) => (
-                            <label
-                              key={opt.value}
-                              className='flex items-center gap-1'
-                            >
-                              <input
-                                type='radio'
-                                name='platform'
-                                value={opt.value}
-                                checked={form.platform === opt.value}
-                                onChange={handleChange}
-                              />
-                              {opt.label}
-                            </label>
-                          ))}
+                        ))}
+                      </div>
+                      {form.platform && (
+                        <div className='mt-2 text-xs text-amber-600'>
+                          After saving, the selected platform cannot be changed.
                         </div>
-                        {form.platform && (
-                          <div className='mt-2 text-xs text-amber-600'>
-                            After saving, the selected platform cannot be
-                            changed.
-                          </div>
-                        )}
-                        {isPlatformMissing && (
-                          <div className='text-destructive mt-1 text-xs'>
-                            Platform is required.
-                          </div>
-                        )}
+                      )}
+                      {isPlatformMissing && (
+                        <div className='text-destructive mt-1 text-xs'>
+                          Platform is required.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {showWebhook && (
+                    <div className='relative'>
+                      <label className='mb-1 block font-medium'>Webhook</label>
+                      <Input
+                        ref={webhookInputRef}
+                        name='webhook'
+                        value={form.webhook}
+                        readOnly
+                        className='cursor-pointer pr-24 select-all'
+                        onClick={async () => {
+                          if (form.webhook) {
+                            await navigator.clipboard.writeText(form.webhook);
+                            setWebhookCopied(true);
+                            setTimeout(() => setWebhookCopied(false), 2000);
+                          }
+                        }}
+                        title='Click to copy webhook URL'
+                      />
+                      {webhookCopied && (
+                        <div className='bg-primary animate-fade-in absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded px-2 py-1 text-xs text-white shadow'>
+                          Webhook URL copied!
+                        </div>
+                      )}
+                      <div className='text-muted-foreground mt-1 text-xs'>
+                        Click to copy the webhook URL to your clipboard.
                       </div>
                     </div>
-                    {showWebhook && (
-                      <div className='relative'>
-                        <label className='mb-1 block font-medium'>
-                          Webhook
-                        </label>
-                        <Input
-                          ref={webhookInputRef}
-                          name='webhook'
-                          value={form.webhook}
-                          readOnly
-                          className='cursor-pointer pr-24 select-all'
-                          onClick={async () => {
-                            if (form.webhook) {
-                              await navigator.clipboard.writeText(form.webhook);
-                              setWebhookCopied(true);
-                              setTimeout(() => setWebhookCopied(false), 2000);
-                            }
-                          }}
-                          title='Click to copy webhook URL'
-                        />
-                        {webhookCopied && (
-                          <div className='bg-primary animate-fade-in absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded px-2 py-1 text-xs text-white shadow'>
-                            Webhook URL copied!
-                          </div>
-                        )}
-                        <div className='text-muted-foreground mt-1 text-xs'>
-                          Click to copy the webhook URL to your clipboard.
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </section>
-              </TabsContent>
-            </Tabs>
-            <div className='mt-8 flex justify-end gap-2'>
-              <Button
-                type='button'
-                variant='outline'
-                size='default'
-                onClick={handleCancel}
-              >
-                Cancel
-              </Button>
-              <Button type='submit' size='default'>
-                Save Product
-              </Button>
-            </div>
-            <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Discard changes?</DialogTitle>
-                </DialogHeader>
-                <div className='mb-4'>
-                  You have unsaved changes. Are you sure you want to cancel and
-                  lose all changes?
+                  )}
                 </div>
-                <DialogFooter>
-                  <Button
-                    variant='outline'
-                    onClick={() => setShowCancelDialog(false)}
-                  >
-                    No, keep editing
-                  </Button>
-                  <Button variant='destructive' onClick={confirmCancel}>
-                    Yes, discard changes
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+              </section>
+            </TabsContent>
+          </Tabs>
+          <div className='mt-8 flex justify-end gap-2'>
+            <Button
+              type='button'
+              variant='outline'
+              size='default'
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+            <Button type='submit' size='default'>
+              Save Product
+            </Button>
           </div>
+          <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Discard changes?</DialogTitle>
+              </DialogHeader>
+              <div className='mb-4'>
+                You have unsaved changes. Are you sure you want to cancel and
+                lose all changes?
+              </div>
+              <DialogFooter>
+                <Button
+                  variant='outline'
+                  onClick={() => setShowCancelDialog(false)}
+                >
+                  No, keep editing
+                </Button>
+                <Button variant='destructive' onClick={confirmCancel}>
+                  Yes, discard changes
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </CardContent>
       </Card>
 

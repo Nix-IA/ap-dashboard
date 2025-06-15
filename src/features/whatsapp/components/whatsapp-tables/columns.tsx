@@ -318,8 +318,8 @@ function DisplayNameCell({ cell, row }: any) {
 
   return (
     <>
-      <div className='group relative flex w-full min-w-[180px] items-center justify-between'>
-        <span className='max-w-[120px] truncate'>
+      <div className='group relative flex w-full max-w-full min-w-[220px] items-center justify-between pr-8'>
+        <span className='truncate' style={{ maxWidth: 'calc(100% - 32px)' }}>
           {String(cell.getValue() ?? '')}
         </span>
         <div
@@ -330,6 +330,7 @@ function DisplayNameCell({ cell, row }: any) {
             className='px-2 py-1 opacity-70 transition-opacity group-hover:opacity-100'
             onClick={handleEdit}
             title='Edit display name'
+            tabIndex={0}
           >
             <Pencil className='text-muted-foreground h-4 w-4' />
           </button>

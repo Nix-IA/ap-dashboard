@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/lib/supabase';
+import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
@@ -680,272 +681,227 @@ export default function ProductForm({
               <TabsContent value='product'>
                 {/* Product Section */}
                 <section className='space-y-6'>
-                  <div className='mb-6'>
+                  <div>
                     <label className='mb-1 block font-medium'>
-                      Product Status
+                      Name{' '}
+                      <span className='text-destructive' title='Required'>
+                        *
+                      </span>
                     </label>
-                    <div className='flex gap-4'>
-                      <label className='flex items-center gap-1'>
-                        <input
-                          type='radio'
-                          name='status'
-                          value='active'
-                          checked={form.status === 'active'}
-                          onChange={handleChange}
-                        />{' '}
-                        Active
-                      </label>
-                      <label className='flex items-center gap-1'>
-                        <input
-                          type='radio'
-                          name='status'
-                          value='inactive'
-                          checked={form.status === 'inactive'}
-                          onChange={handleChange}
-                        />{' '}
-                        Inactive
-                      </label>
-                    </div>
-                  </div>
-                  {/* Stack all main fields in a single column */}
-                  <div className='flex flex-col gap-6'>
-                    <div>
-                      <label
-                        className={`block font-medium mb-1${submitAttempted && !form.name.trim() ? 'text-destructive' : ''}`}
-                      >
-                        Name{' '}
-                        <span className='text-destructive' title='Required'>
-                          *
-                        </span>
-                      </label>
-                      <Input
-                        ref={refs.name}
-                        name='name'
-                        value={form.name}
-                        onChange={handleChange}
-                        placeholder='Product name'
-                        className={
-                          submitAttempted && !form.name.trim()
-                            ? 'border-destructive focus:ring-destructive'
-                            : ''
-                        }
-                        autoComplete='off'
-                      />
-                      {submitAttempted && !form.name.trim() && (
-                        <div className='text-destructive mt-1 text-xs'>
-                          Name is required.
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <label
-                        className={`block font-medium mb-1${submitAttempted && !form.landing_page.trim() ? 'text-destructive' : ''}`}
-                      >
-                        Main Page{' '}
-                        <span className='text-destructive' title='Required'>
-                          *
-                        </span>
-                      </label>
-                      <Input
-                        ref={refs.landing_page}
-                        name='landing_page'
-                        value={form.landing_page}
-                        onChange={handleChange}
-                        placeholder='Paste here...'
-                        className={
-                          submitAttempted &&
-                          (!form.landing_page.trim() ||
-                            !isValidUrl(form.landing_page.trim()))
-                            ? 'border-destructive focus:ring-destructive'
-                            : ''
-                        }
-                      />
-                      {submitAttempted && !form.landing_page.trim() && (
-                        <div className='text-destructive mt-1 text-xs'>
-                          Main Page URL is required.
-                        </div>
-                      )}
-                      {submitAttempted &&
-                        form.landing_page.trim() &&
-                        !isValidUrl(form.landing_page.trim()) && (
-                          <div className='text-destructive mt-1 text-xs'>
-                            Enter a valid URL (starting with http:// or
-                            https://).
-                          </div>
-                        )}
-                    </div>
-                    <div className='mt-2'>
-                      <label className='mb-1 block font-medium'>
-                        Description{' '}
-                        <span className='text-destructive' title='Required'>
-                          *
-                        </span>
-                      </label>
-                      <div
-                        ref={descriptionRef}
-                        contentEditable
-                        suppressContentEditableWarning
-                        className='bg-background focus:ring-primary min-h-[100px] rounded-md border p-2 focus:ring-2 focus:outline-none'
-                        style={{
-                          whiteSpace: 'pre-wrap',
-                          backgroundColor: 'inherit'
-                        }}
-                        onBlur={handleDescriptionBlur}
-                        dangerouslySetInnerHTML={{ __html: form.description }}
-                        aria-label='Product description (rich text allowed)'
-                      />
-                      <div className='text-muted-foreground mt-1 text-xs'>
-                        You can use formatting (bullets, bold, etc). Pasting
-                        from Word/Google Docs will preserve formatting.
+                    <Input
+                      ref={refs.name}
+                      name='name'
+                      value={form.name}
+                      onChange={handleChange}
+                      placeholder='Product name'
+                      className={
+                        submitAttempted && !form.name.trim()
+                          ? 'border-destructive focus:ring-destructive'
+                          : undefined
+                      }
+                      autoComplete='off'
+                    />
+                    {submitAttempted && !form.name.trim() && (
+                      <div className='text-destructive mt-1 text-xs'>
+                        Name is required.
                       </div>
-                      {submitAttempted &&
-                        (!form.description.trim() ||
-                          form.description === '<br>') && (
-                          <div className='text-destructive mt-1 text-xs'>
-                            Description is required.
-                          </div>
-                        )}
-                    </div>
-                    <div>
-                      <label
-                        className={`block font-medium mb-1${submitAttempted && !form.objective.trim() ? 'text-destructive' : ''}`}
-                      >
-                        Objective{' '}
-                        <span className='text-destructive' title='Required'>
-                          *
-                        </span>
-                      </label>
-                      <Textarea
-                        ref={refs.objective}
-                        name='objective'
-                        value={form.objective}
-                        onChange={handleChange}
-                        placeholder='Type here...'
-                        rows={2}
-                        className={
-                          submitAttempted && !form.objective.trim()
-                            ? 'border-destructive focus:ring-destructive'
-                            : ''
-                        }
-                      />
-                      {submitAttempted && !form.objective.trim() && (
+                    )}
+                  </div>
+                  <div>
+                    <label className='mb-1 block font-medium'>
+                      Main Page{' '}
+                      <span className='text-destructive' title='Required'>
+                        *
+                      </span>
+                    </label>
+                    <Input
+                      ref={refs.landing_page}
+                      name='landing_page'
+                      value={form.landing_page}
+                      onChange={handleChange}
+                      placeholder='Paste here...'
+                      className={
+                        submitAttempted &&
+                        (!form.landing_page.trim() ||
+                          !isValidUrl(form.landing_page.trim()))
+                          ? 'border-destructive focus:ring-destructive'
+                          : undefined
+                      }
+                    />
+                    {submitAttempted && !form.landing_page.trim() && (
+                      <div className='text-destructive mt-1 text-xs'>
+                        Main Page URL is required.
+                      </div>
+                    )}
+                    {submitAttempted &&
+                      form.landing_page.trim() &&
+                      !isValidUrl(form.landing_page.trim()) && (
                         <div className='text-destructive mt-1 text-xs'>
-                          Objective is required.
+                          Enter a valid URL (starting with http:// or https://).
                         </div>
                       )}
+                  </div>
+                  <div className='mt-2'>
+                    <label className='mb-1 block font-medium'>
+                      Description{' '}
+                      <span className='text-destructive' title='Required'>
+                        *
+                      </span>
+                    </label>
+                    <div
+                      ref={descriptionRef}
+                      contentEditable
+                      suppressContentEditableWarning
+                      className='bg-background focus:ring-primary min-h-[100px] rounded-md border p-2 focus:ring-2 focus:outline-none'
+                      style={{
+                        whiteSpace: 'pre-wrap',
+                        backgroundColor: 'inherit'
+                      }}
+                      onBlur={handleDescriptionBlur}
+                      dangerouslySetInnerHTML={{ __html: form.description }}
+                      aria-label='Product description (rich text allowed)'
+                    />
+                    <div className='text-muted-foreground mt-1 text-xs'>
+                      You can use formatting (bullets, bold, etc). Pasting from
+                      Word/Google Docs will preserve formatting.
                     </div>
-                    <div>
-                      <label
-                        className={`block font-medium mb-1${submitAttempted && !form.benefits.trim() ? 'text-destructive' : ''}`}
-                      >
-                        Benefits{' '}
-                        <span className='text-destructive' title='Required'>
-                          *
-                        </span>
-                      </label>
-                      <Textarea
-                        ref={refs.benefits}
-                        name='benefits'
-                        value={form.benefits}
-                        onChange={handleChange}
-                        placeholder='Type here...'
-                        rows={2}
-                        className={
-                          submitAttempted && !form.benefits.trim()
-                            ? 'border-destructive focus:ring-destructive'
-                            : ''
-                        }
-                      />
-                      {submitAttempted && !form.benefits.trim() && (
+                    {submitAttempted &&
+                      (!form.description.trim() ||
+                        form.description === '<br>') && (
                         <div className='text-destructive mt-1 text-xs'>
-                          Benefits are required.
+                          Description is required.
                         </div>
                       )}
-                    </div>
-                    <div>
-                      <label
-                        className={`block font-medium mb-1${submitAttempted && !form.target_audience.trim() ? 'text-destructive' : ''}`}
-                      >
-                        Target Audience{' '}
-                        <span className='text-destructive' title='Required'>
-                          *
-                        </span>
-                      </label>
-                      <Textarea
-                        ref={refs.target_audience}
-                        name='target_audience'
-                        value={form.target_audience}
-                        onChange={handleChange}
-                        placeholder='Type here...'
-                        rows={2}
-                        className={
-                          submitAttempted && !form.target_audience.trim()
-                            ? 'border-destructive focus:ring-destructive'
-                            : ''
-                        }
-                      />
-                      {submitAttempted && !form.target_audience.trim() && (
-                        <div className='text-destructive mt-1 text-xs'>
-                          Target Audience is required.
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <label
-                        className={`block font-medium mb-1${submitAttempted && !form.problems_solved.trim() ? 'text-destructive' : ''}`}
-                      >
-                        Problems Solved{' '}
-                        <span className='text-destructive' title='Required'>
-                          *
-                        </span>
-                      </label>
-                      <Textarea
-                        ref={refs.problems_solved}
-                        name='problems_solved'
-                        value={form.problems_solved}
-                        onChange={handleChange}
-                        placeholder='Type here...'
-                        rows={2}
-                        className={
-                          submitAttempted && !form.problems_solved.trim()
-                            ? 'border-destructive focus:ring-destructive'
-                            : ''
-                        }
-                      />
-                      {submitAttempted && !form.problems_solved.trim() && (
-                        <div className='text-destructive mt-1 text-xs'>
-                          Problems Solved is required.
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <label
-                        className={`block font-medium mb-1${submitAttempted && !form.delivery_information.trim() ? 'text-destructive' : ''}`}
-                      >
-                        Delivery Information{' '}
-                        <span className='text-destructive' title='Required'>
-                          *
-                        </span>
-                      </label>
-                      <Textarea
-                        ref={refs.delivery_information}
-                        name='delivery_information'
-                        value={form.delivery_information}
-                        onChange={handleChange}
-                        placeholder='Describe what and how the customer will receive after purchase.'
-                        className={
-                          submitAttempted && !form.delivery_information.trim()
-                            ? 'border-destructive focus:ring-destructive'
-                            : ''
-                        }
-                        rows={2}
-                      />
-                      {submitAttempted && !form.delivery_information.trim() && (
-                        <div className='text-destructive mt-1 text-xs'>
-                          Delivery information is required.
-                        </div>
-                      )}
-                    </div>
+                  </div>
+                  <div>
+                    <label className='mb-1 block font-medium'>
+                      Objective{' '}
+                      <span className='text-destructive' title='Required'>
+                        *
+                      </span>
+                    </label>
+                    <Textarea
+                      ref={refs.objective}
+                      name='objective'
+                      value={form.objective}
+                      onChange={handleChange}
+                      placeholder='Type here...'
+                      rows={2}
+                      className={
+                        submitAttempted && !form.objective.trim()
+                          ? 'border-destructive focus:ring-destructive'
+                          : undefined
+                      }
+                    />
+                    {submitAttempted && !form.objective.trim() && (
+                      <div className='text-destructive mt-1 text-xs'>
+                        Objective is required.
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className='mb-1 block font-medium'>
+                      Benefits{' '}
+                      <span className='text-destructive' title='Required'>
+                        *
+                      </span>
+                    </label>
+                    <Textarea
+                      ref={refs.benefits}
+                      name='benefits'
+                      value={form.benefits}
+                      onChange={handleChange}
+                      placeholder='Type here...'
+                      rows={2}
+                      className={
+                        submitAttempted && !form.benefits.trim()
+                          ? 'border-destructive focus:ring-destructive'
+                          : undefined
+                      }
+                    />
+                    {submitAttempted && !form.benefits.trim() && (
+                      <div className='text-destructive mt-1 text-xs'>
+                        Benefits are required.
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className='mb-1 block font-medium'>
+                      Target Audience{' '}
+                      <span className='text-destructive' title='Required'>
+                        *
+                      </span>
+                    </label>
+                    <Textarea
+                      ref={refs.target_audience}
+                      name='target_audience'
+                      value={form.target_audience}
+                      onChange={handleChange}
+                      placeholder='Type here...'
+                      rows={2}
+                      className={
+                        submitAttempted && !form.target_audience.trim()
+                          ? 'border-destructive focus:ring-destructive'
+                          : undefined
+                      }
+                    />
+                    {submitAttempted && !form.target_audience.trim() && (
+                      <div className='text-destructive mt-1 text-xs'>
+                        Target Audience is required.
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className='mb-1 block font-medium'>
+                      Problems Solved{' '}
+                      <span className='text-destructive' title='Required'>
+                        *
+                      </span>
+                    </label>
+                    <Textarea
+                      ref={refs.problems_solved}
+                      name='problems_solved'
+                      value={form.problems_solved}
+                      onChange={handleChange}
+                      placeholder='Type here...'
+                      rows={2}
+                      className={
+                        submitAttempted && !form.problems_solved.trim()
+                          ? 'border-destructive focus:ring-destructive'
+                          : undefined
+                      }
+                    />
+                    {submitAttempted && !form.problems_solved.trim() && (
+                      <div className='text-destructive mt-1 text-xs'>
+                        Problems Solved is required.
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className='mb-1 block font-medium'>
+                      Delivery Information{' '}
+                      <span className='text-destructive' title='Required'>
+                        *
+                      </span>
+                    </label>
+                    <Textarea
+                      ref={refs.delivery_information}
+                      name='delivery_information'
+                      value={form.delivery_information}
+                      onChange={handleChange}
+                      placeholder='Describe what and how the customer will receive after purchase.'
+                      className={
+                        submitAttempted && !form.delivery_information.trim()
+                          ? 'border-destructive focus:ring-destructive'
+                          : undefined
+                      }
+                      rows={2}
+                    />
+                    {submitAttempted && !form.delivery_information.trim() && (
+                      <div className='text-destructive mt-1 text-xs'>
+                        Delivery information is required.
+                      </div>
+                    )}
                   </div>
                 </section>
               </TabsContent>
@@ -1489,10 +1445,17 @@ export default function ProductForm({
               </TabsContent>
             </Tabs>
             <div className='mt-8 flex justify-end gap-2'>
-              <Button type='button' variant='outline' onClick={handleCancel}>
+              <Button
+                type='button'
+                variant='outline'
+                size='default'
+                onClick={handleCancel}
+              >
                 Cancel
               </Button>
-              <Button type='submit'>Save Product</Button>
+              <Button type='submit' size='default'>
+                Save Product
+              </Button>
             </div>
             <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
               <DialogContent>

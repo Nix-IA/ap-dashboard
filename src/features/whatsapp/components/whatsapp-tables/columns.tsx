@@ -15,37 +15,26 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { ColumnDef } from '@tanstack/react-table';
 import { Pencil, Loader2 } from 'lucide-react';
 import React from 'react';
 import { getCountryFlagAndFormatPhone } from './phone-utils';
+import { supabase } from '@/lib/supabase';
 
 export const columns: ColumnDef<any>[] = [
   {
     id: 'display_name',
     accessorKey: 'display_name',
     header: 'Display Name',
-    cell: ({ cell, row }) => {
-      return (
-        <div className='group relative flex w-full min-w-[180px] items-center justify-between'>
-          <span className='max-w-[120px] truncate'>
-            {String(cell.getValue() ?? '')}
-          </span>
-          <div
-            className='bg-background absolute right-0 flex items-center gap-1 pr-1'
-            style={{ zIndex: 1 }}
-          >
-            <button
-              className='px-2 py-1 opacity-70 transition-opacity group-hover:opacity-100'
-              // onClick={() => setEditing(true)}
-              title='Edit display name'
-            >
-              <Pencil className='text-muted-foreground h-4 w-4' />
-            </button>
-          </div>
-        </div>
-      );
-    }
+    cell: DisplayNameCell
   },
   {
     id: 'status',
@@ -293,5 +282,91 @@ function ActionCell({ row }: { row: any }) {
         </AlertDialogContent>
       </AlertDialog>
     </TooltipProvider>
+  );
+}
+
+// Inline editable display name cell with modal
+function DisplayNameCell({ cell, row }: any) {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(cell.getValue() ?? '');
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
+
+  const handleEdit = () => {
+    setValue(cell.getValue() ?? '');
+    setError('');
+    setOpen(true);
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    setError('');
+    const instanceName =
+      row.original.instance_name || row.original.name || row.original.id;
+    const { error } = await supabase
+      .from('whatsapp_numbers')
+      .update({ display_name: value })
+      .eq('instance_name', instanceName);
+    setLoading(false);
+    if (error) {
+      setError(error.message || 'Failed to update display name.');
+    } else {
+      setOpen(false);
+      window.location.reload();
+    }
+  };
+
+  return (
+    <>
+      <div className='group relative flex w-full min-w-[180px] items-center justify-between'>
+        <span className='max-w-[120px] truncate'>
+          {String(cell.getValue() ?? '')}
+        </span>
+        <div
+          className='bg-background absolute right-0 flex items-center gap-1 pr-1'
+          style={{ zIndex: 1 }}
+        >
+          <button
+            className='px-2 py-1 opacity-70 transition-opacity group-hover:opacity-100'
+            onClick={handleEdit}
+            title='Edit display name'
+          >
+            <Pencil className='text-muted-foreground h-4 w-4' />
+          </button>
+        </div>
+      </div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Display Name</DialogTitle>
+          </DialogHeader>
+          <Input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            disabled={loading}
+            autoFocus
+          />
+          {error && <div className='mt-2 text-xs text-red-500'>{error}</div>}
+          <DialogFooter>
+            <button
+              className='bg-primary hover:bg-primary/90 rounded px-4 py-2 text-white disabled:opacity-50'
+              onClick={handleSave}
+              disabled={loading || !value.trim()}
+              type='button'
+            >
+              {loading ? 'Saving...' : 'Save'}
+            </button>
+            <button
+              className='rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300 disabled:opacity-50'
+              onClick={() => setOpen(false)}
+              disabled={loading}
+              type='button'
+            >
+              Cancel
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

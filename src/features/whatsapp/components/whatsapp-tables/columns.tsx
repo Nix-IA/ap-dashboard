@@ -26,88 +26,6 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: 'display_name',
     header: 'Display Name',
     cell: ({ cell, row }) => {
-      const [editing, setEditing] = React.useState(false);
-      const [value, setValue] = React.useState(cell.getValue() ?? '');
-      const [loading, setLoading] = React.useState(false);
-      const [error, setError] = React.useState('');
-      const [debug, setDebug] = React.useState<any>(null);
-      const inputRef = React.useRef<HTMLInputElement>(null);
-      React.useEffect(() => {
-        if (editing && inputRef.current) inputRef.current.focus();
-      }, [editing]);
-      const handleSave = async () => {
-        setLoading(true);
-        setError('');
-        setDebug(null);
-        try {
-          const { supabase } = await import('@/lib/supabase');
-          console.log('Updating whatsapp_numbers', {
-            id: row.original.id,
-            value
-          });
-          const { data, error } = await supabase
-            .from('whatsapp_numbers')
-            .update({ display_name: value })
-            .eq('id', row.original.id);
-          setDebug({ data, error, id: row.original.id, value });
-          if (error) setError(error.message);
-          else {
-            // Atualiza o valor localmente para refletir imediatamente na tabela
-            if (row.original) row.original.display_name = value;
-            setEditing(false);
-          }
-        } catch (e: any) {
-          setError('Failed to update');
-          setDebug({ exception: e?.message || e });
-          console.error('Update exception', e);
-        }
-        setLoading(false);
-      };
-      if (editing) {
-        return (
-          <div className='flex w-full min-w-[180px] flex-col gap-1'>
-            <div className='flex w-full items-center justify-between gap-2'>
-              <input
-                ref={inputRef}
-                className='w-full rounded border px-2 py-1 text-sm'
-                value={value as string}
-                onChange={(e) => setValue(e.target.value)}
-                disabled={loading}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSave();
-                  if (e.key === 'Escape') setEditing(false);
-                }}
-              />
-              <div className='ml-2 flex gap-1'>
-                <button
-                  className='text-primary text-xs hover:underline disabled:opacity-50'
-                  onClick={handleSave}
-                  disabled={loading}
-                  title='Save'
-                >
-                  Save
-                </button>
-                <button
-                  className='text-muted-foreground text-xs hover:underline'
-                  onClick={() => setEditing(false)}
-                  disabled={loading}
-                  title='Cancel'
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-            {error && (
-              <span className='ml-2 text-xs text-red-500'>{error}</span>
-            )}
-            {debug && (
-              <pre className='text-muted-foreground mt-1 max-h-32 max-w-xs overflow-x-auto rounded bg-zinc-900 p-2 text-xs whitespace-pre-wrap'>
-                {JSON.stringify(debug, null, 2)}
-              </pre>
-            )}
-          </div>
-        );
-      }
       return (
         <div className='group relative flex w-full min-w-[180px] items-center justify-between'>
           <span className='max-w-[120px] truncate'>
@@ -119,7 +37,7 @@ export const columns: ColumnDef<any>[] = [
           >
             <button
               className='px-2 py-1 opacity-70 transition-opacity group-hover:opacity-100'
-              onClick={() => setEditing(true)}
+              // onClick={() => setEditing(true)}
               title='Edit display name'
             >
               <Pencil className='text-muted-foreground h-4 w-4' />

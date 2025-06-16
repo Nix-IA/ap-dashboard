@@ -9,15 +9,14 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { supabase } from '@/lib/supabase';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
-import GithubSignInButton from './github-auth-button';
 import UserSignUpForm from './user-signup-form';
-import { supabase } from '@/lib/supabase';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
@@ -54,7 +53,7 @@ export default function UserAuthForm() {
     } else {
       toast.success('Login realizado com sucesso!');
       // Redirecionar ou atualizar página
-      window.location.href = '/dashboard/overview';
+      window.location.href = '/dashboard';
     }
   };
 

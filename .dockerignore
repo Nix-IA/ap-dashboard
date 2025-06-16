@@ -1,6 +1,6 @@
 node_modules
 .next
-pnpm-lock.yaml
+pnpm-workspace.yaml
 .env.local
 .env.development
 .git

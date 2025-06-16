@@ -1,5 +1,4 @@
 'use client';
-import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
 import React from 'react';
 import { ActiveThemeProvider } from '../active-theme';
@@ -17,7 +16,6 @@ export default function Providers({
   return (
     <>
       <ActiveThemeProvider initialTheme={activeThemeValue}>
-        {/* Removed ClerkProvider and Clerk-related code */}
         {children}
       </ActiveThemeProvider>
     </>

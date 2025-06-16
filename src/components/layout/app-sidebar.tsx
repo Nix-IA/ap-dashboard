@@ -61,6 +61,12 @@ export default function AppSidebar() {
   const pathname = usePathname();
   const { isOpen } = useMediaQuery();
   const router = useRouter();
+  const [user, setUser] = React.useState<any>(null);
+  React.useEffect(() => {
+    const supabase = require('@/lib/supabase').createSupabaseClient();
+    supabase.auth.getUser().then((result: any) => setUser(result.data.user));
+  }, []);
+
   const handleSwitchTenant = (_tenantId: string) => {
     // Tenant switching functionality would be implemented here
   };
@@ -152,7 +158,18 @@ export default function AppSidebar() {
                   <UserAvatarProfile
                     className='h-8 w-8 rounded-lg'
                     showInfo
-                    user={user}
+                    user={
+                      user
+                        ? {
+                            fullName:
+                              user.user_metadata?.name || user.email || '',
+                            emailAddresses: [
+                              { emailAddress: user.email || '' }
+                            ],
+                            imageUrl: user.user_metadata?.avatar_url || ''
+                          }
+                        : null
+                    }
                   />
                   <IconChevronsDown className='ml-auto size-4' />
                 </SidebarMenuButton>
@@ -168,7 +185,18 @@ export default function AppSidebar() {
                     <UserAvatarProfile
                       className='h-8 w-8 rounded-lg'
                       showInfo
-                      user={user}
+                      user={
+                        user
+                          ? {
+                              fullName:
+                                user.user_metadata?.name || user.email || '',
+                              emailAddresses: [
+                                { emailAddress: user.email || '' }
+                              ],
+                              imageUrl: user.user_metadata?.avatar_url || ''
+                            }
+                          : null
+                      }
                     />
                   </div>
                 </DropdownMenuLabel>

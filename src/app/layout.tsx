@@ -1,7 +1,7 @@
 import Providers from '@/components/layout/providers';
+import ThemeProvider from '@/components/layout/ThemeToggle/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { fontVariables } from '@/lib/font';
-import ThemeProvider from '@/components/layout/ThemeToggle/theme-provider';
 import { cn } from '@/lib/utils';
 import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
@@ -50,11 +50,12 @@ export default async function RootLayout({
       </head>
       <body
         className={cn(
-          'bg-background overflow-hidden overscroll-none font-sans antialiased',
+          'bg-background font-sans antialiased',
           activeThemeValue ? `theme-${activeThemeValue}` : '',
           isScaled ? 'theme-scaled' : '',
           fontVariables
         )}
+        style={{ minHeight: '100dvh', height: '100dvh', overflow: 'auto' }}
       >
         <NextTopLoader showSpinner={false} />
         <NuqsAdapter>

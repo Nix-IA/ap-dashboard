@@ -1,6 +1,5 @@
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -10,24 +9,24 @@ import {
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { supabase } from '@/lib/supabase';
 import { ColumnDef } from '@tanstack/react-table';
-import { Pencil, Loader2 } from 'lucide-react';
+import { Loader2, Pencil } from 'lucide-react';
 import React from 'react';
 import { getCountryFlagAndFormatPhone } from './phone-utils';
-import { supabase } from '@/lib/supabase';
 
 export const columns: ColumnDef<any>[] = [
   {

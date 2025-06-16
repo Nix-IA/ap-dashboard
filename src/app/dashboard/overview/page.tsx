@@ -1,22 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { OverviewFilters } from '@/features/overview/components/OverviewFilters';
 import { OverviewCards } from '@/features/overview/components/OverviewCards';
 import {
-  DealsFunnelChart,
-  ConversationsStatusChart
+  ConversationsStatusChart,
+  DealsFunnelChart
 } from '@/features/overview/components/OverviewCharts';
 import {
-  DealsTimelineChart,
-  DealsByProductChart
+  DealsByProductChart,
+  DealsTimelineChart
 } from '@/features/overview/components/OverviewExtraCharts';
+import { OverviewFilters } from '@/features/overview/components/OverviewFilters';
 import {
-  RecentDealsTable,
   CriticalConversationsTable,
+  RecentDealsTable,
   RecentEventsTable
 } from '@/features/overview/components/OverviewTables';
 import { supabase } from '@/lib/supabase';
+import React, { useEffect, useState } from 'react';
 
 // Mock data para exemplo inicial
 const MOCK_PRODUCTS = [

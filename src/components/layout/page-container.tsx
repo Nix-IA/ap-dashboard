@@ -1,5 +1,5 @@
-import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import React from 'react';
 
 export default function PageContainer({
   children,
@@ -8,15 +8,12 @@ export default function PageContainer({
   children: React.ReactNode;
   scrollable?: boolean;
 }) {
+  if (!scrollable) {
+    return <div className='flex flex-1 p-4 md:px-6'>{children}</div>;
+  }
   return (
-    <>
-      {scrollable ? (
-        <ScrollArea className='h-[calc(100dvh-52px)]'>
-          <div className='flex flex-1 p-4 md:px-6'>{children}</div>
-        </ScrollArea>
-      ) : (
-        <div className='flex flex-1 p-4 md:px-6'>{children}</div>
-      )}
-    </>
+    <ScrollArea className='h-[calc(100dvh-52px)]'>
+      <div className='flex flex-1 p-4 md:px-6'>{children}</div>
+    </ScrollArea>
   );
 }

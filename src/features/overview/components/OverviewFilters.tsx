@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
 import { Calendar } from '@/components/ui/calendar';
+import React, { useEffect, useRef, useState } from 'react';
 
 const PERIOD_PRESETS = [
   {

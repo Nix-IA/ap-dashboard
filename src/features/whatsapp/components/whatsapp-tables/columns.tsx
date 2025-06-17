@@ -33,7 +33,94 @@ export const columns: ColumnDef<any>[] = [
     id: 'display_name',
     accessorKey: 'display_name',
     header: 'Display Name',
-    cell: DisplayNameCell
+    cell: ({ cell, row }) => {
+      const [open, setOpen] = React.useState(false);
+      const [editValue, setEditValue] = React.useState('');
+      const [loading, setLoading] = React.useState(false);
+      const [error, setError] = React.useState('');
+      const value = cell.getValue();
+
+      const handleEdit = () => {
+        setEditValue(String(value ?? ''));
+        setError('');
+        setOpen(true);
+      };
+
+      const handleSave = async () => {
+        setLoading(true);
+        setError('');
+        const instanceName =
+          row.original.instance_name || row.original.name || row.original.id;
+        const { error } = await supabase
+          .from('whatsapp_numbers')
+          .update({ display_name: editValue })
+          .eq('instance_name', instanceName);
+        setLoading(false);
+        if (error) {
+          setError('Failed to update display name.');
+          return;
+        }
+        setOpen(false);
+        window.location.reload();
+      };
+
+      return (
+        <div className='group flex min-w-[180px] items-center justify-between'>
+          <span className='text-foreground/90 truncate'>
+            {value && String(value).trim() !== '' ? (
+              String(value)
+            ) : (
+              <span className='text-muted-foreground italic'>No name</span>
+            )}
+          </span>
+          <button
+            onClick={handleEdit}
+            className='hover:bg-accent ml-2 rounded p-1 opacity-60 transition-opacity group-hover:opacity-100'
+            aria-label='Edit display name'
+            tabIndex={0}
+            type='button'
+          >
+            <Pencil className='h-4 w-4' />
+          </button>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Edit Display Name</DialogTitle>
+              </DialogHeader>
+              {error && (
+                <div className='mb-2 text-sm text-red-500'>{error}</div>
+              )}
+              <div className='grid gap-4'>
+                <Input
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  placeholder='Enter display name'
+                  disabled={loading}
+                  aria-label='Display name'
+                />
+              </div>
+              <DialogFooter>
+                <button
+                  className='inline-flex h-10 items-center justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200'
+                  onClick={() => setOpen(false)}
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+                <button
+                  className='inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-blue-600 disabled:opacity-50'
+                  onClick={handleSave}
+                  disabled={loading}
+                >
+                  {loading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+                  Save
+                </button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+      );
+    }
   },
   {
     id: 'status',
@@ -191,16 +278,25 @@ function ActionCell({ row }: { row: any }) {
   const handleRemove = async () => {
     setLoading(true);
     setError('');
+    const instanceName =
+      row.original.instance_name || row.original.name || row.original.id;
+    if (!instanceName) {
+      setError('Instance identifier not found.');
+      setLoading(false);
+      return;
+    }
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_WHATSAPP_API_URL;
+      const apiHost = process.env.NEXT_PUBLIC_WHATSAPP_API_HOST;
+      if (!apiHost) {
+        setError('API host not configured.');
+        setLoading(false);
+        return;
+      }
       const apiKey = process.env.NEXT_PUBLIC_WHATSAPP_API_KEY;
-      const instanceName =
-        row.original.instance_name || row.original.name || row.original.id;
-      const res = await fetch(`${apiUrl}instance/delete/${instanceName}`, {
+      const res = await fetch(`${apiHost}instance/delete/${instanceName}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          auth: 'apikey',
           apikey: apiKey || ''
         }
       });
@@ -209,9 +305,10 @@ function ActionCell({ row }: { row: any }) {
         setLoading(false);
         return;
       }
+      // Mostra tela de processando por 2s antes de atualizar a lista
       setTimeout(() => {
         window.location.reload();
-      }, 1000);
+      }, 2000);
     } catch (e) {
       setError('Failed to remove instance.');
       setLoading(false);
@@ -281,92 +378,5 @@ function ActionCell({ row }: { row: any }) {
         </AlertDialogContent>
       </AlertDialog>
     </TooltipProvider>
-  );
-}
-
-// Inline editable display name cell with modal
-function DisplayNameCell({ cell, row }: any) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(cell.getValue() ?? '');
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState('');
-
-  const handleEdit = () => {
-    setValue(cell.getValue() ?? '');
-    setError('');
-    setOpen(true);
-  };
-
-  const handleSave = async () => {
-    setLoading(true);
-    setError('');
-    const instanceName =
-      row.original.instance_name || row.original.name || row.original.id;
-    const { error } = await supabase
-      .from('whatsapp_numbers')
-      .update({ display_name: value })
-      .eq('instance_name', instanceName);
-    setLoading(false);
-    if (error) {
-      setError(error.message || 'Failed to update display name.');
-    } else {
-      setOpen(false);
-      window.location.reload();
-    }
-  };
-
-  return (
-    <>
-      <div className='group relative flex w-full max-w-full min-w-[220px] items-center justify-between pr-8'>
-        <span className='truncate' style={{ maxWidth: 'calc(100% - 32px)' }}>
-          {String(cell.getValue() ?? '')}
-        </span>
-        <div
-          className='bg-background absolute right-0 flex items-center gap-1 pr-1'
-          style={{ zIndex: 1 }}
-        >
-          <button
-            className='px-2 py-1 opacity-70 transition-opacity group-hover:opacity-100'
-            onClick={handleEdit}
-            title='Edit display name'
-            tabIndex={0}
-          >
-            <Pencil className='text-muted-foreground h-4 w-4' />
-          </button>
-        </div>
-      </div>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Display Name</DialogTitle>
-          </DialogHeader>
-          <Input
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            disabled={loading}
-            autoFocus
-          />
-          {error && <div className='mt-2 text-xs text-red-500'>{error}</div>}
-          <DialogFooter>
-            <button
-              className='bg-primary hover:bg-primary/90 rounded px-4 py-2 text-white disabled:opacity-50'
-              onClick={handleSave}
-              disabled={loading || !value.trim()}
-              type='button'
-            >
-              {loading ? 'Saving...' : 'Save'}
-            </button>
-            <button
-              className='rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300 disabled:opacity-50'
-              onClick={() => setOpen(false)}
-              disabled={loading}
-              type='button'
-            >
-              Cancel
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
   );
 }

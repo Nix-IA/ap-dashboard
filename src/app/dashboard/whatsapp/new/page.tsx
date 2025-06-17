@@ -26,7 +26,7 @@ export default function Page() {
 
   return (
     <Dialog open>
-      <DialogContent className='w-full max-w-md'>
+      <DialogContent className='w-full max-w-md' hideClose>
         <WhatsappOnboarding
           sellerId={sellerId}
           onClose={() => router.push('/dashboard/whatsapp')}

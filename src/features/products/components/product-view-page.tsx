@@ -1,4 +1,3 @@
-import { fakeProducts, Product } from '@/constants/mock-api';
 import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
 import ProductForm from './product-form';
@@ -10,32 +9,59 @@ type TProductViewPageProps = {
 export default async function ProductViewPage({
   productId
 }: TProductViewPageProps) {
-  let product = null;
+  let productJson = null;
+  let webhookKey = null;
   let pageTitle = 'Create New Product';
 
   if (productId !== 'new') {
-    // Se for UUID, busca no Supabase
-    let data, error;
-    if (isNaN(Number(productId))) {
-      const res = await supabase
+    // Busca o knowledge_base mais recente para o produto
+    let kbData, kbError, productData, productError;
+    try {
+      const kbRes = await supabase
+        .from('knowledge_base')
+        .select('*')
+        .eq('product_id', productId)
+        .eq('type', 'json')
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .single();
+      kbData = kbRes.data;
+      kbError = kbRes.error;
+    } catch (e) {
+      kbData = null;
+      kbError = true;
+    }
+    try {
+      const prodRes = await supabase
         .from('products')
         .select('*')
         .eq('id', productId)
         .single();
-      data = res.data;
-      error = res.error;
-    } else {
-      // fallback para mock se for número
-      const mock = await fakeProducts.getProductById(Number(productId));
-      data = mock.product;
-      error = !mock.product;
+      productData = prodRes.data;
+      productError = prodRes.error;
+    } catch (e) {
+      productData = null;
+      productError = true;
     }
-    product = data as Product;
-    if (!product || error) {
+    if (!kbData || kbError || !productData || productError) {
       notFound();
     }
+    productJson = kbData.content;
+    webhookKey = productData.webhook_key;
     pageTitle = `Edit Product`;
+    // Passa o product_id para o formulário
+    return (
+      <ProductForm
+        initialData={{
+          productJson,
+          webhookKey,
+          id: productId,
+          knowledge_base_id: kbData.id
+        }}
+        pageTitle={pageTitle}
+      />
+    );
   }
 
-  return <ProductForm initialData={product} pageTitle={pageTitle} />;
+  return <ProductForm initialData={{}} pageTitle={pageTitle} />;
 }

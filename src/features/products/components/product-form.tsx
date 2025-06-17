@@ -606,7 +606,7 @@ export default function ProductForm({
   // Add a flag to determine if webhook should be shown
   const showWebhook = Boolean(initialData && initialData.webhook);
 
-  // Mapeamento campo -> aba
+  // Mapeamento campo -> aba (corrigido)
   const fieldTabMap: Record<string, string> = {
     name: 'product',
     landing_page: 'product',
@@ -615,19 +615,50 @@ export default function ProductForm({
     benefits: 'product',
     target_audience: 'product',
     problems_solved: 'product',
-    payment_methods: 'sales',
-    offers: 'sales',
+    delivery_information: 'product',
+    payment_methods: 'sales', // corrigido
+    offers: 'sales', // corrigido
     platform: 'integrations'
   };
 
-  // Ao fechar o modal, scroll/foco no primeiro campo faltante
-  useEffect(() => {
-    if (
-      !showValidationModal &&
-      submitAttempted &&
-      validationErrors.length > 0
-    ) {
-      // Mapear o nome do campo pelo texto do erro
+  // Agrupamento de erros por aba
+  function groupValidationErrors(errors: string[]) {
+    const groups: Record<string, string[]> = {
+      'Product Details': [],
+      'Sales Details': [],
+      Integrations: []
+    };
+    errors.forEach((err) => {
+      if (
+        err.toLowerCase().includes('name') ||
+        err.toLowerCase().includes('main page url') ||
+        err.toLowerCase().includes('description') ||
+        err.toLowerCase().includes('objective') ||
+        err.toLowerCase().includes('benefits') ||
+        err.toLowerCase().includes('target audience') ||
+        err.toLowerCase().includes('problems solved') ||
+        err.toLowerCase().includes('delivery information')
+      ) {
+        groups['Product Details'].push(err);
+      } else if (
+        err.toLowerCase().includes('payment method') ||
+        err.toLowerCase().includes('offer') ||
+        err.toLowerCase().includes('coupon')
+      ) {
+        groups['Sales Details'].push(err);
+      } else if (err.toLowerCase().includes('platform')) {
+        groups['Integrations'].push(err);
+      } else {
+        // fallback
+        groups['Product Details'].push(err);
+      }
+    });
+    return groups;
+  }
+
+  // Função utilitária para navegar/focar no primeiro campo obrigatório
+  function focusFirstValidationError() {
+    if (validationErrors.length > 0) {
       const errorFieldOrder = [
         'name',
         'landing_page',
@@ -662,6 +693,17 @@ export default function ProductForm({
           }
         }, 300);
       }
+    }
+  }
+
+  // Ao fechar o modal, scroll/foco no primeiro campo faltante
+  useEffect(() => {
+    if (
+      !showValidationModal &&
+      submitAttempted &&
+      validationErrors.length > 0
+    ) {
+      focusFirstValidationError();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showValidationModal]);
@@ -718,6 +760,13 @@ export default function ProductForm({
       );
     });
 
+  // Helpers para saber se cada campo está com erro
+  const fieldHasError = (field: string) =>
+    submitAttempted &&
+    validationErrors.some((err) =>
+      err.toLowerCase().includes(field.replace('_', ' '))
+    );
+
   return (
     <form onSubmit={handleSubmit} className='space-y-6'>
       <Card>
@@ -743,7 +792,7 @@ export default function ProductForm({
                     htmlFor='name'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Product Name
+                    Product Name <span className='text-red-500'>*</span>
                   </label>
                   <Input
                     id='name'
@@ -752,8 +801,11 @@ export default function ProductForm({
                     onChange={handleChange}
                     ref={refs.name}
                     required
-                    className='focus:ring-primary focus:ring-2'
+                    className={`focus:ring-primary focus:ring-2 ${fieldHasError('name') ? 'border-red-500' : ''}`}
                   />
+                  {fieldHasError('name') && (
+                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                  )}
                 </div>
                 <div>
                   <label className='flex items-center gap-2'>
@@ -778,7 +830,7 @@ export default function ProductForm({
                   htmlFor='description'
                   className='mb-2 block text-sm font-medium'
                 >
-                  Description
+                  Description <span className='text-red-500'>*</span>
                 </label>
                 <Textarea
                   id='description'
@@ -787,8 +839,11 @@ export default function ProductForm({
                   onChange={handleChange}
                   ref={refs.description}
                   required
-                  className='focus:ring-primary focus:ring-2'
+                  className={`focus:ring-primary focus:ring-2 ${fieldHasError('description') ? 'border-red-500' : ''}`}
                 />
+                {fieldHasError('description') && (
+                  <div className='mt-1 text-xs text-red-500'>Required</div>
+                )}
               </div>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div>
@@ -796,7 +851,7 @@ export default function ProductForm({
                     htmlFor='landing_page'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Main Page URL
+                    Main Page URL <span className='text-red-500'>*</span>
                   </label>
                   <Input
                     id='landing_page'
@@ -805,15 +860,18 @@ export default function ProductForm({
                     onChange={handleChange}
                     ref={refs.landing_page}
                     required
-                    className='focus:ring-primary focus:ring-2'
+                    className={`focus:ring-primary focus:ring-2 ${fieldHasError('landing_page') ? 'border-red-500' : ''}`}
                   />
+                  {fieldHasError('landing_page') && (
+                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                  )}
                 </div>
                 <div>
                   <label
                     htmlFor='objective'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Objective
+                    Objective <span className='text-red-500'>*</span>
                   </label>
                   <Textarea
                     id='objective'
@@ -822,8 +880,11 @@ export default function ProductForm({
                     onChange={handleChange}
                     ref={refs.objective}
                     required
-                    className='focus:ring-primary focus:ring-2'
+                    className={`focus:ring-primary focus:ring-2 ${fieldHasError('objective') ? 'border-red-500' : ''}`}
                   />
+                  {fieldHasError('objective') && (
+                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                  )}
                 </div>
               </div>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
@@ -832,7 +893,7 @@ export default function ProductForm({
                     htmlFor='benefits'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Benefits
+                    Benefits <span className='text-red-500'>*</span>
                   </label>
                   <Textarea
                     id='benefits'
@@ -841,15 +902,18 @@ export default function ProductForm({
                     onChange={handleChange}
                     ref={refs.benefits}
                     required
-                    className='focus:ring-primary focus:ring-2'
+                    className={`focus:ring-primary focus:ring-2 ${fieldHasError('benefits') ? 'border-red-500' : ''}`}
                   />
+                  {fieldHasError('benefits') && (
+                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                  )}
                 </div>
                 <div>
                   <label
                     htmlFor='target_audience'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Target Audience
+                    Target Audience <span className='text-red-500'>*</span>
                   </label>
                   <Textarea
                     id='target_audience'
@@ -858,8 +922,11 @@ export default function ProductForm({
                     onChange={handleChange}
                     ref={refs.target_audience}
                     required
-                    className='focus:ring-primary focus:ring-2'
+                    className={`focus:ring-primary focus:ring-2 ${fieldHasError('target_audience') ? 'border-red-500' : ''}`}
                   />
+                  {fieldHasError('target_audience') && (
+                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                  )}
                 </div>
               </div>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
@@ -868,7 +935,7 @@ export default function ProductForm({
                     htmlFor='problems_solved'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Problems Solved
+                    Problems Solved <span className='text-red-500'>*</span>
                   </label>
                   <Textarea
                     id='problems_solved'
@@ -877,15 +944,18 @@ export default function ProductForm({
                     onChange={handleChange}
                     ref={refs.problems_solved}
                     required
-                    className='focus:ring-primary focus:ring-2'
+                    className={`focus:ring-primary focus:ring-2 ${fieldHasError('problems_solved') ? 'border-red-500' : ''}`}
                   />
+                  {fieldHasError('problems_solved') && (
+                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                  )}
                 </div>
                 <div>
                   <label
                     htmlFor='delivery_information'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Delivery Information
+                    Delivery Information <span className='text-red-500'>*</span>
                   </label>
                   <Textarea
                     id='delivery_information'
@@ -894,8 +964,11 @@ export default function ProductForm({
                     onChange={handleChange}
                     ref={refs.delivery_information}
                     required
-                    className='focus:ring-primary focus:ring-2'
+                    className={`focus:ring-primary focus:ring-2 ${fieldHasError('delivery_information') ? 'border-red-500' : ''}`}
                   />
+                  {fieldHasError('delivery_information') && (
+                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                  )}
                 </div>
               </div>
             </TabsContent>
@@ -907,9 +980,11 @@ export default function ProductForm({
                     htmlFor='payment_methods'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Payment Methods
+                    Payment Methods <span className='text-red-500'>*</span>
                   </label>
-                  <div className='flex flex-col gap-2'>
+                  <div
+                    className={`flex flex-col gap-2 ${fieldHasError('payment_methods') ? 'rounded-md border border-red-500 p-2' : ''}`}
+                  >
                     {PAYMENT_OPTIONS.map((option) => (
                       <div key={option.value} className='flex items-center'>
                         <input
@@ -929,15 +1004,23 @@ export default function ProductForm({
                       </div>
                     ))}
                   </div>
+                  {fieldHasError('payment_methods') && (
+                    <div className='mt-1 text-xs text-red-500'>
+                      At least one Payment Method is required
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label
                     htmlFor='offers'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Sales Offers
+                    Sales Offers <span className='text-red-500'>*</span>
                   </label>
-                  <div ref={refs.offers} className='flex flex-col gap-4'>
+                  <div
+                    ref={refs.offers}
+                    className={`flex flex-col gap-4 ${fieldHasError('offers') ? 'rounded-md border border-red-500 p-2' : ''}`}
+                  >
                     {form.offers.map((offer, idx) => (
                       <div
                         key={idx}
@@ -1014,6 +1097,11 @@ export default function ProductForm({
                       Add Offer
                     </Button>
                   </div>
+                  {fieldHasError('offers') && (
+                    <div className='mt-1 text-xs text-red-500'>
+                      At least one Offer is required
+                    </div>
+                  )}
                 </div>
                 <div className='col-span-2'>
                   <label
@@ -1114,10 +1202,7 @@ export default function ProductForm({
                     htmlFor='platform'
                     className='mb-2 block text-sm font-medium'
                   >
-                    Platform{' '}
-                    <span className={form.platform ? '' : 'text-destructive'}>
-                      *
-                    </span>
+                    Platform <span className='text-red-500'>*</span>
                   </label>
                   <select
                     id='platform'
@@ -1125,7 +1210,7 @@ export default function ProductForm({
                     value={form.platform}
                     onChange={handleSelectChange}
                     ref={refs.platform}
-                    className='bg-background focus:ring-primary w-full rounded-md border px-3 py-2 text-base focus:ring-2'
+                    className={`bg-background focus:ring-primary w-full rounded-md border px-3 py-2 text-base focus:ring-2 ${fieldHasError('platform') ? 'border-red-500' : ''}`}
                     required
                     disabled={!!initialData?.id} // desabilita edição se já cadastrado
                   >
@@ -1136,6 +1221,9 @@ export default function ProductForm({
                       </option>
                     ))}
                   </select>
+                  {fieldHasError('platform') && (
+                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                  )}
                 </div>
                 {webhookKey && (
                   <div className='flex flex-col gap-2'>
@@ -1245,21 +1333,36 @@ export default function ProductForm({
             <DialogTitle>Validation Errors</DialogTitle>
           </DialogHeader>
           <div className='mt-4'>
-            <p className='text-muted-foreground text-sm'>
-              Please fix the following errors before submitting:
+            <p className='text-muted-foreground mb-4 text-sm'>
+              Please fix the following required fields before submitting:
             </p>
-            <ul className='mt-2 list-inside list-disc space-y-1 text-sm'>
-              {validationErrors.map((error, idx) => (
-                <li key={idx} className='text-red-600'>
-                  {error}
-                </li>
-              ))}
-            </ul>
+            {Object.entries(groupValidationErrors(validationErrors)).map(
+              ([section, errs]) =>
+                errs.length > 0 && (
+                  <div key={section} className='mb-2'>
+                    <div className='mb-1 text-base font-semibold'>
+                      {section}
+                    </div>
+                    <ul className='ml-6 list-disc'>
+                      {errs.map((error, idx) => (
+                        <li key={idx} className='text-red-500'>
+                          {error}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+            )}
           </div>
           <DialogFooter>
             <Button
               variant='outline'
-              onClick={() => setShowValidationModal(false)}
+              onClick={() => {
+                setShowValidationModal(false);
+                setTimeout(() => {
+                  focusFirstValidationError();
+                }, 0);
+              }}
               className='w-full md:w-auto'
             >
               Close

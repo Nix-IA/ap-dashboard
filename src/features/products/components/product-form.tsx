@@ -188,8 +188,7 @@ export default function ProductForm({
     // Se onboardingData, usa ela
     if (onboardingData) {
       setForm(mapProductSchemaToForm(onboardingData));
-      setInitialForm(mapProductSchemaToForm(onboardingData));
-      // Força isDirty para true ao criar novo produto com dados extraídos
+      setInitialForm(DEFAULT_PRODUCT); // Garante que isDirty será true
       if (!initialData?.id) setIsDirty(true);
     } else if (initialData) {
       // Se vier do server, faz o parse/mapping do JSON bruto
@@ -199,9 +198,8 @@ export default function ProductForm({
             JSON.parse(initialData.productJson)
           );
           setForm(parsed);
-          setInitialForm(parsed);
+          setInitialForm(DEFAULT_PRODUCT); // Garante que isDirty será true
           if (initialData.webhookKey) setWebhookKey(initialData.webhookKey);
-          // Força isDirty para true ao criar novo produto com dados extraídos
           if (!initialData.id) setIsDirty(true);
         } catch {
           setForm(DEFAULT_PRODUCT);
@@ -209,11 +207,9 @@ export default function ProductForm({
           setWebhookKey(null);
         }
       } else {
-        // fallback: já está mapeado
         setForm((prev) => ({ ...prev, ...initialData }));
-        setInitialForm((prev) => ({ ...prev, ...initialData }));
+        setInitialForm(DEFAULT_PRODUCT); // Garante que isDirty será true
         setWebhookKey(initialData.webhookKey || null);
-        // Força isDirty para true ao criar novo produto com dados extraídos
         if (!initialData.id) setIsDirty(true);
       }
     }

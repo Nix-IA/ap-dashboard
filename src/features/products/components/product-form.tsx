@@ -10,9 +10,9 @@ import {
   DialogTitle
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -146,9 +146,10 @@ export default function ProductForm({
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [webhookKey, setWebhookKey] = useState<string | null>(null);
 
   // Add a ref for the description field
-  const descriptionRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const webhookInputRef = useRef<HTMLInputElement>(null);
 
   // Refs para campos obrigatórios
@@ -162,12 +163,19 @@ export default function ProductForm({
     problems_solved: useRef<HTMLTextAreaElement>(null),
     payment_methods: useRef<HTMLDivElement>(null),
     offers: useRef<HTMLDivElement>(null),
-    platform: useRef<HTMLDivElement>(null),
+    platform: useRef<HTMLSelectElement>(null),
     delivery_information: useRef<HTMLTextAreaElement>(null),
-    other_relevant_urls: useRef<HTMLDivElement>(null)
+    other_relevant_urls: useRef<HTMLDivElement>(null),
+    coupons: useRef<HTMLDivElement>(null)
   };
 
+  // New state variables for webhook modal
+  const [showWebhookModal, setShowWebhookModal] = useState(false);
+  const [webhookModalUrl, setWebhookModalUrl] = useState<string | null>(null);
+  const [webhookModalCopied, setWebhookModalCopied] = useState(false);
+
   useEffect(() => {
+    // Se vier do onboarding
     if (onboarding) {
       try {
         const data = localStorage.getItem('agentpay_product_onboarding');
@@ -177,13 +185,37 @@ export default function ProductForm({
   }, [onboarding]);
 
   useEffect(() => {
-    // Prefill form with onboarding data ou initialData
+    // Se onboardingData, usa ela
     if (onboardingData) {
       setForm(mapProductSchemaToForm(onboardingData));
       setInitialForm(mapProductSchemaToForm(onboardingData));
+      // Força isDirty para true ao criar novo produto com dados extraídos
+      if (!initialData?.id) setIsDirty(true);
     } else if (initialData) {
-      setForm((prev) => ({ ...prev, ...initialData }));
-      setInitialForm((prev) => ({ ...prev, ...initialData }));
+      // Se vier do server, faz o parse/mapping do JSON bruto
+      if (initialData.productJson) {
+        try {
+          const parsed = mapProductSchemaToForm(
+            JSON.parse(initialData.productJson)
+          );
+          setForm(parsed);
+          setInitialForm(parsed);
+          if (initialData.webhookKey) setWebhookKey(initialData.webhookKey);
+          // Força isDirty para true ao criar novo produto com dados extraídos
+          if (!initialData.id) setIsDirty(true);
+        } catch {
+          setForm(DEFAULT_PRODUCT);
+          setInitialForm(DEFAULT_PRODUCT);
+          setWebhookKey(null);
+        }
+      } else {
+        // fallback: já está mapeado
+        setForm((prev) => ({ ...prev, ...initialData }));
+        setInitialForm((prev) => ({ ...prev, ...initialData }));
+        setWebhookKey(initialData.webhookKey || null);
+        // Força isDirty para true ao criar novo produto com dados extraídos
+        if (!initialData.id) setIsDirty(true);
+      }
     }
   }, [onboardingData, initialData]);
 
@@ -382,13 +414,22 @@ export default function ProductForm({
       );
     }
     if (!form.platform) errors.push('Platform');
+    // Only require other_relevant_urls fields if any field is filled
     if (
-      form.other_relevant_urls.some(
-        (u) => !u.page_title?.trim() || !u.url?.trim() || !isValidUrl(u.url)
-      )
+      form.other_relevant_urls.some((u) => {
+        const anyFieldFilled = !!(
+          u.page_title?.trim() ||
+          u.url?.trim() ||
+          u.description?.trim()
+        );
+        return (
+          anyFieldFilled &&
+          (!u.page_title?.trim() || !u.url?.trim() || !isValidUrl(u.url))
+        );
+      })
     ) {
       errors.push(
-        'Other Relevant URLs: title and valid URL are required for each entry'
+        'Other Relevant URLs: title and valid URL are required for each entry started'
       );
     }
     return errors;
@@ -545,6 +586,20 @@ export default function ProductForm({
         await saveProductToSupabase(productJson);
       setIsSaving(false);
       setSaveSuccess(true);
+      // If this is a new product (no initialData.id), fetch webhook_key and show modal
+      if (!initialData?.id && product_id) {
+        const { data, error } = await supabase
+          .from('products')
+          .select('webhook_key')
+          .eq('id', product_id)
+          .single();
+        if (!error && data?.webhook_key) {
+          const url = `https://webhook.agentpay.com.br/webhook/b3b7cd9b-f318-4a40-9265-7ef2a4714734/platform/${data.webhook_key}`;
+          setWebhookModalUrl(url);
+          setShowWebhookModal(true);
+          return; // Don't redirect yet, wait for modal close
+        }
+      }
       setTimeout(() => {
         router.push('/dashboard/product');
       }, 1200);
@@ -641,65 +696,74 @@ export default function ProductForm({
 
   // Helper for other_relevant_urls validation
   const otherUrlFieldErrors = submitAttempted
-    ? form.other_relevant_urls.map((urlObj) => ({
-        page_title: !urlObj.page_title?.trim(),
-        url: !urlObj.url?.trim() || !isValidUrl(urlObj.url)
-      }))
+    ? form.other_relevant_urls.map((urlObj) => {
+        const anyFieldFilled = !!(
+          urlObj.page_title?.trim() ||
+          urlObj.url?.trim() ||
+          urlObj.description?.trim()
+        );
+        return anyFieldFilled
+          ? {
+              page_title: !urlObj.page_title?.trim(),
+              url: !urlObj.url?.trim() || !isValidUrl(urlObj.url)
+            }
+          : { page_title: false, url: false };
+      })
     : form.other_relevant_urls.map(() => ({ page_title: false, url: false }));
   const isOtherUrlMissing =
     submitAttempted &&
-    (!form.other_relevant_urls ||
-      form.other_relevant_urls.length === 0 ||
-      form.other_relevant_urls.some(
-        (u) => !u.page_title?.trim() || !u.url?.trim() || !isValidUrl(u.url)
-      ));
-
-  const handleCancel = () => {
-    if (isDirty) {
-      setShowCancelDialog(true);
-    } else {
-      router.push('/dashboard/product');
-    }
-  };
-
-  const confirmCancel = () => {
-    setShowCancelDialog(false);
-    router.push('/dashboard/product');
-  };
+    form.other_relevant_urls.some((u) => {
+      const anyFieldFilled = !!(
+        u.page_title?.trim() ||
+        u.url?.trim() ||
+        u.description?.trim()
+      );
+      return (
+        anyFieldFilled &&
+        (!u.page_title?.trim() || !u.url?.trim() || !isValidUrl(u.url))
+      );
+    });
 
   return (
-    <form onSubmit={handleSubmit} className='mx-auto max-w-3xl'>
+    <form onSubmit={handleSubmit} className='space-y-6'>
       <Card>
         <CardHeader>
           <CardTitle>{pageTitle}</CardTitle>
         </CardHeader>
-        <CardContent className='max-h-[80vh] overflow-y-auto'>
+        <CardContent>
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
-            className='w-full'
+            className='space-y-4'
           >
-            <TabsList className='mb-4'>
-              <TabsTrigger value='product'>Product</TabsTrigger>
-              <TabsTrigger value='sales'>Sales</TabsTrigger>
+            <TabsList>
+              <TabsTrigger value='product'>Product Details</TabsTrigger>
+              <TabsTrigger value='sales'>Sales Details</TabsTrigger>
               <TabsTrigger value='integrations'>Integrations</TabsTrigger>
             </TabsList>
             <TabsContent value='product'>
-              {/* Product Section */}
-              <section className='space-y-6'>
+              {/* Product details fields */}
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div>
                   <label
-                    className='mb-1 block font-medium'
-                    htmlFor='status-switch'
+                    htmlFor='name'
+                    className='mb-2 block text-sm font-medium'
                   >
-                    Status{' '}
-                    <span className='text-destructive' title='Required'>
-                      *
-                    </span>
+                    Product Name
                   </label>
-                  <div className='mb-2 flex items-center gap-3'>
+                  <Input
+                    id='name'
+                    name='name'
+                    value={form.name}
+                    onChange={handleChange}
+                    ref={refs.name}
+                    required
+                    className='focus:ring-primary focus:ring-2'
+                  />
+                </div>
+                <div>
+                  <label className='flex items-center gap-2'>
                     <Switch
-                      id='status-switch'
                       checked={form.status === 'active'}
                       onCheckedChange={(checked) =>
                         setForm((prev) => ({
@@ -707,837 +771,541 @@ export default function ProductForm({
                           status: checked ? 'active' : 'inactive'
                         }))
                       }
+                      className='h-6 w-11 rounded-full'
                     />
-                    <span className='text-sm'>
+                    <span className='text-sm font-medium'>
                       {form.status === 'active' ? 'Active' : 'Inactive'}
                     </span>
-                  </div>
-                  <div className='text-muted-foreground text-xs'>
-                    When active, agents will be able to act on the sale of this
-                    product.
-                  </div>
+                  </label>
                 </div>
+              </div>
+              <div>
+                <label
+                  htmlFor='description'
+                  className='mb-2 block text-sm font-medium'
+                >
+                  Description
+                </label>
+                <Textarea
+                  id='description'
+                  name='description'
+                  value={form.description}
+                  onChange={handleChange}
+                  ref={refs.description}
+                  required
+                  className='focus:ring-primary focus:ring-2'
+                />
+              </div>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div>
-                  <label className='mb-1 block font-medium'>
-                    Name{' '}
-                    <span className='text-destructive' title='Required'>
-                      *
-                    </span>
+                  <label
+                    htmlFor='landing_page'
+                    className='mb-2 block text-sm font-medium'
+                  >
+                    Main Page URL
                   </label>
                   <Input
-                    ref={refs.name}
-                    name='name'
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder='Product name'
-                    className={
-                      submitAttempted && !form.name.trim()
-                        ? 'border-destructive focus:ring-destructive'
-                        : undefined
-                    }
-                    autoComplete='off'
-                  />
-                  {submitAttempted && !form.name.trim() && (
-                    <div className='text-destructive mt-1 text-xs'>
-                      Name is required.
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <label className='mb-1 block font-medium'>
-                    Main Page{' '}
-                    <span className='text-destructive' title='Required'>
-                      *
-                    </span>
-                  </label>
-                  <Input
-                    ref={refs.landing_page}
+                    id='landing_page'
                     name='landing_page'
                     value={form.landing_page}
                     onChange={handleChange}
-                    placeholder='Paste here...'
-                    className={
-                      submitAttempted &&
-                      (!form.landing_page.trim() ||
-                        !isValidUrl(form.landing_page.trim()))
-                        ? 'border-destructive focus:ring-destructive'
-                        : undefined
-                    }
+                    ref={refs.landing_page}
+                    required
+                    className='focus:ring-primary focus:ring-2'
                   />
-                  {submitAttempted && !form.landing_page.trim() && (
-                    <div className='text-destructive mt-1 text-xs'>
-                      Main Page URL is required.
-                    </div>
-                  )}
-                  {submitAttempted &&
-                    form.landing_page.trim() &&
-                    !isValidUrl(form.landing_page.trim()) && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        Enter a valid URL (starting with http:// or https://).
-                      </div>
-                    )}
-                </div>
-                <div className='mt-2'>
-                  <label className='mb-1 block font-medium'>
-                    Description{' '}
-                    <span className='text-destructive' title='Required'>
-                      *
-                    </span>
-                  </label>
-                  <div
-                    ref={descriptionRef}
-                    contentEditable
-                    suppressContentEditableWarning
-                    className='bg-background focus:ring-primary min-h-[100px] rounded-md border p-2 focus:ring-2 focus:outline-none'
-                    style={{
-                      whiteSpace: 'pre-wrap',
-                      backgroundColor: 'inherit'
-                    }}
-                    onBlur={handleDescriptionBlur}
-                    dangerouslySetInnerHTML={{ __html: form.description }}
-                    aria-label='Product description (rich text allowed)'
-                  />
-                  <div className='text-muted-foreground mt-1 text-xs'>
-                    You can use formatting (bullets, bold, etc). Pasting from
-                    Word/Google Docs will preserve formatting.
-                  </div>
-                  {submitAttempted &&
-                    (!form.description.trim() ||
-                      form.description === '<br>') && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        Description is required.
-                      </div>
-                    )}
                 </div>
                 <div>
-                  <label className='mb-1 block font-medium'>
-                    Objective{' '}
-                    <span className='text-destructive' title='Required'>
-                      *
-                    </span>
+                  <label
+                    htmlFor='objective'
+                    className='mb-2 block text-sm font-medium'
+                  >
+                    Objective
                   </label>
                   <Textarea
-                    ref={refs.objective}
+                    id='objective'
                     name='objective'
                     value={form.objective}
                     onChange={handleChange}
-                    placeholder='Type here...'
-                    rows={2}
-                    className={
-                      submitAttempted && !form.objective.trim()
-                        ? 'border-destructive focus:ring-destructive'
-                        : undefined
-                    }
+                    ref={refs.objective}
+                    required
+                    className='focus:ring-primary focus:ring-2'
                   />
-                  {submitAttempted && !form.objective.trim() && (
-                    <div className='text-destructive mt-1 text-xs'>
-                      Objective is required.
-                    </div>
-                  )}
                 </div>
+              </div>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div>
-                  <label className='mb-1 block font-medium'>
-                    Benefits{' '}
-                    <span className='text-destructive' title='Required'>
-                      *
-                    </span>
+                  <label
+                    htmlFor='benefits'
+                    className='mb-2 block text-sm font-medium'
+                  >
+                    Benefits
                   </label>
                   <Textarea
-                    ref={refs.benefits}
+                    id='benefits'
                     name='benefits'
                     value={form.benefits}
                     onChange={handleChange}
-                    placeholder='Type here...'
-                    rows={2}
-                    className={
-                      submitAttempted && !form.benefits.trim()
-                        ? 'border-destructive focus:ring-destructive'
-                        : undefined
-                    }
+                    ref={refs.benefits}
+                    required
+                    className='focus:ring-primary focus:ring-2'
                   />
-                  {submitAttempted && !form.benefits.trim() && (
-                    <div className='text-destructive mt-1 text-xs'>
-                      Benefits are required.
-                    </div>
-                  )}
                 </div>
                 <div>
-                  <label className='mb-1 block font-medium'>
-                    Target Audience{' '}
-                    <span className='text-destructive' title='Required'>
-                      *
-                    </span>
+                  <label
+                    htmlFor='target_audience'
+                    className='mb-2 block text-sm font-medium'
+                  >
+                    Target Audience
                   </label>
                   <Textarea
-                    ref={refs.target_audience}
+                    id='target_audience'
                     name='target_audience'
                     value={form.target_audience}
                     onChange={handleChange}
-                    placeholder='Type here...'
-                    rows={2}
-                    className={
-                      submitAttempted && !form.target_audience.trim()
-                        ? 'border-destructive focus:ring-destructive'
-                        : undefined
-                    }
+                    ref={refs.target_audience}
+                    required
+                    className='focus:ring-primary focus:ring-2'
                   />
-                  {submitAttempted && !form.target_audience.trim() && (
-                    <div className='text-destructive mt-1 text-xs'>
-                      Target Audience is required.
-                    </div>
-                  )}
                 </div>
+              </div>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div>
-                  <label className='mb-1 block font-medium'>
-                    Problems Solved{' '}
-                    <span className='text-destructive' title='Required'>
-                      *
-                    </span>
+                  <label
+                    htmlFor='problems_solved'
+                    className='mb-2 block text-sm font-medium'
+                  >
+                    Problems Solved
                   </label>
                   <Textarea
-                    ref={refs.problems_solved}
+                    id='problems_solved'
                     name='problems_solved'
                     value={form.problems_solved}
                     onChange={handleChange}
-                    placeholder='Type here...'
-                    rows={2}
-                    className={
-                      submitAttempted && !form.problems_solved.trim()
-                        ? 'border-destructive focus:ring-destructive'
-                        : undefined
-                    }
+                    ref={refs.problems_solved}
+                    required
+                    className='focus:ring-primary focus:ring-2'
                   />
-                  {submitAttempted && !form.problems_solved.trim() && (
-                    <div className='text-destructive mt-1 text-xs'>
-                      Problems Solved is required.
-                    </div>
-                  )}
                 </div>
                 <div>
-                  <label className='mb-1 block font-medium'>
-                    Delivery Information{' '}
-                    <span className='text-destructive' title='Required'>
-                      *
-                    </span>
+                  <label
+                    htmlFor='delivery_information'
+                    className='mb-2 block text-sm font-medium'
+                  >
+                    Delivery Information
                   </label>
                   <Textarea
-                    ref={refs.delivery_information}
+                    id='delivery_information'
                     name='delivery_information'
                     value={form.delivery_information}
                     onChange={handleChange}
-                    placeholder='Describe what and how the customer will receive after purchase.'
-                    className={
-                      submitAttempted && !form.delivery_information.trim()
-                        ? 'border-destructive focus:ring-destructive'
-                        : undefined
-                    }
-                    rows={2}
+                    ref={refs.delivery_information}
+                    required
+                    className='focus:ring-primary focus:ring-2'
                   />
-                  {submitAttempted && !form.delivery_information.trim() && (
-                    <div className='text-destructive mt-1 text-xs'>
-                      Delivery information is required.
-                    </div>
-                  )}
                 </div>
-              </section>
+              </div>
             </TabsContent>
             <TabsContent value='sales'>
-              {/* Sales Section */}
-              <section className='space-y-6'>
-                <div className='mb-6'>
-                  <label className='mb-1 block font-medium'>
+              {/* Sales details fields */}
+              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                <div>
+                  <label
+                    htmlFor='payment_methods'
+                    className='mb-2 block text-sm font-medium'
+                  >
                     Payment Methods
                   </label>
-                  <div
-                    className={`flex gap-4${isPaymentMissing ? 'border-destructive rounded-md border p-2' : ''}`}
-                  >
-                    {PAYMENT_OPTIONS.map((opt) => (
-                      <label
-                        key={opt.value}
-                        className='flex items-center gap-1'
-                      >
+                  <div className='flex flex-col gap-2'>
+                    {PAYMENT_OPTIONS.map((option) => (
+                      <div key={option.value} className='flex items-center'>
                         <input
+                          id={`payment_method_${option.value}`}
                           type='checkbox'
-                          name='payment_methods'
-                          value={opt.value}
-                          checked={form.payment_methods.includes(opt.value)}
+                          value={option.value}
+                          checked={form.payment_methods.includes(option.value)}
                           onChange={handleChange}
+                          className='text-primary focus:ring-primary h-4 w-4 rounded border-gray-300'
                         />
-                        {opt.label}
-                      </label>
+                        <label
+                          htmlFor={`payment_method_${option.value}`}
+                          className='ml-2 block text-sm'
+                        >
+                          {option.label}
+                        </label>
+                      </div>
                     ))}
                   </div>
-                  {isPaymentMissing && (
-                    <div className='text-destructive mt-1 text-xs'>
-                      At least one Payment Method is required.
-                    </div>
-                  )}
                 </div>
-                <div className='mb-6'>
-                  <label className='mb-1 block font-medium'>FAQ</label>
-                  <Textarea
-                    name='faq'
-                    value={form.faq}
-                    onChange={handleChange}
-                    placeholder='Describe the most frequent questions'
-                    rows={2}
-                  />
-                  <div className='text-muted-foreground mt-1 text-xs'>
-                    Write questions and answers in Q&amp;A style. Example:
-                    <br />
-                    Q: How do I access the product?
-                    <br />
-                    A: You will receive an email with access instructions after
-                    purchase.
-                  </div>
-                </div>
-                <div className='mb-6'>
-                  <label className='mb-1 block font-medium'>Offers</label>
-                  <div
-                    className={`mb-6${isOfferMissing ? 'border-destructive rounded-md border p-2' : ''}`}
+                <div>
+                  <label
+                    htmlFor='offers'
+                    className='mb-2 block text-sm font-medium'
                   >
+                    Sales Offers
+                  </label>
+                  <div ref={refs.offers} className='flex flex-col gap-4'>
                     {form.offers.map((offer, idx) => (
-                      <Card key={idx} className='bg-muted mb-4 p-4'>
+                      <div
+                        key={idx}
+                        className='flex flex-col gap-2 rounded-lg border p-4'
+                      >
                         <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                           <div>
                             <label
-                              className={`block text-sm font-medium mb-1${offerFieldErrors[idx]?.title ? 'text-destructive' : ''}`}
+                              htmlFor={`offer_title_${idx}`}
+                              className='mb-2 block text-sm font-medium'
                             >
-                              Title <span className='text-destructive'>*</span>
+                              Offer Title
                             </label>
                             <Input
+                              id={`offer_title_${idx}`}
+                              name={`offer_title_${idx}`}
                               value={offer.title}
                               onChange={(e) =>
                                 handleOfferChange(idx, 'title', e.target.value)
                               }
-                              placeholder='Offer title'
-                              className={
-                                offerFieldErrors[idx]?.title
-                                  ? 'border-destructive focus:ring-destructive'
-                                  : ''
-                              }
+                              required
+                              className='focus:ring-primary focus:ring-2'
                             />
-                            {offerFieldErrors[idx]?.title && (
-                              <div className='text-destructive mt-1 text-xs'>
-                                Title is required.
-                              </div>
-                            )}
                           </div>
                           <div>
                             <label
-                              className={`block text-sm font-medium mb-1${offerFieldErrors[idx]?.price ? 'text-destructive' : ''}`}
+                              htmlFor={`offer_price_${idx}`}
+                              className='mb-2 block text-sm font-medium'
                             >
-                              Price <span className='text-destructive'>*</span>
+                              Price
                             </label>
                             <Input
+                              id={`offer_price_${idx}`}
+                              name={`offer_price_${idx}`}
                               value={offer.price}
                               onChange={(e) =>
                                 handleOfferChange(idx, 'price', e.target.value)
                               }
-                              placeholder='e.g. R$67, 12xR$9,90 or R$47/month'
-                              className={
-                                offerFieldErrors[idx]?.price
-                                  ? 'border-destructive focus:ring-destructive'
-                                  : ''
-                              }
+                              required
+                              className='focus:ring-primary focus:ring-2'
                             />
-                            {offerFieldErrors[idx]?.price && (
-                              <div className='text-destructive mt-1 text-xs'>
-                                Price is required.
-                              </div>
-                            )}
                           </div>
                         </div>
-                        <div className='mt-2'>
-                          <label className='mb-1 block text-sm font-medium'>
-                            Description
-                          </label>
-                          <Textarea
-                            value={offer.description}
-                            onChange={(e) =>
-                              handleOfferChange(
-                                idx,
-                                'description',
-                                e.target.value
-                              )
-                            }
-                            placeholder='Offer description (optional)'
-                            rows={2}
-                          />
-                        </div>
-                        <div className={`mt-2`}>
+                        <div>
                           <label
-                            className={`block text-sm font-medium mb-1${offerFieldErrors[idx]?.url || (submitAttempted && offer.url && !isValidUrl(offer.url)) ? 'text-destructive' : ''}`}
+                            htmlFor={`offer_url_${idx}`}
+                            className='mb-2 block text-sm font-medium'
                           >
-                            Offer Page{' '}
-                            <span className='text-destructive'>*</span>
+                            Payment Page URL
                           </label>
                           <Input
+                            id={`offer_url_${idx}`}
+                            name={`offer_url_${idx}`}
                             value={offer.url}
                             onChange={(e) =>
                               handleOfferChange(idx, 'url', e.target.value)
                             }
-                            placeholder='Offer URL'
-                            className={
-                              offerFieldErrors[idx]?.url ||
-                              (submitAttempted &&
-                                offer.url &&
-                                !isValidUrl(offer.url))
-                                ? 'border-destructive focus:ring-destructive'
-                                : ''
-                            }
+                            required
+                            className='focus:ring-primary focus:ring-2'
                           />
-                          {offerFieldErrors[idx]?.url && (
-                            <div className='text-destructive mt-1 text-xs'>
-                              Offer Page URL is required.
-                            </div>
-                          )}
-                          {submitAttempted &&
-                            offer.url &&
-                            !isValidUrl(offer.url) && (
-                              <div className='text-destructive mt-1 text-xs'>
-                                Enter a valid URL (starting with http:// or
-                                https://).
-                              </div>
-                            )}
                         </div>
-                        {form.offers.length > 1 && (
+                        <div className='flex justify-end gap-2'>
                           <Button
-                            type='button'
-                            variant='destructive'
-                            className='mt-2'
-                            onClick={() => setShowRemoveOffer(idx)}
+                            variant='outline'
+                            onClick={() => removeOffer(idx)}
+                            className='text-sm'
                           >
-                            Remove
+                            Remove Offer
                           </Button>
-                        )}
-                        <Dialog
-                          open={showRemoveOffer === idx}
-                          onOpenChange={() => setShowRemoveOffer(null)}
-                        >
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Remove offer?</DialogTitle>
-                            </DialogHeader>
-                            <p>Are you sure you want to remove this offer?</p>
-                            <DialogFooter>
-                              <Button
-                                variant='outline'
-                                onClick={() => setShowRemoveOffer(null)}
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                variant='destructive'
-                                onClick={() => {
-                                  removeOffer(idx);
-                                  setShowRemoveOffer(null);
-                                }}
-                              >
-                                Remove
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                      </Card>
-                    ))}
-                    <Button
-                      type='button'
-                      variant='secondary'
-                      onClick={addOffer}
-                      className='w-full'
-                    >
-                      + Add
-                    </Button>
-                    {isOfferMissing && (
-                      <div className='text-destructive mt-1 text-xs'>
-                        At least one Offer is required.
+                        </div>
                       </div>
-                    )}
+                    ))}
+                    <Button type='button' onClick={addOffer} className='mt-2'>
+                      Add Offer
+                    </Button>
                   </div>
                 </div>
-                <div className='mb-6'>
-                  <label className='mb-1 block font-medium'>Coupons</label>
-                  {form.coupons.map((coupon, idx) => (
-                    <Card key={idx} className='bg-muted mb-4 p-4'>
-                      <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
-                        <div>
-                          <label className='block text-sm'>Title</label>
-                          <Input
-                            value={coupon.title}
-                            onChange={(e) =>
-                              handleCouponChange(idx, 'title', e.target.value)
-                            }
-                            placeholder='Coupon title'
-                          />
-                        </div>
-                        <div>
-                          <label className='block text-sm'>Discount</label>
-                          <Input
-                            value={coupon.discount}
-                            onChange={(e) =>
-                              handleCouponChange(
-                                idx,
-                                'discount',
-                                e.target.value
-                              )
-                            }
-                            placeholder='e.g. 20%'
-                          />
-                        </div>
-                        <div>
-                          <label className='block text-sm'>Code</label>
-                          <Input
-                            value={coupon.code}
-                            onChange={(e) =>
-                              handleCouponChange(idx, 'code', e.target.value)
-                            }
-                            placeholder='e.g. LAN20'
-                          />
-                        </div>
-                      </div>
-                      {form.coupons.length > 1 && (
-                        <Button
-                          type='button'
-                          variant='destructive'
-                          className='mt-2'
-                          onClick={() => setShowRemoveCoupon(idx)}
-                        >
-                          Remove
-                        </Button>
-                      )}
-                      <Dialog
-                        open={showRemoveCoupon === idx}
-                        onOpenChange={() => setShowRemoveCoupon(null)}
-                      >
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Remove coupon?</DialogTitle>
-                          </DialogHeader>
-                          <p>Are you sure you want to remove this coupon?</p>
-                          <DialogFooter>
-                            <Button
-                              variant='outline'
-                              onClick={() => setShowRemoveCoupon(null)}
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              variant='destructive'
-                              onClick={() => {
-                                removeCoupon(idx);
-                                setShowRemoveCoupon(null);
-                              }}
-                            >
-                              Remove
-                            </Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
-                    </Card>
-                  ))}
-                  <Button
-                    type='button'
-                    variant='secondary'
-                    onClick={addCoupon}
-                    className='w-full'
+                <div className='col-span-2'>
+                  <label
+                    htmlFor='coupons'
+                    className='mb-2 block text-sm font-medium'
                   >
-                    + Add
-                  </Button>
-                </div>
-                <div className='mb-6'>
-                  <label className='mb-1 block font-medium'>
-                    Other Relevant URLs
+                    Discount Coupons
                   </label>
-                  {form.other_relevant_urls.map((urlObj, idx) => (
-                    <Card key={idx} className='bg-muted mb-2 p-3'>
-                      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                        <div>
-                          <label
-                            className={`block text-sm font-medium mb-1${otherUrlFieldErrors[idx]?.page_title ? 'text-destructive' : ''}`}
-                          >
-                            Title <span className='text-destructive'>*</span>
-                          </label>
-                          <Input
-                            value={urlObj.page_title || ''}
-                            onChange={(e) =>
-                              handleOtherUrlChange(
-                                idx,
-                                'page_title',
-                                e.target.value
-                              )
-                            }
-                            placeholder='e.g. Terms of Service'
-                            className={
-                              otherUrlFieldErrors[idx]?.page_title
-                                ? 'border-destructive focus:ring-destructive'
-                                : ''
-                            }
-                          />
-                          {otherUrlFieldErrors[idx]?.page_title && (
-                            <div className='text-destructive mt-1 text-xs'>
-                              Title is required.
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <label
-                            className={`block text-sm font-medium mb-1${otherUrlFieldErrors[idx]?.url ? 'text-destructive' : ''}`}
-                          >
-                            URL <span className='text-destructive'>*</span>
-                          </label>
-                          <Input
-                            value={urlObj.url || ''}
-                            onChange={(e) =>
-                              handleOtherUrlChange(idx, 'url', e.target.value)
-                            }
-                            placeholder='https://...'
-                            className={
-                              otherUrlFieldErrors[idx]?.url
-                                ? 'border-destructive focus:ring-destructive'
-                                : ''
-                            }
-                          />
-                          {otherUrlFieldErrors[idx]?.url && (
-                            <div className='text-destructive mt-1 text-xs'>
-                              Valid URL is required.
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className='mt-2'>
-                        <label className='mb-1 block text-sm font-medium'>
-                          Description
-                        </label>
-                        <Textarea
-                          value={urlObj.description || ''}
-                          onChange={(e) =>
-                            handleOtherUrlChange(
-                              idx,
-                              'description',
-                              e.target.value
-                            )
-                          }
-                          placeholder='e.g. Terms and conditions for buyers.'
-                          rows={2}
-                        />
-                      </div>
-                      {form.other_relevant_urls.length > 1 && (
-                        <Button
-                          type='button'
-                          variant='destructive'
-                          className='mt-2'
-                          onClick={() => setShowRemoveOtherUrl(idx)}
-                        >
-                          Remove
-                        </Button>
-                      )}
-                      <Dialog
-                        open={showRemoveOtherUrl === idx}
-                        onOpenChange={() => setShowRemoveOtherUrl(null)}
-                      >
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Remove URL?</DialogTitle>
-                          </DialogHeader>
-                          <p>Are you sure you want to remove this URL?</p>
-                          <DialogFooter>
-                            <Button
-                              variant='outline'
-                              onClick={() => setShowRemoveOtherUrl(null)}
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              variant='destructive'
-                              onClick={() => {
-                                removeOtherUrl(idx);
-                                setShowRemoveOtherUrl(null);
-                              }}
-                            >
-                              Remove
-                            </Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
-                    </Card>
-                  ))}
-                  <Button
-                    type='button'
-                    variant='secondary'
-                    onClick={addOtherUrl}
-                    className='w-full'
+                  <div
+                    ref={refs.coupons}
+                    className='flex flex-col gap-4 md:flex-row md:gap-6'
                   >
-                    + Add
-                  </Button>
-                  {isOtherUrlMissing && (
-                    <div className='text-destructive mt-1 text-xs'>
-                      Each entry must have a title and a valid URL.
-                    </div>
-                  )}
+                    {form.coupons.map((coupon, idx) => (
+                      <div
+                        key={idx}
+                        className='flex w-full flex-col gap-2 rounded-lg border p-4 md:w-1/2'
+                      >
+                        <div className='grid grid-cols-1 gap-4'>
+                          <div>
+                            <label
+                              htmlFor={`coupon_title_${idx}`}
+                              className='mb-2 block text-sm font-medium'
+                            >
+                              Coupon Title
+                            </label>
+                            <Input
+                              id={`coupon_title_${idx}`}
+                              name={`coupon_title_${idx}`}
+                              value={coupon.title}
+                              onChange={(e) =>
+                                handleCouponChange(idx, 'title', e.target.value)
+                              }
+                              className='focus:ring-primary focus:ring-2'
+                            />
+                          </div>
+                          <div>
+                            <label
+                              htmlFor={`coupon_discount_${idx}`}
+                              className='mb-2 block text-sm font-medium'
+                            >
+                              Discount Value
+                            </label>
+                            <Input
+                              id={`coupon_discount_${idx}`}
+                              name={`coupon_discount_${idx}`}
+                              value={coupon.discount}
+                              onChange={(e) =>
+                                handleCouponChange(
+                                  idx,
+                                  'discount',
+                                  e.target.value
+                                )
+                              }
+                              className='focus:ring-primary focus:ring-2'
+                            />
+                          </div>
+                          <div>
+                            <label
+                              htmlFor={`coupon_code_${idx}`}
+                              className='mb-2 block text-sm font-medium'
+                            >
+                              Coupon Code
+                            </label>
+                            <Input
+                              id={`coupon_code_${idx}`}
+                              name={`coupon_code_${idx}`}
+                              value={coupon.code}
+                              onChange={(e) =>
+                                handleCouponChange(idx, 'code', e.target.value)
+                              }
+                              className='focus:ring-primary focus:ring-2'
+                            />
+                          </div>
+                        </div>
+                        <div className='flex justify-end gap-2'>
+                          <Button
+                            variant='outline'
+                            onClick={() => removeCoupon(idx)}
+                            className='text-sm'
+                          >
+                            Remove Coupon
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    <Button type='button' onClick={addCoupon} className='mt-2'>
+                      Add Coupon
+                    </Button>
+                  </div>
                 </div>
-              </section>
+              </div>
             </TabsContent>
             <TabsContent value='integrations'>
-              {/* Integrations Section */}
-              <section className='space-y-6'>
-                <div className='flex flex-col gap-6'>
-                  <div>
-                    <label className='mb-1 block font-medium'>
-                      Platform{' '}
-                      <span className='text-destructive' title='Required'>
-                        *
-                      </span>
+              {/* Integrations fields */}
+              <div className='grid grid-cols-1 items-end gap-6 md:grid-cols-2'>
+                <div>
+                  <label
+                    htmlFor='platform'
+                    className='mb-2 block text-sm font-medium'
+                  >
+                    Platform{' '}
+                    <span className={form.platform ? '' : 'text-destructive'}>
+                      *
+                    </span>
+                  </label>
+                  <select
+                    id='platform'
+                    name='platform'
+                    value={form.platform}
+                    onChange={handleSelectChange}
+                    ref={refs.platform}
+                    className='bg-background focus:ring-primary w-full rounded-md border px-3 py-2 text-base focus:ring-2'
+                    required
+                    disabled={!!initialData?.id} // desabilita edição se já cadastrado
+                  >
+                    <option value=''>Select a platform</option>
+                    {PLATFORM_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {webhookKey && (
+                  <div className='flex flex-col gap-2'>
+                    <label className='mb-2 block text-sm font-medium'>
+                      Webhook URL
                     </label>
-                    <div
-                      className={`mb-6${isPlatformMissing ? 'border-destructive rounded-md border p-2' : ''}`}
-                    >
-                      <div className='flex gap-4'>
-                        <label className='flex items-center gap-1'>
-                          <input
-                            type='radio'
-                            name='platform'
-                            value=''
-                            checked={form.platform === ''}
-                            onChange={handleChange}
-                            disabled
-                            className='opacity-50'
-                          />
-                          <span className='text-muted-foreground'>
-                            Select a platform
-                          </span>
-                        </label>
-                        {PLATFORM_OPTIONS.map((opt) => (
-                          <label
-                            key={opt.value}
-                            className='flex items-center gap-1'
-                          >
-                            <input
-                              type='radio'
-                              name='platform'
-                              value={opt.value}
-                              checked={form.platform === opt.value}
-                              onChange={handleChange}
-                            />
-                            {opt.label}
-                          </label>
-                        ))}
-                      </div>
-                      {form.platform && (
-                        <div className='mt-2 text-xs text-amber-600'>
-                          After saving, the selected platform cannot be changed.
-                        </div>
-                      )}
-                      {isPlatformMissing && (
-                        <div className='text-destructive mt-1 text-xs'>
-                          Platform is required.
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  {showWebhook && (
-                    <div className='relative'>
-                      <label className='mb-1 block font-medium'>Webhook</label>
+                    <div className='flex items-center gap-2'>
                       <Input
-                        ref={webhookInputRef}
-                        name='webhook'
-                        value={form.webhook}
+                        value={`https://webhook.agentpay.com.br/webhook/b3b7cd9b-f318-4a40-9265-7ef2a4714734/platform/${webhookKey}`}
                         readOnly
                         className='cursor-pointer pr-24 select-all'
                         onClick={async () => {
-                          if (form.webhook) {
-                            await navigator.clipboard.writeText(form.webhook);
-                            setWebhookCopied(true);
-                            setTimeout(() => setWebhookCopied(false), 2000);
-                          }
+                          await navigator.clipboard.writeText(
+                            `https://webhook.agentpay.com.br/webhook/b3b7cd9b-f318-4a40-9265-7ef2a4714734/platform/${webhookKey}`
+                          );
                         }}
-                        title='Click to copy webhook URL'
                       />
-                      {webhookCopied && (
-                        <div className='bg-primary animate-fade-in absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded px-2 py-1 text-xs text-white shadow'>
-                          Webhook URL copied!
-                        </div>
-                      )}
-                      <div className='text-muted-foreground mt-1 text-xs'>
-                        Click to copy the webhook URL to your clipboard.
-                      </div>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        onClick={async () => {
+                          await navigator.clipboard.writeText(
+                            `https://webhook.agentpay.com.br/webhook/b3b7cd9b-f318-4a40-9265-7ef2a4714734/platform/${webhookKey}`
+                          );
+                        }}
+                      >
+                        Copy
+                      </Button>
                     </div>
-                  )}
-                </div>
-              </section>
+                  </div>
+                )}
+              </div>
             </TabsContent>
           </Tabs>
-          <div className='mt-8 flex justify-end gap-2'>
-            <Button
-              type='button'
-              variant='outline'
-              size='default'
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
-            <Button type='submit' size='default'>
-              Save Product
-            </Button>
-          </div>
-          <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Discard changes?</DialogTitle>
-              </DialogHeader>
-              <div className='mb-4'>
-                You have unsaved changes. Are you sure you want to cancel and
-                lose all changes?
-              </div>
-              <DialogFooter>
-                <Button
-                  variant='outline'
-                  onClick={() => setShowCancelDialog(false)}
-                >
-                  No, keep editing
-                </Button>
-                <Button variant='destructive' onClick={confirmCancel}>
-                  Yes, discard changes
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </CardContent>
       </Card>
+      {/* --- BOTÕES DE AÇÃO --- */}
+      <div className='mt-8 flex justify-end gap-4'>
+        {isDirty && (
+          <Button type='submit' className='w-full md:w-auto'>
+            {initialData?.id ? 'Save Changes' : 'Create Product'}
+          </Button>
+        )}
+        <Button
+          variant='outline'
+          onClick={() => setShowCancelDialog(true)}
+          className='w-full md:w-auto'
+        >
+          Cancel
+        </Button>
+      </div>
+      {/* --- FIM BOTÕES DE AÇÃO --- */}
 
-      {/* Validation Modal (render at root of form) */}
-      <Dialog open={showValidationModal} onOpenChange={setShowValidationModal}>
+      {/* Webhook URL modal */}
+      <Dialog
+        open={showWebhookModal}
+        onOpenChange={(open) => {
+          setShowWebhookModal(open);
+          if (!open) {
+            router.push('/dashboard/product');
+          }
+        }}
+      >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Missing Required Fields</DialogTitle>
+            <DialogTitle>Configure Your Webhook</DialogTitle>
           </DialogHeader>
-          <ul className='text-destructive mb-4 list-disc pl-5 text-sm'>
-            {validationErrors.map((err, i) => (
-              <li key={i}>{err}</li>
-            ))}
-          </ul>
+          <div className='mb-4 text-sm'>
+            Copy and configure this webhook URL in your platform to receive
+            notifications:
+          </div>
+          <Input
+            value={webhookModalUrl || ''}
+            readOnly
+            className='cursor-pointer pr-24 select-all'
+            onClick={async () => {
+              if (webhookModalUrl) {
+                await navigator.clipboard.writeText(webhookModalUrl);
+                setWebhookModalCopied(true);
+                setTimeout(() => setWebhookModalCopied(false), 2000);
+              }
+            }}
+            title='Click to copy webhook URL'
+          />
+          {webhookModalCopied && (
+            <div className='bg-primary animate-fade-in absolute top-1/2 right-2 z-10 -translate-y-1/2 rounded px-2 py-1 text-xs text-white shadow'>
+              Webhook URL copied!
+            </div>
+          )}
           <DialogFooter>
-            <Button onClick={() => setShowValidationModal(false)}>OK</Button>
+            <Button
+              onClick={() => {
+                setShowWebhookModal(false);
+                router.push('/dashboard/product');
+              }}
+            >
+              Close
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {isSaving && (
-        <div className='text-primary mt-2 text-sm'>Saving product...</div>
-      )}
-      {saveError && (
-        <div className='text-destructive mt-2 text-sm'>{saveError}</div>
-      )}
-      {saveSuccess && (
-        <div className='mt-2 text-sm text-green-600'>
-          Product saved successfully!
-        </div>
-      )}
+      {/* Validation error modal */}
+      <Dialog open={showValidationModal} onOpenChange={setShowValidationModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Validation Errors</DialogTitle>
+          </DialogHeader>
+          <div className='mt-4'>
+            <p className='text-muted-foreground text-sm'>
+              Please fix the following errors before submitting:
+            </p>
+            <ul className='mt-2 list-inside list-disc space-y-1 text-sm'>
+              {validationErrors.map((error, idx) => (
+                <li key={idx} className='text-red-600'>
+                  {error}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <DialogFooter>
+            <Button
+              variant='outline'
+              onClick={() => setShowValidationModal(false)}
+              className='w-full md:w-auto'
+            >
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-      <div className='text-muted-foreground mb-2 text-xs'>
-        Fields marked with <span className='text-destructive'>*</span> are
-        required.
-      </div>
+      {/* Cancel confirmation dialog */}
+      <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Discard Changes?</DialogTitle>
+          </DialogHeader>
+          <div className='mt-4'>
+            <p className='text-muted-foreground text-sm'>
+              Are you sure you want to discard your changes? This action cannot
+              be undone.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button
+              variant='outline'
+              onClick={() => setShowCancelDialog(false)}
+              className='w-full md:w-auto'
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                setShowCancelDialog(false);
+                router.push('/dashboard/product');
+              }}
+              className='w-full md:w-auto'
+            >
+              Discard
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </form>
   );
 }

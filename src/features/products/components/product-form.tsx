@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -70,7 +71,7 @@ const DEFAULT_PRODUCT: {
 export function mapProductSchemaToForm(data: any): typeof DEFAULT_PRODUCT {
   if (!data) return { ...DEFAULT_PRODUCT };
   return {
-    status: 'inactive',
+    status: data.status || 'inactive',
     name: data.product?.basic_info?.name || '',
     description: data.product?.basic_info?.description || '',
     landing_page: data.product?.basic_info?.landing_page_url || '',
@@ -243,6 +244,12 @@ export default function ProductForm({
     } else {
       setForm((prev) => ({ ...prev, [name]: value }));
     }
+  };
+
+  // New handler for select input
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   // Offers
@@ -527,7 +534,8 @@ export default function ProductForm({
           faq: form.faq ? JSON.parse(form.faq) : [],
           other_relevant_urls: form.other_relevant_urls
         }
-      }
+      },
+      status: form.status || 'inactive'
     };
     setIsSaving(true);
     setSaveError(null);
@@ -679,6 +687,36 @@ export default function ProductForm({
             <TabsContent value='product'>
               {/* Product Section */}
               <section className='space-y-6'>
+                <div>
+                  <label
+                    className='mb-1 block font-medium'
+                    htmlFor='status-switch'
+                  >
+                    Status{' '}
+                    <span className='text-destructive' title='Required'>
+                      *
+                    </span>
+                  </label>
+                  <div className='mb-2 flex items-center gap-3'>
+                    <Switch
+                      id='status-switch'
+                      checked={form.status === 'active'}
+                      onCheckedChange={(checked) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          status: checked ? 'active' : 'inactive'
+                        }))
+                      }
+                    />
+                    <span className='text-sm'>
+                      {form.status === 'active' ? 'Active' : 'Inactive'}
+                    </span>
+                  </div>
+                  <div className='text-muted-foreground text-xs'>
+                    When active, agents will be able to act on the sale of this
+                    product.
+                  </div>
+                </div>
                 <div>
                   <label className='mb-1 block font-medium'>
                     Name{' '}

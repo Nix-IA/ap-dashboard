@@ -38,6 +38,14 @@ export const navItems: NavItem[] = [
     items: []
   },
   {
+    title: 'Platforms',
+    url: '/dashboard/platforms',
+    icon: 'settings', // Use a valid icon from Icons
+    shortcut: ['i', 'i'],
+    isActive: false,
+    items: []
+  },
+  {
     title: 'Account',
     url: '#', // Placeholder as there is no direct link for the parent
     icon: 'billing',

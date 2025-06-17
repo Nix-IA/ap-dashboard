@@ -1,11 +1,11 @@
 'use client';
 
 import PageContainer from '@/components/layout/page-container';
-import { useRouter } from 'next/navigation';
-import WhatsappOnboarding from '@/features/whatsapp/components/whatsapp-onboarding';
-import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import WhatsappOnboarding from '@/features/whatsapp/components/whatsapp-onboarding';
+import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Page() {
   const router = useRouter();

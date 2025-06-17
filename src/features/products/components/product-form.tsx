@@ -786,11 +786,11 @@ export default function ProductForm({
             </TabsList>
             <TabsContent value='product'>
               {/* Product details fields */}
-              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                <div>
+              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='name'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Product Name <span className='text-red-500'>*</span>
                   </label>
@@ -804,11 +804,11 @@ export default function ProductForm({
                     className={`focus:ring-primary focus:ring-2 ${fieldHasError('name') ? 'border-red-500' : ''}`}
                   />
                   {fieldHasError('name') && (
-                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                    <span className='text-xs text-red-500'>Required</span>
                   )}
                 </div>
-                <div>
-                  <label className='flex items-center gap-2'>
+                <div className='flex flex-col items-end justify-end'>
+                  <label className='mb-1 block flex items-center gap-2 text-sm font-medium'>
                     <Switch
                       checked={form.status === 'active'}
                       onCheckedChange={(checked) =>
@@ -819,16 +819,16 @@ export default function ProductForm({
                       }
                       className='h-6 w-11 rounded-full'
                     />
-                    <span className='text-sm font-medium'>
+                    <span className='ml-2'>
                       {form.status === 'active' ? 'Active' : 'Inactive'}
                     </span>
                   </label>
                 </div>
               </div>
-              <div>
+              <div className='mt-6 flex flex-col'>
                 <label
                   htmlFor='description'
-                  className='mb-2 block text-sm font-medium'
+                  className='mb-1 block text-sm font-medium'
                 >
                   Description <span className='text-red-500'>*</span>
                 </label>
@@ -842,14 +842,14 @@ export default function ProductForm({
                   className={`focus:ring-primary focus:ring-2 ${fieldHasError('description') ? 'border-red-500' : ''}`}
                 />
                 {fieldHasError('description') && (
-                  <div className='mt-1 text-xs text-red-500'>Required</div>
+                  <span className='text-xs text-red-500'>Required</span>
                 )}
               </div>
-              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                <div>
+              <div className='mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='landing_page'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Main Page URL <span className='text-red-500'>*</span>
                   </label>
@@ -863,13 +863,13 @@ export default function ProductForm({
                     className={`focus:ring-primary focus:ring-2 ${fieldHasError('landing_page') ? 'border-red-500' : ''}`}
                   />
                   {fieldHasError('landing_page') && (
-                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                    <span className='text-xs text-red-500'>Required</span>
                   )}
                 </div>
-                <div>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='objective'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Objective <span className='text-red-500'>*</span>
                   </label>
@@ -883,15 +883,15 @@ export default function ProductForm({
                     className={`focus:ring-primary focus:ring-2 ${fieldHasError('objective') ? 'border-red-500' : ''}`}
                   />
                   {fieldHasError('objective') && (
-                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                    <span className='text-xs text-red-500'>Required</span>
                   )}
                 </div>
               </div>
-              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                <div>
+              <div className='mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='benefits'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Benefits <span className='text-red-500'>*</span>
                   </label>
@@ -905,13 +905,13 @@ export default function ProductForm({
                     className={`focus:ring-primary focus:ring-2 ${fieldHasError('benefits') ? 'border-red-500' : ''}`}
                   />
                   {fieldHasError('benefits') && (
-                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                    <span className='text-xs text-red-500'>Required</span>
                   )}
                 </div>
-                <div>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='target_audience'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Target Audience <span className='text-red-500'>*</span>
                   </label>
@@ -925,15 +925,15 @@ export default function ProductForm({
                     className={`focus:ring-primary focus:ring-2 ${fieldHasError('target_audience') ? 'border-red-500' : ''}`}
                   />
                   {fieldHasError('target_audience') && (
-                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                    <span className='text-xs text-red-500'>Required</span>
                   )}
                 </div>
               </div>
-              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                <div>
+              <div className='mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='problems_solved'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Problems Solved <span className='text-red-500'>*</span>
                   </label>
@@ -947,13 +947,13 @@ export default function ProductForm({
                     className={`focus:ring-primary focus:ring-2 ${fieldHasError('problems_solved') ? 'border-red-500' : ''}`}
                   />
                   {fieldHasError('problems_solved') && (
-                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                    <span className='text-xs text-red-500'>Required</span>
                   )}
                 </div>
-                <div>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='delivery_information'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Delivery Information <span className='text-red-500'>*</span>
                   </label>
@@ -967,7 +967,7 @@ export default function ProductForm({
                     className={`focus:ring-primary focus:ring-2 ${fieldHasError('delivery_information') ? 'border-red-500' : ''}`}
                   />
                   {fieldHasError('delivery_information') && (
-                    <div className='mt-1 text-xs text-red-500'>Required</div>
+                    <span className='text-xs text-red-500'>Required</span>
                   )}
                 </div>
               </div>
@@ -975,15 +975,15 @@ export default function ProductForm({
             <TabsContent value='sales'>
               {/* Sales details fields */}
               <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-                <div>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='payment_methods'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Payment Methods <span className='text-red-500'>*</span>
                   </label>
                   <div
-                    className={`flex flex-col gap-2 ${fieldHasError('payment_methods') ? 'rounded-md border border-red-500 p-2' : ''}`}
+                    className={`flex flex-col ${fieldHasError('payment_methods') ? 'rounded-md border border-red-500 p-2' : ''}`}
                   >
                     {PAYMENT_OPTIONS.map((option) => (
                       <div key={option.value} className='flex items-center'>
@@ -1010,10 +1010,10 @@ export default function ProductForm({
                     </div>
                   )}
                 </div>
-                <div>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='offers'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Sales Offers <span className='text-red-500'>*</span>
                   </label>
@@ -1027,10 +1027,10 @@ export default function ProductForm({
                         className='flex flex-col gap-2 rounded-lg border p-4'
                       >
                         <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                          <div>
+                          <div className='flex flex-col'>
                             <label
                               htmlFor={`offer_title_${idx}`}
-                              className='mb-2 block text-sm font-medium'
+                              className='mb-1 block text-sm font-medium'
                             >
                               Offer Title
                             </label>
@@ -1045,10 +1045,10 @@ export default function ProductForm({
                               className='focus:ring-primary focus:ring-2'
                             />
                           </div>
-                          <div>
+                          <div className='flex flex-col'>
                             <label
                               htmlFor={`offer_price_${idx}`}
-                              className='mb-2 block text-sm font-medium'
+                              className='mb-1 block text-sm font-medium'
                             >
                               Price
                             </label>
@@ -1064,10 +1064,10 @@ export default function ProductForm({
                             />
                           </div>
                         </div>
-                        <div>
+                        <div className='mt-2 flex flex-col'>
                           <label
                             htmlFor={`offer_url_${idx}`}
-                            className='mb-2 block text-sm font-medium'
+                            className='mb-1 block text-sm font-medium'
                           >
                             Payment Page URL
                           </label>
@@ -1106,7 +1106,7 @@ export default function ProductForm({
                 <div className='col-span-2'>
                   <label
                     htmlFor='coupons'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Discount Coupons
                   </label>
@@ -1120,10 +1120,10 @@ export default function ProductForm({
                         className='flex w-full flex-col gap-2 rounded-lg border p-4 md:w-1/2'
                       >
                         <div className='grid grid-cols-1 gap-4'>
-                          <div>
+                          <div className='flex flex-col'>
                             <label
                               htmlFor={`coupon_title_${idx}`}
-                              className='mb-2 block text-sm font-medium'
+                              className='mb-1 block text-sm font-medium'
                             >
                               Coupon Title
                             </label>
@@ -1137,10 +1137,10 @@ export default function ProductForm({
                               className='focus:ring-primary focus:ring-2'
                             />
                           </div>
-                          <div>
+                          <div className='flex flex-col'>
                             <label
                               htmlFor={`coupon_discount_${idx}`}
-                              className='mb-2 block text-sm font-medium'
+                              className='mb-1 block text-sm font-medium'
                             >
                               Discount Value
                             </label>
@@ -1158,10 +1158,10 @@ export default function ProductForm({
                               className='focus:ring-primary focus:ring-2'
                             />
                           </div>
-                          <div>
+                          <div className='flex flex-col'>
                             <label
                               htmlFor={`coupon_code_${idx}`}
-                              className='mb-2 block text-sm font-medium'
+                              className='mb-1 block text-sm font-medium'
                             >
                               Coupon Code
                             </label>
@@ -1197,10 +1197,10 @@ export default function ProductForm({
             <TabsContent value='integrations'>
               {/* Integrations fields */}
               <div className='grid grid-cols-1 items-end gap-6 md:grid-cols-2'>
-                <div>
+                <div className='flex flex-col'>
                   <label
                     htmlFor='platform'
-                    className='mb-2 block text-sm font-medium'
+                    className='mb-1 block text-sm font-medium'
                   >
                     Platform <span className='text-red-500'>*</span>
                   </label>
@@ -1226,8 +1226,8 @@ export default function ProductForm({
                   )}
                 </div>
                 {webhookKey && (
-                  <div className='flex flex-col gap-2'>
-                    <label className='mb-2 block text-sm font-medium'>
+                  <div className='flex flex-col'>
+                    <label className='mb-1 block text-sm font-medium'>
                       Webhook URL
                     </label>
                     <div className='flex items-center gap-2'>

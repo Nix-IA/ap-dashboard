@@ -28,99 +28,100 @@ import { Loader2, Pencil } from 'lucide-react';
 import React from 'react';
 import { getCountryFlagAndFormatPhone } from './phone-utils';
 
+// --- Cell component for display_name ---
+function DisplayNameCell({ cell, row }: { cell: any; row: any }) {
+  const [open, setOpen] = React.useState(false);
+  const [editValue, setEditValue] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
+  const value = cell.getValue();
+
+  const handleEdit = () => {
+    setEditValue(String(value ?? ''));
+    setError('');
+    setOpen(true);
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    setError('');
+    const instanceName =
+      row.original.instance_name || row.original.name || row.original.id;
+    const { error } = await supabase
+      .from('whatsapp_numbers')
+      .update({ display_name: editValue })
+      .eq('instance_name', instanceName);
+    setLoading(false);
+    if (error) {
+      setError('Failed to update display name.');
+      return;
+    }
+    setOpen(false);
+    window.location.reload();
+  };
+
+  return (
+    <div className='group flex min-w-[180px] items-center justify-between'>
+      <span className='text-foreground/90 truncate'>
+        {value && String(value).trim() !== '' ? (
+          String(value)
+        ) : (
+          <span className='text-muted-foreground italic'>No name</span>
+        )}
+      </span>
+      <button
+        onClick={handleEdit}
+        className='hover:bg-accent ml-2 rounded p-1 opacity-60 transition-opacity group-hover:opacity-100'
+        aria-label='Edit display name'
+        tabIndex={0}
+        type='button'
+      >
+        <Pencil className='h-4 w-4' />
+      </button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Display Name</DialogTitle>
+          </DialogHeader>
+          {error && <div className='mb-2 text-sm text-red-500'>{error}</div>}
+          <div className='grid gap-4'>
+            <Input
+              value={editValue}
+              onChange={(e) => setEditValue(e.target.value)}
+              placeholder='Enter display name'
+              disabled={loading}
+              aria-label='Display name'
+            />
+          </div>
+          <DialogFooter>
+            <button
+              className='inline-flex h-10 items-center justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200'
+              onClick={() => setOpen(false)}
+              disabled={loading}
+            >
+              Cancel
+            </button>
+            <button
+              className='inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-blue-600 disabled:opacity-50'
+              onClick={handleSave}
+              disabled={loading}
+            >
+              {loading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+              Save
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
 export const columns: ColumnDef<any>[] = [
   {
     id: 'display_name',
     accessorKey: 'display_name',
     header: 'Display Name',
-    cell: ({ cell, row }) => {
-      const [open, setOpen] = React.useState(false);
-      const [editValue, setEditValue] = React.useState('');
-      const [loading, setLoading] = React.useState(false);
-      const [error, setError] = React.useState('');
-      const value = cell.getValue();
-
-      const handleEdit = () => {
-        setEditValue(String(value ?? ''));
-        setError('');
-        setOpen(true);
-      };
-
-      const handleSave = async () => {
-        setLoading(true);
-        setError('');
-        const instanceName =
-          row.original.instance_name || row.original.name || row.original.id;
-        const { error } = await supabase
-          .from('whatsapp_numbers')
-          .update({ display_name: editValue })
-          .eq('instance_name', instanceName);
-        setLoading(false);
-        if (error) {
-          setError('Failed to update display name.');
-          return;
-        }
-        setOpen(false);
-        window.location.reload();
-      };
-
-      return (
-        <div className='group flex min-w-[180px] items-center justify-between'>
-          <span className='text-foreground/90 truncate'>
-            {value && String(value).trim() !== '' ? (
-              String(value)
-            ) : (
-              <span className='text-muted-foreground italic'>No name</span>
-            )}
-          </span>
-          <button
-            onClick={handleEdit}
-            className='hover:bg-accent ml-2 rounded p-1 opacity-60 transition-opacity group-hover:opacity-100'
-            aria-label='Edit display name'
-            tabIndex={0}
-            type='button'
-          >
-            <Pencil className='h-4 w-4' />
-          </button>
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Edit Display Name</DialogTitle>
-              </DialogHeader>
-              {error && (
-                <div className='mb-2 text-sm text-red-500'>{error}</div>
-              )}
-              <div className='grid gap-4'>
-                <Input
-                  value={editValue}
-                  onChange={(e) => setEditValue(e.target.value)}
-                  placeholder='Enter display name'
-                  disabled={loading}
-                  aria-label='Display name'
-                />
-              </div>
-              <DialogFooter>
-                <button
-                  className='inline-flex h-10 items-center justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200'
-                  onClick={() => setOpen(false)}
-                  disabled={loading}
-                >
-                  Cancel
-                </button>
-                <button
-                  className='inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-blue-600 disabled:opacity-50'
-                  onClick={handleSave}
-                  disabled={loading}
-                >
-                  {loading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-                  Save
-                </button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      );
-    }
+    cell: (props) => <DisplayNameCell {...props} />
   },
   {
     id: 'status',

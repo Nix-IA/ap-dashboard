@@ -187,9 +187,9 @@ export default function ProductForm({
   useEffect(() => {
     // Se onboardingData, usa ela
     if (onboardingData) {
-      setForm(mapProductSchemaToForm(onboardingData));
-      setInitialForm(DEFAULT_PRODUCT); // Garante que isDirty será true
-      if (!initialData?.id) setIsDirty(true);
+      const mapped = mapProductSchemaToForm(onboardingData);
+      setForm(mapped);
+      setInitialForm(DEFAULT_PRODUCT); // <- Corrigido: initialForm é o vazio!
     } else if (initialData) {
       // Se vier do server, faz o parse/mapping do JSON bruto
       if (initialData.productJson) {
@@ -198,9 +198,8 @@ export default function ProductForm({
             JSON.parse(initialData.productJson)
           );
           setForm(parsed);
-          setInitialForm(DEFAULT_PRODUCT); // Garante que isDirty será true
+          setInitialForm(parsed);
           if (initialData.webhookKey) setWebhookKey(initialData.webhookKey);
-          if (!initialData.id) setIsDirty(true);
         } catch {
           setForm(DEFAULT_PRODUCT);
           setInitialForm(DEFAULT_PRODUCT);
@@ -208,9 +207,8 @@ export default function ProductForm({
         }
       } else {
         setForm((prev) => ({ ...prev, ...initialData }));
-        setInitialForm(DEFAULT_PRODUCT); // Garante que isDirty será true
+        setInitialForm((prev) => ({ ...prev, ...initialData }));
         setWebhookKey(initialData.webhookKey || null);
-        if (!initialData.id) setIsDirty(true);
       }
     }
   }, [onboardingData, initialData]);

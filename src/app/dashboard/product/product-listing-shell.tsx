@@ -125,7 +125,7 @@ export default function ProductListingShell() {
       <div className='flex items-start justify-between'>
         <Heading
           title='Products'
-          description='Manage products (Server side table functionalities.)'
+          description='View, manage, and organize your product catalog.'
         />
         <button
           className={cn(

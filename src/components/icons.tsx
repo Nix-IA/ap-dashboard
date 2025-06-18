@@ -31,7 +31,9 @@ import {
   IconX,
   IconLayoutKanban,
   IconBrandGithub,
-  IconBrandWhatsapp
+  IconBrandWhatsapp,
+  IconApps,
+  IconPackage
 } from '@tabler/icons-react';
 
 export type Icon = React.ComponentType<IconProps>;
@@ -41,7 +43,7 @@ export const Icons = {
   logo: IconCommand,
   login: IconLogin,
   close: IconX,
-  product: IconShoppingBag,
+  product: IconPackage, // Changed from IconShoppingBag to IconPackage for better representation
   spinner: IconLoader2,
   kanban: IconLayoutKanban,
   chevronLeft: IconChevronLeft,
@@ -68,5 +70,6 @@ export const Icons = {
   github: IconBrandGithub,
   twitter: IconBrandTwitter,
   check: IconCheck,
-  whatsapp: IconBrandWhatsapp
+  whatsapp: IconBrandWhatsapp,
+  platforms: IconApps
 };

@@ -41,7 +41,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Platforms',
     url: '/dashboard/platforms',
-    icon: 'settings', // Use a valid icon from Icons
+    icon: 'platforms', // Changed from 'settings' to 'platforms' for better representation
     shortcut: ['i', 'i'],
     isActive: false,
     items: []

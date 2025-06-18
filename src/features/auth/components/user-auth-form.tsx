@@ -11,11 +11,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/lib/supabase';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
+import ForgotPasswordForm from './forgot-password-form';
 import UserSignUpForm from './user-signup-form';
 
 const formSchema = z.object({
@@ -28,10 +28,11 @@ const formSchema = z.object({
 type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl');
   const [loading, setLoading] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showMagicLinkForm, setShowMagicLinkForm] = useState(false);
+  const [magicLinkSent, setMagicLinkSent] = useState(false);
   const defaultValues = {
     email: '',
     password: ''
@@ -66,6 +67,10 @@ export default function UserAuthForm() {
     if (error) toast.error(error.message);
   };
 
+  const handleMagicLinkLogin = () => {
+    setShowMagicLinkForm(true);
+  };
+
   useEffect(() => {
     const fetchAndSetSeller = async () => {
       const {
@@ -89,6 +94,19 @@ export default function UserAuthForm() {
     fetchAndSetSeller();
   }, []);
 
+  if (showForgotPassword) {
+    return <ForgotPasswordForm onBack={() => setShowForgotPassword(false)} />;
+  }
+
+  if (showMagicLinkForm) {
+    return (
+      <ForgotPasswordForm
+        onBack={() => setShowMagicLinkForm(false)}
+        defaultOption='magic-link'
+      />
+    );
+  }
+
   if (showSignUp) {
     return (
       <>
@@ -99,6 +117,70 @@ export default function UserAuthForm() {
           </Button>
         </div>
       </>
+    );
+  }
+
+  if (magicLinkSent) {
+    return (
+      <div className='w-full space-y-6 text-center'>
+        <div className='space-y-3'>
+          <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900'>
+            <svg
+              className='h-6 w-6 text-blue-600 dark:text-blue-400'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
+              />
+            </svg>
+          </div>
+          <h2 className='text-2xl font-semibold'>Check your email</h2>
+          <p className='text-muted-foreground'>
+            We&apos;ve sent a magic link to{' '}
+            <span className='font-medium'>{form.getValues('email')}</span>.
+            Click the link to sign in instantly without a password.
+          </p>
+        </div>
+        <div className='bg-muted/50 rounded-lg border p-4'>
+          <div className='text-muted-foreground flex items-center justify-center space-x-2 text-sm'>
+            <svg
+              className='h-4 w-4'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+              />
+            </svg>
+            <span>Check your spam folder if you don&apos;t see the email</span>
+          </div>
+        </div>
+        <div className='space-y-2'>
+          <Button
+            onClick={() => setMagicLinkSent(false)}
+            variant='outline'
+            className='w-full'
+          >
+            Back to sign in
+          </Button>
+          <Button
+            onClick={handleMagicLinkLogin}
+            variant='ghost'
+            className='w-full'
+          >
+            Send another magic link
+          </Button>
+        </div>
+      </div>
     );
   }
 
@@ -132,7 +214,17 @@ export default function UserAuthForm() {
             name='password'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <div className='flex items-center justify-between'>
+                  <FormLabel>Password</FormLabel>
+                  <Button
+                    type='button'
+                    variant='link'
+                    className='h-auto px-0 text-sm font-normal'
+                    onClick={() => setShowForgotPassword(true)}
+                  >
+                    Forgot password?
+                  </Button>
+                </div>
                 <FormControl>
                   <Input
                     type='password'
@@ -177,6 +269,25 @@ export default function UserAuthForm() {
           />
         </svg>
         Continue with Google
+      </Button>
+      <Button
+        className='mb-2 w-full'
+        variant='outline'
+        type='button'
+        onClick={handleMagicLinkLogin}
+        disabled={loading}
+      >
+        <svg
+          className='mr-2 h-4 w-4'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+        >
+          <path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' />
+          <polyline points='22,6 12,13 2,6' />
+        </svg>
+        Sign in with email link
       </Button>
       <div className='mt-4 flex flex-col gap-2'>
         <Button variant='outline' onClick={() => setShowSignUp(true)}>

@@ -17,25 +17,30 @@ export default function ProductListingPage() {
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [status, setStatus] = useState<'all' | 'active' | 'inactive'>('all');
+  const [sortBy, setSortBy] = useState<string>('name');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const [onboardingData, setOnboardingData] = useState<any>(null);
   const router = useRouter();
 
   const fetchProducts = useCallback(
-    async (page: number, search: string, status: string) => {
-      console.log('fetchProducts called with:', { page, search, status });
+    async (
+      page: number,
+      search: string,
+      status: string,
+      sortBy?: string,
+      sortOrder?: 'asc' | 'desc'
+    ) => {
       setLoading(true);
       const {
         data: { session }
       } = await supabase.auth.getSession();
       if (!session?.user?.id) {
-        console.log('No session found, returning empty results');
         setProducts([]);
         setTotalProducts(0);
         setLoading(false);
         return;
       }
-      console.log('Session found, user ID:', session.user.id);
       let query = supabase
         .from('products')
         .select('*', { count: 'exact' })
@@ -47,35 +52,17 @@ export default function ProductListingPage() {
       if (status !== 'all') {
         query = query.eq('status', status);
       }
+      if (sortBy && sortOrder) {
+        query = query.order(sortBy, { ascending: sortOrder === 'asc' });
+      }
       query = query.range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
       const { data, error, count } = await query;
-
-      // Debug logging to understand pagination issue
-      console.log('Pagination Debug:', {
-        page,
-        PAGE_SIZE,
-        rangeStart: (page - 1) * PAGE_SIZE,
-        rangeEnd: page * PAGE_SIZE - 1,
-        dataLength: data?.length || 0,
-        totalCount: count || 0,
-        status,
-        search
-      });
 
       if (error) {
         console.error('Query error:', error);
         setProducts([]);
         setTotalProducts(0);
       } else {
-        console.log('Query successful:', {
-          dataReceived: data?.length || 0,
-          totalCount: count || 0,
-          actualData: data?.map((p) => ({
-            id: p.id,
-            name: p.name,
-            status: p.status
-          }))
-        });
         setProducts(data || []);
         setTotalProducts(count || 0);
       }
@@ -84,11 +71,25 @@ export default function ProductListingPage() {
     []
   );
 
-  // useEffect to fetch products only when search, page, or status changes
+  // useEffect to fetch products only when search, page, status, or sorting changes
   useEffect(() => {
-    fetchProducts(page, search, status);
+    fetchProducts(page, search, status, sortBy, sortOrder);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search, status]);
+  }, [page, search, status, sortBy, sortOrder]);
+
+  // Handle sorting changes
+  const handleSortChange = (columnId: string, order: 'asc' | 'desc') => {
+    setPage(1); // Reset to first page when sorting
+    setSortBy(columnId);
+    setSortOrder(order);
+  };
+
+  // Handle clearing sort
+  const handleClearSort = () => {
+    setPage(1);
+    setSortBy('name'); // Default back to name sorting
+    setSortOrder('asc');
+  };
 
   // No need to filter products on client side since we filter at database level
   const filteredProducts = products;
@@ -158,32 +159,34 @@ export default function ProductListingPage() {
     <div>
       <div className='mb-4 flex flex-col items-center gap-2 md:flex-row'>
         {/* Remove the Register Product button here, keep only search, status, etc. */}
-        <input
-          type='text'
-          placeholder='Search products...'
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              setPage(1);
-              setSearch(searchInput);
-            }
-          }}
-          className='w-full rounded border px-3 py-2 md:w-64'
-        />
-        {search && (
-          <button
-            onClick={() => {
-              setSearch('');
-              setSearchInput('');
-              setPage(1);
+        <div className='relative w-full md:w-64'>
+          <input
+            type='text'
+            placeholder='Search products...'
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                setPage(1);
+                setSearch(searchInput);
+              }
             }}
-            className='ml-2 rounded bg-gray-200 px-2 py-1 text-gray-700 transition hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-200 dark:hover:bg-zinc-600'
-            title='Clear search filter'
-          >
-            ×
-          </button>
-        )}
+            className='w-full rounded border px-3 py-2 pr-8'
+          />
+          {search && (
+            <button
+              onClick={() => {
+                setSearch('');
+                setSearchInput('');
+                setPage(1);
+              }}
+              className='absolute top-1/2 right-2 -translate-y-1/2 rounded px-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+              title='Clear search filter'
+            >
+              ×
+            </button>
+          )}
+        </div>
         <select
           value={status}
           onChange={(e) => {
@@ -205,6 +208,10 @@ export default function ProductListingPage() {
         page={page}
         pageSize={PAGE_SIZE}
         onPageChange={setPage}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+        onSortChange={handleSortChange}
+        onClearSort={handleClearSort}
       />
       {Math.ceil(totalProducts / PAGE_SIZE) > 1 && (
         <div className='mt-4 flex justify-center gap-2'>

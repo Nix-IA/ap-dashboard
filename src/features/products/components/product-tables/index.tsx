@@ -8,6 +8,10 @@ interface ProductTableParams<TData, TValue> {
   page?: number;
   pageSize?: number;
   onPageChange?: (page: number) => void;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  onSortChange?: (columnId: string, order: 'asc' | 'desc') => void;
+  onClearSort?: () => void;
 }
 export function ProductTable<TData extends { id?: string | number }, TValue>({
   data,
@@ -15,7 +19,11 @@ export function ProductTable<TData extends { id?: string | number }, TValue>({
   columns,
   page = 1,
   pageSize = 10,
-  onPageChange
+  onPageChange,
+  sortBy = '',
+  sortOrder = 'asc',
+  onSortChange,
+  onClearSort
 }: ProductTableParams<TData, TValue>) {
   // Debug logging for table rendering
   console.log('ProductTable rendering:', {
@@ -107,8 +115,32 @@ export function ProductTable<TData extends { id?: string | number }, TValue>({
                   ? col.header({
                       column: {
                         id: col.id ?? '',
-                        getCanSort: () => false,
-                        getCanHide: () => false
+                        getCanSort: () => true,
+                        getCanHide: () => false,
+                        getIsSorted: () => {
+                          if (sortBy === col.id) {
+                            return sortOrder === 'asc' ? 'asc' : 'desc';
+                          }
+                          return false;
+                        },
+                        toggleSorting: (desc?: boolean) => {
+                          if (onSortChange && col.id) {
+                            const newOrder =
+                              desc === true
+                                ? 'desc'
+                                : desc === false
+                                  ? 'asc'
+                                  : sortBy === col.id && sortOrder === 'asc'
+                                    ? 'desc'
+                                    : 'asc';
+                            onSortChange(col.id, newOrder);
+                          }
+                        },
+                        clearSorting: () => {
+                          if (onClearSort) {
+                            onClearSort();
+                          }
+                        }
                       }
                     } as any)
                   : (col.header ?? '')}

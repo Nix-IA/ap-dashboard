@@ -16,6 +16,7 @@ import {
   DialogTitle
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-header';
 import {
   Tooltip,
   TooltipContent,
@@ -23,7 +24,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { supabase } from '@/lib/supabase';
-import { ColumnDef } from '@tanstack/react-table';
+import { Column, ColumnDef } from '@tanstack/react-table';
 import { Loader2, Pencil } from 'lucide-react';
 import React from 'react';
 import { getCountryFlagAndFormatPhone } from './phone-utils';
@@ -120,18 +121,22 @@ export const columns: ColumnDef<any>[] = [
   {
     id: 'display_name',
     accessorKey: 'display_name',
-    header: 'Display Name',
+    header: ({ column }: { column: Column<any, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Display Name' />
+    ),
     cell: (props) => <DisplayNameCell {...props} />
   },
   {
     id: 'status',
     accessorKey: 'status',
-    header: 'Status',
+    header: ({ column }: { column: Column<any, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Status' />
+    ),
     cell: ({ cell }) => {
       const value = String(cell.getValue() ?? '').toLowerCase();
       let icon = null;
       let color = '';
-      if (value === 'active') {
+      if (value === 'open') {
         icon = (
           <svg
             width='18'
@@ -151,14 +156,14 @@ export const columns: ColumnDef<any>[] = [
           </svg>
         );
         color = 'text-green-500';
-      } else if (value === 'inactive') {
+      } else if (value === 'closed') {
         icon = (
           <svg
             width='18'
             height='18'
             fill='none'
             viewBox='0 0 24 24'
-            className='mr-1 inline-block align-middle text-gray-400'
+            className='mr-1 inline-block align-middle text-red-500'
           >
             <circle cx='12' cy='12' r='10' fill='currentColor' opacity='0.18' />
             <path
@@ -170,8 +175,8 @@ export const columns: ColumnDef<any>[] = [
             />
           </svg>
         );
-        color = 'text-gray-400';
-      } else if (value === 'pending') {
+        color = 'text-red-500';
+      } else if (value === 'connecting') {
         icon = (
           <svg
             width='18'
@@ -191,6 +196,26 @@ export const columns: ColumnDef<any>[] = [
           </svg>
         );
         color = 'text-yellow-500';
+      } else if (value === 'refused') {
+        icon = (
+          <svg
+            width='18'
+            height='18'
+            fill='none'
+            viewBox='0 0 24 24'
+            className='mr-1 inline-block align-middle text-orange-500'
+          >
+            <circle cx='12' cy='12' r='10' fill='currentColor' opacity='0.18' />
+            <path
+              d='M12 9v2m0 4h.01'
+              stroke='currentColor'
+              strokeWidth='2.2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            />
+          </svg>
+        );
+        color = 'text-orange-500';
       }
       return (
         <span className={`flex items-center capitalize ${color}`}>
@@ -203,7 +228,9 @@ export const columns: ColumnDef<any>[] = [
   {
     id: 'phone',
     accessorKey: 'phone',
-    header: 'Phone',
+    header: ({ column }: { column: Column<any, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Phone' />
+    ),
     cell: ({ cell }) => {
       const raw = String(cell.getValue() ?? '');
       if (!raw || raw === 'null') return <span></span>;
@@ -219,7 +246,9 @@ export const columns: ColumnDef<any>[] = [
   {
     id: 'created_at',
     accessorKey: 'created_at',
-    header: 'Created At',
+    header: ({ column }: { column: Column<any, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Created At' />
+    ),
     cell: ({ cell }) => {
       const raw = cell.getValue();
       let formatted = '';
@@ -240,7 +269,9 @@ export const columns: ColumnDef<any>[] = [
   {
     id: 'updated_at',
     accessorKey: 'updated_at',
-    header: 'Updated At',
+    header: ({ column }: { column: Column<any, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Updated At' />
+    ),
     cell: ({ cell }) => {
       const raw = cell.getValue();
       let formatted = '';

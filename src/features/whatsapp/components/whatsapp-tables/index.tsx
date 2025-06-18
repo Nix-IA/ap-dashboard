@@ -7,6 +7,10 @@ interface WhatsappTableParams<TData, TValue> {
   page?: number;
   pageSize?: number;
   onPageChange?: (page: number) => void;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  onSortChange?: (columnId: string, order: 'asc' | 'desc') => void;
+  onClearSort?: () => void;
 }
 
 export function WhatsappTable<TData extends { id?: string | number }, TValue>({
@@ -15,7 +19,11 @@ export function WhatsappTable<TData extends { id?: string | number }, TValue>({
   columns,
   page = 1,
   pageSize = 10,
-  onPageChange
+  onPageChange,
+  sortBy = '',
+  sortOrder = 'asc',
+  onSortChange,
+  onClearSort
 }: WhatsappTableParams<TData, TValue>) {
   return (
     <div className='w-full overflow-x-auto rounded-lg border'>
@@ -31,8 +39,32 @@ export function WhatsappTable<TData extends { id?: string | number }, TValue>({
                   ? col.header({
                       column: {
                         id: col.id ?? '',
-                        getCanSort: () => false,
-                        getCanHide: () => false
+                        getCanSort: () => true,
+                        getCanHide: () => false,
+                        getIsSorted: () => {
+                          if (sortBy === col.id) {
+                            return sortOrder === 'asc' ? 'asc' : 'desc';
+                          }
+                          return false;
+                        },
+                        toggleSorting: (desc?: boolean) => {
+                          if (onSortChange && col.id) {
+                            const newOrder =
+                              desc === true
+                                ? 'desc'
+                                : desc === false
+                                  ? 'asc'
+                                  : sortBy === col.id && sortOrder === 'asc'
+                                    ? 'desc'
+                                    : 'asc';
+                            onSortChange(col.id, newOrder);
+                          }
+                        },
+                        clearSorting: () => {
+                          if (onClearSort) {
+                            onClearSort();
+                          }
+                        }
                       }
                     } as any)
                   : (col.header ?? '')}

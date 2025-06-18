@@ -38,7 +38,6 @@ const DEFAULT_PRODUCT: {
   name: string;
   description: string;
   landing_page: string;
-  image_url: string;
   objective: string;
   benefits: string;
   target_audience: string;
@@ -60,7 +59,6 @@ const DEFAULT_PRODUCT: {
   name: '',
   description: '',
   landing_page: '',
-  image_url: '',
   objective: '',
   benefits: '',
   target_audience: '',
@@ -86,7 +84,6 @@ export function mapProductSchemaToForm(
     name: data.product?.basic_info?.name || '',
     description: data.product?.basic_info?.description || '',
     landing_page: data.product?.basic_info?.landing_page_url || '',
-    image_url: data.product?.basic_info?.image_url || '',
     objective: data.product?.product_details?.goal || '',
     benefits: data.product?.product_details?.main_benefits || '',
     target_audience: data.product?.product_details?.target_audience || '',
@@ -167,7 +164,6 @@ export default function ProductForm({
   const refs = {
     name: useRef<HTMLInputElement>(null),
     landing_page: useRef<HTMLInputElement>(null),
-    image_url: useRef<HTMLInputElement>(null),
     description: descriptionRef,
     objective: useRef<HTMLTextAreaElement>(null),
     benefits: useRef<HTMLTextAreaElement>(null),
@@ -608,8 +604,7 @@ export default function ProductForm({
         basic_info: {
           name: form.name,
           description: form.description,
-          landing_page_url: form.landing_page,
-          image_url: form.image_url
+          landing_page_url: form.landing_page
         },
         product_details: {
           goal: form.objective,
@@ -888,44 +883,25 @@ export default function ProductForm({
                   <span className='text-xs text-red-500'>Required</span>
                 )}
               </div>
-              <div className='mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
-                <div className='flex flex-col'>
-                  <label
-                    htmlFor='landing_page'
-                    className='mb-1 block text-sm font-medium'
-                  >
-                    Main Page URL <span className='text-red-500'>*</span>
-                  </label>
-                  <Input
-                    id='landing_page'
-                    name='landing_page'
-                    value={form.landing_page}
-                    onChange={handleChange}
-                    ref={refs.landing_page}
-                    required
-                    className={`focus:ring-primary focus:ring-2 ${fieldHasError('landing_page') ? 'border-red-500' : ''}`}
-                  />
-                  {fieldHasError('landing_page') && (
-                    <span className='text-xs text-red-500'>Required</span>
-                  )}
-                </div>
-                <div className='flex flex-col'>
-                  <label
-                    htmlFor='image_url'
-                    className='mb-1 block text-sm font-medium'
-                  >
-                    Product Image URL
-                  </label>
-                  <Input
-                    id='image_url'
-                    name='image_url'
-                    value={form.image_url}
-                    onChange={handleChange}
-                    ref={refs.image_url}
-                    className='focus:ring-primary focus:ring-2'
-                    placeholder='https://example.com/product-image.jpg'
-                  />
-                </div>
+              <div className='mt-6 flex flex-col'>
+                <label
+                  htmlFor='landing_page'
+                  className='mb-1 block text-sm font-medium'
+                >
+                  Main Page URL <span className='text-red-500'>*</span>
+                </label>
+                <Input
+                  id='landing_page'
+                  name='landing_page'
+                  value={form.landing_page}
+                  onChange={handleChange}
+                  ref={refs.landing_page}
+                  required
+                  className={`focus:ring-primary focus:ring-2 ${fieldHasError('landing_page') ? 'border-red-500' : ''}`}
+                />
+                {fieldHasError('landing_page') && (
+                  <span className='text-xs text-red-500'>Required</span>
+                )}
               </div>
               <div className='mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
                 <div className='flex flex-col'>

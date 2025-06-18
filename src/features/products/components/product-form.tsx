@@ -174,7 +174,6 @@ export default function ProductForm({
     offers: useRef<HTMLDivElement>(null),
     platform: useRef<HTMLSelectElement>(null),
     delivery_information: useRef<HTMLTextAreaElement>(null),
-    other_relevant_urls: useRef<HTMLDivElement>(null),
     coupons: useRef<HTMLDivElement>(null)
   };
 
@@ -453,24 +452,6 @@ export default function ProductForm({
       );
     }
     if (!form.platform) errors.push('Platform');
-    // Only require other_relevant_urls fields if any field is filled
-    if (
-      form.other_relevant_urls.some((u) => {
-        const anyFieldFilled = !!(
-          u.page_title?.trim() ||
-          u.url?.trim() ||
-          u.description?.trim()
-        );
-        return (
-          anyFieldFilled &&
-          (!u.page_title?.trim() || !u.url?.trim() || !isValidUrl(u.url))
-        );
-      })
-    ) {
-      errors.push(
-        'Other Relevant URLs: title and valid URL are required for each entry started'
-      );
-    }
     return errors;
   }
 
@@ -760,58 +741,6 @@ export default function ProductForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showValidationModal]);
 
-  // Handlers for other_relevant_urls
-  const handleOtherUrlChange = (idx: number, field: string, value: string) => {
-    setForm((prev) => {
-      const urls = [...(prev.other_relevant_urls || [])];
-      urls[idx] = { ...urls[idx], [field]: value };
-      return { ...prev, other_relevant_urls: urls };
-    });
-  };
-  const addOtherUrl = () =>
-    setForm((prev) => ({
-      ...prev,
-      other_relevant_urls: [
-        ...(prev.other_relevant_urls || []),
-        { page_title: '', description: '', url: '' }
-      ]
-    }));
-  const removeOtherUrl = (idx: number) =>
-    setForm((prev) => ({
-      ...prev,
-      other_relevant_urls: prev.other_relevant_urls.filter((_, i) => i !== idx)
-    }));
-
-  // Helper for other_relevant_urls validation
-  const otherUrlFieldErrors = submitAttempted
-    ? form.other_relevant_urls.map((urlObj) => {
-        const anyFieldFilled = !!(
-          urlObj.page_title?.trim() ||
-          urlObj.url?.trim() ||
-          urlObj.description?.trim()
-        );
-        return anyFieldFilled
-          ? {
-              page_title: !urlObj.page_title?.trim(),
-              url: !urlObj.url?.trim() || !isValidUrl(urlObj.url)
-            }
-          : { page_title: false, url: false };
-      })
-    : form.other_relevant_urls.map(() => ({ page_title: false, url: false }));
-  const isOtherUrlMissing =
-    submitAttempted &&
-    form.other_relevant_urls.some((u) => {
-      const anyFieldFilled = !!(
-        u.page_title?.trim() ||
-        u.url?.trim() ||
-        u.description?.trim()
-      );
-      return (
-        anyFieldFilled &&
-        (!u.page_title?.trim() || !u.url?.trim() || !isValidUrl(u.url))
-      );
-    });
-
   // Helpers para saber se cada campo está com erro
   const fieldHasError = (field: string) =>
     submitAttempted &&
@@ -1041,7 +970,9 @@ export default function ProductForm({
                 {/* Payment Methods Section */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className='text-lg'>Payment Methods</CardTitle>
+                    <CardTitle className='text-lg'>
+                      Payment Methods <span className='text-red-500'>*</span>
+                    </CardTitle>
                     <CardDescription>
                       Select the payment methods available for this product
                     </CardDescription>
@@ -1083,7 +1014,9 @@ export default function ProductForm({
                 {/* Sales Offers Section */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className='text-lg'>Sales Offers</CardTitle>
+                    <CardTitle className='text-lg'>
+                      Sales Offers <span className='text-red-500'>*</span>
+                    </CardTitle>
                     <CardDescription>
                       Configure pricing plans and sales offers for this product
                     </CardDescription>
@@ -1107,7 +1040,7 @@ export default function ProductForm({
                                   htmlFor={`offer_title_${idx}`}
                                   className='text-sm font-medium'
                                 >
-                                  Title
+                                  Title <span className='text-red-500'>*</span>
                                 </label>
                                 <Input
                                   id={`offer_title_${idx}`}
@@ -1130,7 +1063,7 @@ export default function ProductForm({
                                   htmlFor={`offer_price_${idx}`}
                                   className='text-sm font-medium'
                                 >
-                                  Price
+                                  Price <span className='text-red-500'>*</span>
                                 </label>
                                 <Input
                                   id={`offer_price_${idx}`}
@@ -1177,7 +1110,8 @@ export default function ProductForm({
                                 htmlFor={`offer_url_${idx}`}
                                 className='text-sm font-medium'
                               >
-                                Payment Page URL
+                                Payment Page URL{' '}
+                                <span className='text-red-500'>*</span>
                               </label>
                               <Input
                                 id={`offer_url_${idx}`}

@@ -31,7 +31,7 @@ export default function SignInViewPage() {
           <blockquote className='space-y-2'>
             <p className='text-lg'>
               &ldquo;Agent Pay revolutionized our sales process with intelligent 
-              automation. Our WhatsApp conversions increased by 300% in just the first month.&rdquo;
+              automation. Our WhatsApp conversions improved significantly with automated responses.&rdquo;
             </p>
             <footer className='text-sm'>Maria Silva, Sales Director</footer>
           </blockquote>

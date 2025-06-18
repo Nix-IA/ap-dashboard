@@ -180,7 +180,7 @@ export default function ProductListingPage() {
                 setSearchInput('');
                 setPage(1);
               }}
-              className='absolute top-1/2 right-2 -translate-y-1/2 rounded px-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+              className='absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer rounded px-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
               title='Clear search filter'
             >
               ×
@@ -193,7 +193,7 @@ export default function ProductListingPage() {
             setPage(1);
             setStatus(e.target.value as 'all' | 'active' | 'inactive');
           }}
-          className='rounded border px-3 py-2'
+          className='cursor-pointer rounded border px-3 py-2'
         >
           <option value='all'>All</option>
           <option value='active'>Active</option>
@@ -218,7 +218,7 @@ export default function ProductListingPage() {
           <button
             onClick={() => setPage(page - 1)}
             disabled={page === 1}
-            className='rounded border px-3 py-1 disabled:opacity-50'
+            className='cursor-pointer rounded border px-3 py-1 disabled:cursor-not-allowed disabled:opacity-50'
           >
             Previous
           </button>
@@ -228,7 +228,7 @@ export default function ProductListingPage() {
           <button
             onClick={() => setPage(page + 1)}
             disabled={page * PAGE_SIZE >= totalProducts}
-            className='rounded border px-3 py-1 disabled:opacity-50'
+            className='cursor-pointer rounded border px-3 py-1 disabled:cursor-not-allowed disabled:opacity-50'
           >
             Next
           </button>

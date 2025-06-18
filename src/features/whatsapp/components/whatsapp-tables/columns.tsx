@@ -72,7 +72,7 @@ function DisplayNameCell({ cell, row }: { cell: any; row: any }) {
       </span>
       <button
         onClick={handleEdit}
-        className='hover:bg-accent ml-2 rounded p-1 opacity-60 transition-opacity group-hover:opacity-100'
+        className='hover:bg-accent ml-2 cursor-pointer rounded p-1 opacity-60 transition-opacity group-hover:opacity-100'
         aria-label='Edit display name'
         tabIndex={0}
         type='button'
@@ -96,14 +96,14 @@ function DisplayNameCell({ cell, row }: { cell: any; row: any }) {
           </div>
           <DialogFooter>
             <button
-              className='inline-flex h-10 items-center justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200'
+              className='inline-flex h-10 cursor-pointer items-center justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 disabled:cursor-not-allowed'
               onClick={() => setOpen(false)}
               disabled={loading}
             >
               Cancel
             </button>
             <button
-              className='inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-blue-600 disabled:opacity-50'
+              className='inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-blue-600 disabled:cursor-not-allowed disabled:opacity-50'
               onClick={handleSave}
               disabled={loading}
             >
@@ -355,7 +355,7 @@ function ActionCell({ row }: { row: any }) {
             <AlertDialogTrigger asChild>
               <button
                 title='Remove WhatsApp instance'
-                className='px-2 py-1 text-red-500 hover:text-red-700'
+                className='cursor-pointer px-2 py-1 text-red-500 hover:text-red-700'
                 aria-label='Remove WhatsApp instance'
               >
                 <svg
@@ -392,7 +392,7 @@ function ActionCell({ row }: { row: any }) {
           <AlertDialogFooter>
             <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
             <button
-              className='flex items-center gap-2 rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 focus:ring-red-600 disabled:opacity-50'
+              className='flex cursor-pointer items-center gap-2 rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 focus:ring-red-600 disabled:cursor-not-allowed disabled:opacity-50'
               disabled={loading}
               onClick={handleRemove}
               type='button'

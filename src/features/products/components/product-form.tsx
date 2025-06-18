@@ -150,8 +150,10 @@ export default function ProductForm({
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [activeTab, setActiveTab] = useState('product');
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showRemoveDialog, setShowRemoveDialog] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [webhookKey, setWebhookKey] = useState<string | null>(null);
@@ -581,6 +583,36 @@ export default function ProductForm({
       throw new Error(kbRes.error?.message || 'Failed to save product details');
     }
     return { product_id, knowledge_base_id: kbRes.data?.id };
+  }
+
+  async function handleRemoveProduct() {
+    if (!initialData?.id) return;
+
+    setIsRemoving(true);
+    setSaveError(null);
+
+    try {
+      // Update product status to "removed"
+      const { error } = await supabase
+        .from('products')
+        .update({ status: 'removed' })
+        .eq('id', initialData.id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      setIsRemoving(false);
+      setShowRemoveDialog(false);
+
+      // Redirect after successful removal
+      setTimeout(() => {
+        router.push('/dashboard/product');
+      }, 1000);
+    } catch (err: any) {
+      setIsRemoving(false);
+      setSaveError(err.message || 'Failed to remove product');
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -1512,8 +1544,28 @@ export default function ProductForm({
       {/* --- BOTÕES DE AÇÃO --- */}
       <div className='mt-8 flex justify-end gap-4'>
         {isDirty && (
-          <Button type='submit' className='w-full md:w-auto'>
-            {initialData?.id ? 'Save Changes' : 'Create Product'}
+          <Button
+            type='submit'
+            className='w-full md:w-auto'
+            disabled={isSaving}
+          >
+            {isSaving
+              ? 'Saving...'
+              : initialData?.id
+                ? 'Save Changes'
+                : 'Create Product'}
+          </Button>
+        )}
+        {/* Remove Product button - only show for existing products */}
+        {initialData?.id && (
+          <Button
+            type='button'
+            variant='destructive'
+            onClick={() => setShowRemoveDialog(true)}
+            className='w-full md:w-auto'
+            disabled={isRemoving}
+          >
+            {isRemoving ? 'Removing...' : 'Remove Product'}
           </Button>
         )}
         <Button
@@ -1648,6 +1700,48 @@ export default function ProductForm({
               className='w-full md:w-auto'
             >
               Discard
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Remove product confirmation dialog */}
+      <Dialog open={showRemoveDialog} onOpenChange={setShowRemoveDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Remove Product?</DialogTitle>
+          </DialogHeader>
+          <div className='mt-4'>
+            <p className='text-muted-foreground text-sm'>
+              Are you sure you want to remove this product? This will set the
+              product status to &quot;removed&quot; and it will no longer appear
+              in your product listings. This action cannot be undone.
+            </p>
+            {saveError && (
+              <div className='mt-4 rounded-md border border-red-200 bg-red-50 p-3'>
+                <p className='text-sm text-red-600'>{saveError}</p>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button
+              variant='outline'
+              onClick={() => {
+                setShowRemoveDialog(false);
+                setSaveError(null);
+              }}
+              className='w-full md:w-auto'
+              disabled={isRemoving}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant='destructive'
+              onClick={handleRemoveProduct}
+              className='w-full md:w-auto'
+              disabled={isRemoving}
+            >
+              {isRemoving ? 'Removing...' : 'Remove Product'}
             </Button>
           </DialogFooter>
         </DialogContent>

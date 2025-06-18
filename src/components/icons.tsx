@@ -25,6 +25,7 @@ import {
   IconPizza,
   IconPlus,
   IconProps,
+  IconRobot,
   IconSettings,
   IconSun,
   IconTrash,
@@ -40,6 +41,7 @@ export type Icon = React.ComponentType<IconProps>;
 export const Icons = {
   dashboard: IconLayoutDashboard,
   logo: IconCommand,
+  agentPay: IconRobot,
   login: IconLogin,
   close: IconX,
   product: IconPackage, // Changed from IconShoppingBag to IconPackage for better representation

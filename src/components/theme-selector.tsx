@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+import { useSearchParams } from 'next/navigation';
 
 const DEFAULT_THEMES = [
   {
@@ -52,6 +53,14 @@ const MONO_THEMES = [
 
 export function ThemeSelector() {
   const { activeTheme, setActiveTheme } = useThemeConfig();
+  const searchParams = useSearchParams();
+
+  // Only show theme selector if theme=1 is in URL
+  const showThemeSelector = searchParams.get('theme') === '1';
+
+  if (!showThemeSelector) {
+    return null;
+  }
 
   return (
     <div className='flex items-center gap-2'>

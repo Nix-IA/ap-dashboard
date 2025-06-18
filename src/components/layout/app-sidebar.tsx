@@ -35,7 +35,6 @@ import {
   IconChevronRight,
   IconChevronsDown,
   IconLogout,
-  IconPhotoUp,
   IconUser
 } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -64,7 +63,7 @@ export default function AppSidebar() {
             <SidebarMenuButton size='lg' asChild>
               <Link href='/dashboard'>
                 <div className='bg-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
-                  <IconPhotoUp className='size-4' />
+                  <Icons.agentPay className='size-4' />
                 </div>
                 <div className='flex flex-col gap-0.5 leading-none'>
                   <span className='font-semibold'>Agent Pay</span>

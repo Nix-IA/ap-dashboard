@@ -42,19 +42,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
-import { OrgSwitcher } from '../org-switcher';
-export const company = {
-  name: 'Acme Inc',
-  logo: IconPhotoUp,
-  plan: 'Enterprise'
-};
-
-const tenants = [
-  { id: '1', name: 'Acme Inc' },
-  { id: '2', name: 'Beta Corp' },
-  { id: '3', name: 'Gamma Ltd' }
-];
-
 export default function AppSidebar() {
   const pathname = usePathname();
   const { isOpen } = useMediaQuery();
@@ -65,12 +52,6 @@ export default function AppSidebar() {
     supabase.auth.getUser().then((result: any) => setUser(result.data.user));
   }, []);
 
-  const handleSwitchTenant = (_tenantId: string) => {
-    // Tenant switching functionality would be implemented here
-  };
-
-  const activeTenant = tenants[0];
-
   React.useEffect(() => {
     // Side effects based on sidebar state changes
   }, [isOpen]);
@@ -78,11 +59,23 @@ export default function AppSidebar() {
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
-        <OrgSwitcher
-          tenants={tenants}
-          defaultTenant={activeTenant}
-          onTenantSwitch={handleSwitchTenant}
-        />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size='lg' asChild>
+              <Link href='/dashboard'>
+                <div className='bg-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
+                  <IconPhotoUp className='size-4' />
+                </div>
+                <div className='flex flex-col gap-0.5 leading-none'>
+                  <span className='font-semibold'>Agent Pay</span>
+                  <span className='text-muted-foreground text-xs'>
+                    Dashboard
+                  </span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup>

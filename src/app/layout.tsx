@@ -16,8 +16,14 @@ const META_THEME_COLORS = {
 };
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Agent Pay - Dashboard',
+  description:
+    'Your intelligent sales agent dashboard - Automate your WhatsApp sales',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg'
+  }
 };
 
 export const viewport: Viewport = {

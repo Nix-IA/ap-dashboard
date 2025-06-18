@@ -51,8 +51,8 @@ export default function UserAuthForm() {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success('Login realizado com sucesso!');
-      // Redirecionar ou atualizar página
+      toast.success('Login successful!');
+      // Redirect to dashboard
       window.location.href = '/dashboard';
     }
   };
@@ -95,7 +95,7 @@ export default function UserAuthForm() {
         <UserSignUpForm />
         <div className='mt-4 flex flex-col gap-2'>
           <Button variant='outline' onClick={() => setShowSignUp(false)}>
-            Already have an account? Login
+            Already have an account? Sign in
           </Button>
         </div>
       </>
@@ -150,7 +150,7 @@ export default function UserAuthForm() {
             className='mt-2 ml-auto w-full'
             type='submit'
           >
-            {loading ? 'Entrando...' : 'Entrar'}
+            {loading ? 'Signing in...' : 'Sign in'}
           </Button>
         </form>
       </Form>
@@ -160,7 +160,7 @@ export default function UserAuthForm() {
         </div>
         <div className='relative flex justify-center text-xs uppercase'>
           <span className='bg-background text-muted-foreground px-2'>
-            Ou continue com
+            Or continue with
           </span>
         </div>
       </div>

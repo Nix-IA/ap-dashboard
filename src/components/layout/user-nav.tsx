@@ -62,7 +62,7 @@ export function UserNav() {
             onClick={async () => {
               const supabase = createSupabaseClient();
               await supabase.auth.signOut();
-              router.push('/login');
+              router.push('/auth/sign-in');
             }}
           >
             Log out

@@ -210,7 +210,7 @@ export default function AppSidebar() {
                   onClick={async () => {
                     const supabase = createSupabaseClient();
                     await supabase.auth.signOut();
-                    router.push('/login');
+                    router.push('/auth/sign-in');
                   }}
                 >
                   <IconLogout className='mr-2 h-4 w-4' />

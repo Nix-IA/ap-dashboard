@@ -55,6 +55,7 @@ export default async function ProductViewPage({
         initialData={{
           productJson,
           webhookKey,
+          status: productData.status,
           id: productId,
           knowledge_base_id: kbData.id
         }}

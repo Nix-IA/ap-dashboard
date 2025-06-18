@@ -9,6 +9,7 @@ export type Product = {
   id: number;
   category: string;
   updated_at: string;
+  status: string;
 };
 
 //Info: The following data is used for the sidebar navigation and Cmd K bar.

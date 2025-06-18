@@ -1,7 +1,13 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -68,10 +74,13 @@ const DEFAULT_PRODUCT: {
 };
 
 // Transforma o schema do endpoint para o shape do formulário DEFAULT_PRODUCT
-export function mapProductSchemaToForm(data: any): typeof DEFAULT_PRODUCT {
+export function mapProductSchemaToForm(
+  data: any,
+  status?: string
+): typeof DEFAULT_PRODUCT {
   if (!data) return { ...DEFAULT_PRODUCT };
   return {
-    status: data.status || 'inactive',
+    status: status || 'inactive', // Use provided status or default to inactive
     name: data.product?.basic_info?.name || '',
     description: data.product?.basic_info?.description || '',
     landing_page: data.product?.basic_info?.landing_page_url || '',
@@ -191,23 +200,47 @@ export default function ProductForm({
       setForm(mapped);
       setInitialForm(DEFAULT_PRODUCT); // <- Corrigido: initialForm é o vazio!
     } else if (initialData) {
-      // Se vier do server, faz o parse/mapping do JSON bruto
+      // status vem do products
+      const status = initialData.status || 'inactive';
       if (initialData.productJson) {
         try {
           const parsed = mapProductSchemaToForm(
-            JSON.parse(initialData.productJson)
+            JSON.parse(initialData.productJson),
+            status // Pass the status from initialData
           );
-          setForm(parsed);
-          setInitialForm(parsed);
+          setForm({ ...parsed, status });
+          setInitialForm({ ...parsed, status });
           if (initialData.webhookKey) setWebhookKey(initialData.webhookKey);
         } catch {
-          setForm(DEFAULT_PRODUCT);
-          setInitialForm(DEFAULT_PRODUCT);
+          setForm({ ...DEFAULT_PRODUCT, status });
+          setInitialForm({ ...DEFAULT_PRODUCT, status });
           setWebhookKey(null);
         }
       } else {
-        setForm((prev) => ({ ...prev, ...initialData }));
-        setInitialForm((prev) => ({ ...prev, ...initialData }));
+        // Normalize payment_methods to always be an array
+        let payment_methods = initialData.payment_methods;
+        if (!Array.isArray(payment_methods)) {
+          if (
+            typeof payment_methods === 'string' &&
+            payment_methods.length > 0
+          ) {
+            payment_methods = [payment_methods];
+          } else {
+            payment_methods = [];
+          }
+        }
+        setForm((prev) => ({
+          ...prev,
+          ...initialData,
+          payment_methods,
+          status
+        }));
+        setInitialForm((prev) => ({
+          ...prev,
+          ...initialData,
+          payment_methods,
+          status
+        }));
         setWebhookKey(initialData.webhookKey || null);
       }
     }
@@ -220,8 +253,20 @@ export default function ProductForm({
       if (sessionData) {
         try {
           const parsed = JSON.parse(sessionData);
-          setForm(parsed);
-          setInitialForm(parsed);
+          // Normalize payment_methods
+          let payment_methods = parsed.payment_methods;
+          if (!Array.isArray(payment_methods)) {
+            if (
+              typeof payment_methods === 'string' &&
+              payment_methods.length > 0
+            ) {
+              payment_methods = [payment_methods];
+            } else {
+              payment_methods = [];
+            }
+          }
+          setForm({ ...parsed, payment_methods });
+          setInitialForm({ ...parsed, payment_methods });
           sessionStorage.removeItem('agentpay_product_edit');
         } catch {}
       }
@@ -437,7 +482,7 @@ export default function ProductForm({
       landing_page_url: form.landing_page,
       checkout_url: form.offers[0]?.url || '',
       price: form.offers[0]?.price || '',
-      status: form.status || 'inactive'
+      status: form.status || 'inactive' // status sempre salvo em products
     };
     // Get user session for seller_id
     const {
@@ -569,8 +614,8 @@ export default function ProductForm({
           faq: form.faq ? JSON.parse(form.faq) : [],
           other_relevant_urls: form.other_relevant_urls
         }
-      },
-      status: form.status || 'inactive'
+      }
+      // Note: status is NOT saved in JSON, only in products table
     };
     setIsSaving(true);
     setSaveError(null);
@@ -582,15 +627,22 @@ export default function ProductForm({
       setSaveSuccess(true);
       // If this is a new product (no initialData.id), fetch webhook_key and show modal
       if (!initialData?.id && product_id) {
+        // Fetch webhook_key and status from products table (do NOT fetch payment_methods)
         const { data, error } = await supabase
           .from('products')
-          .select('webhook_key')
+          .select('webhook_key, status')
           .eq('id', product_id)
           .single();
-        if (!error && data?.webhook_key) {
+        if (!error && data) {
           const url = `https://webhook.agentpay.com.br/webhook/b3b7cd9b-f318-4a40-9265-7ef2a4714734/platform/${data.webhook_key}`;
           setWebhookModalUrl(url);
           setShowWebhookModal(true);
+          // Only update status from DB, keep payment_methods from JSON
+          setForm((prev) => ({ ...prev, status: data.status || 'inactive' }));
+          setInitialForm((prev) => ({
+            ...prev,
+            status: data.status || 'inactive'
+          }));
           return; // Don't redirect yet, wait for modal close
         }
       }
@@ -766,6 +818,17 @@ export default function ProductForm({
     validationErrors.some((err) =>
       err.toLowerCase().includes(field.replace('_', ' '))
     );
+
+  // Before rendering checkboxes for payment_methods, ensure array type
+  let safePaymentMethods: string[] = [];
+  if (Array.isArray(form.payment_methods)) {
+    safePaymentMethods = form.payment_methods as string[];
+  } else if (typeof form.payment_methods === 'string') {
+    const val = String(form.payment_methods);
+    safePaymentMethods = val.length > 0 ? [val] : [];
+  } else {
+    safePaymentMethods = [];
+  }
 
   return (
     <form onSubmit={handleSubmit} className='space-y-6'>
@@ -973,225 +1036,304 @@ export default function ProductForm({
               </div>
             </TabsContent>
             <TabsContent value='sales'>
-              {/* Sales details fields */}
-              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-                <div className='flex flex-col'>
-                  <label
-                    htmlFor='payment_methods'
-                    className='mb-1 block text-sm font-medium'
-                  >
-                    Payment Methods <span className='text-red-500'>*</span>
-                  </label>
-                  <div
-                    className={`flex flex-col ${fieldHasError('payment_methods') ? 'rounded-md border border-red-500 p-2' : ''}`}
-                  >
-                    {PAYMENT_OPTIONS.map((option) => (
-                      <div key={option.value} className='flex items-center'>
-                        <input
-                          id={`payment_method_${option.value}`}
-                          type='checkbox'
-                          value={option.value}
-                          checked={form.payment_methods.includes(option.value)}
-                          onChange={handleChange}
-                          className='text-primary focus:ring-primary h-4 w-4 rounded border-gray-300'
-                        />
-                        <label
-                          htmlFor={`payment_method_${option.value}`}
-                          className='ml-2 block text-sm'
+              {/* Sales details fields with improved card-based layout */}
+              <div className='space-y-6'>
+                {/* Payment Methods Section */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className='text-lg'>Payment Methods</CardTitle>
+                    <CardDescription>
+                      Select the payment methods available for this product
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div
+                      className={`space-y-3 ${fieldHasError('payment_methods') ? 'rounded-md border border-red-500 p-4' : ''}`}
+                    >
+                      {PAYMENT_OPTIONS.map((option) => (
+                        <div
+                          key={option.value}
+                          className='flex items-center space-x-3'
                         >
-                          {option.label}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                  {fieldHasError('payment_methods') && (
-                    <div className='mt-1 text-xs text-red-500'>
-                      At least one Payment Method is required
-                    </div>
-                  )}
-                </div>
-                <div className='flex flex-col'>
-                  <label
-                    htmlFor='offers'
-                    className='mb-1 block text-sm font-medium'
-                  >
-                    Sales Offers <span className='text-red-500'>*</span>
-                  </label>
-                  <div
-                    ref={refs.offers}
-                    className={`flex flex-col gap-4 ${fieldHasError('offers') ? 'rounded-md border border-red-500 p-2' : ''}`}
-                  >
-                    {form.offers.map((offer, idx) => (
-                      <div
-                        key={idx}
-                        className='flex flex-col gap-2 rounded-lg border p-4'
-                      >
-                        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                          <div className='flex flex-col'>
-                            <label
-                              htmlFor={`offer_title_${idx}`}
-                              className='mb-1 block text-sm font-medium'
-                            >
-                              Offer Title
-                            </label>
-                            <Input
-                              id={`offer_title_${idx}`}
-                              name={`offer_title_${idx}`}
-                              value={offer.title}
-                              onChange={(e) =>
-                                handleOfferChange(idx, 'title', e.target.value)
-                              }
-                              required
-                              className='focus:ring-primary focus:ring-2'
-                            />
-                          </div>
-                          <div className='flex flex-col'>
-                            <label
-                              htmlFor={`offer_price_${idx}`}
-                              className='mb-1 block text-sm font-medium'
-                            >
-                              Price
-                            </label>
-                            <Input
-                              id={`offer_price_${idx}`}
-                              name={`offer_price_${idx}`}
-                              value={offer.price}
-                              onChange={(e) =>
-                                handleOfferChange(idx, 'price', e.target.value)
-                              }
-                              required
-                              className='focus:ring-primary focus:ring-2'
-                            />
-                          </div>
-                        </div>
-                        <div className='mt-2 flex flex-col'>
-                          <label
-                            htmlFor={`offer_url_${idx}`}
-                            className='mb-1 block text-sm font-medium'
-                          >
-                            Payment Page URL
-                          </label>
-                          <Input
-                            id={`offer_url_${idx}`}
-                            name={`offer_url_${idx}`}
-                            value={offer.url}
-                            onChange={(e) =>
-                              handleOfferChange(idx, 'url', e.target.value)
-                            }
-                            required
-                            className='focus:ring-primary focus:ring-2'
+                          <input
+                            id={`payment_method_${option.value}`}
+                            type='checkbox'
+                            value={option.value}
+                            checked={safePaymentMethods.includes(option.value)}
+                            onChange={handleChange}
+                            className='text-primary focus:ring-primary h-4 w-4 rounded border-gray-300'
                           />
-                        </div>
-                        <div className='flex justify-end gap-2'>
-                          <Button
-                            variant='outline'
-                            onClick={() => removeOffer(idx)}
-                            className='text-sm'
+                          <label
+                            htmlFor={`payment_method_${option.value}`}
+                            className='text-sm font-medium'
                           >
-                            Remove Offer
-                          </Button>
+                            {option.label}
+                          </label>
                         </div>
-                      </div>
-                    ))}
-                    <Button type='button' onClick={addOffer} className='mt-2'>
-                      Add Offer
-                    </Button>
-                  </div>
-                  {fieldHasError('offers') && (
-                    <div className='mt-1 text-xs text-red-500'>
-                      At least one Offer is required
+                      ))}
                     </div>
-                  )}
-                </div>
-                <div className='col-span-2'>
-                  <label
-                    htmlFor='coupons'
-                    className='mb-1 block text-sm font-medium'
-                  >
-                    Discount Coupons
-                  </label>
-                  <div
-                    ref={refs.coupons}
-                    className='flex flex-col gap-4 md:flex-row md:gap-6'
-                  >
-                    {form.coupons.map((coupon, idx) => (
-                      <div
-                        key={idx}
-                        className='flex w-full flex-col gap-2 rounded-lg border p-4 md:w-1/2'
-                      >
-                        <div className='grid grid-cols-1 gap-4'>
-                          <div className='flex flex-col'>
-                            <label
-                              htmlFor={`coupon_title_${idx}`}
-                              className='mb-1 block text-sm font-medium'
-                            >
-                              Coupon Title
-                            </label>
-                            <Input
-                              id={`coupon_title_${idx}`}
-                              name={`coupon_title_${idx}`}
-                              value={coupon.title}
-                              onChange={(e) =>
-                                handleCouponChange(idx, 'title', e.target.value)
-                              }
-                              className='focus:ring-primary focus:ring-2'
-                            />
-                          </div>
-                          <div className='flex flex-col'>
-                            <label
-                              htmlFor={`coupon_discount_${idx}`}
-                              className='mb-1 block text-sm font-medium'
-                            >
-                              Discount Value
-                            </label>
-                            <Input
-                              id={`coupon_discount_${idx}`}
-                              name={`coupon_discount_${idx}`}
-                              value={coupon.discount}
-                              onChange={(e) =>
-                                handleCouponChange(
-                                  idx,
-                                  'discount',
-                                  e.target.value
-                                )
-                              }
-                              className='focus:ring-primary focus:ring-2'
-                            />
-                          </div>
-                          <div className='flex flex-col'>
-                            <label
-                              htmlFor={`coupon_code_${idx}`}
-                              className='mb-1 block text-sm font-medium'
-                            >
-                              Coupon Code
-                            </label>
-                            <Input
-                              id={`coupon_code_${idx}`}
-                              name={`coupon_code_${idx}`}
-                              value={coupon.code}
-                              onChange={(e) =>
-                                handleCouponChange(idx, 'code', e.target.value)
-                              }
-                              className='focus:ring-primary focus:ring-2'
-                            />
-                          </div>
-                        </div>
-                        <div className='flex justify-end gap-2'>
-                          <Button
-                            variant='outline'
-                            onClick={() => removeCoupon(idx)}
-                            className='text-sm'
-                          >
-                            Remove Coupon
-                          </Button>
-                        </div>
+                    {fieldHasError('payment_methods') && (
+                      <div className='mt-3 text-xs text-red-500'>
+                        At least one Payment Method is required
                       </div>
-                    ))}
-                    <Button type='button' onClick={addCoupon} className='mt-2'>
-                      Add Coupon
-                    </Button>
-                  </div>
-                </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Sales Offers Section */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className='text-lg'>Sales Offers</CardTitle>
+                    <CardDescription>
+                      Configure pricing plans and sales offers for this product
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div
+                      ref={refs.offers}
+                      className={`space-y-4 ${fieldHasError('offers') ? 'rounded-md border border-red-500 p-4' : ''}`}
+                    >
+                      {form.offers.map((offer, idx) => (
+                        <Card key={idx} className='bg-muted/30 border'>
+                          <CardHeader className='pb-4'>
+                            <CardTitle className='text-base'>
+                              Offer {idx + 1}
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className='space-y-4'>
+                            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                              <div className='space-y-2'>
+                                <label
+                                  htmlFor={`offer_title_${idx}`}
+                                  className='text-sm font-medium'
+                                >
+                                  Title
+                                </label>
+                                <Input
+                                  id={`offer_title_${idx}`}
+                                  name={`offer_title_${idx}`}
+                                  value={offer.title}
+                                  onChange={(e) =>
+                                    handleOfferChange(
+                                      idx,
+                                      'title',
+                                      e.target.value
+                                    )
+                                  }
+                                  required
+                                  className='focus:ring-primary focus:ring-2'
+                                  placeholder='e.g., Basic Plan'
+                                />
+                              </div>
+                              <div className='space-y-2'>
+                                <label
+                                  htmlFor={`offer_price_${idx}`}
+                                  className='text-sm font-medium'
+                                >
+                                  Price
+                                </label>
+                                <Input
+                                  id={`offer_price_${idx}`}
+                                  name={`offer_price_${idx}`}
+                                  value={offer.price}
+                                  onChange={(e) =>
+                                    handleOfferChange(
+                                      idx,
+                                      'price',
+                                      e.target.value
+                                    )
+                                  }
+                                  required
+                                  className='focus:ring-primary focus:ring-2'
+                                  placeholder='e.g., $99.00'
+                                />
+                              </div>
+                            </div>
+                            <div className='space-y-2'>
+                              <label
+                                htmlFor={`offer_description_${idx}`}
+                                className='text-sm font-medium'
+                              >
+                                Description
+                              </label>
+                              <Textarea
+                                id={`offer_description_${idx}`}
+                                name={`offer_description_${idx}`}
+                                value={offer.description}
+                                onChange={(e) =>
+                                  handleOfferChange(
+                                    idx,
+                                    'description',
+                                    e.target.value
+                                  )
+                                }
+                                className='focus:ring-primary focus:ring-2'
+                                placeholder='e.g., Complete course with 50+ lessons and bonus materials'
+                                rows={3}
+                              />
+                            </div>
+                            <div className='space-y-2'>
+                              <label
+                                htmlFor={`offer_url_${idx}`}
+                                className='text-sm font-medium'
+                              >
+                                Payment Page URL
+                              </label>
+                              <Input
+                                id={`offer_url_${idx}`}
+                                name={`offer_url_${idx}`}
+                                value={offer.url}
+                                onChange={(e) =>
+                                  handleOfferChange(idx, 'url', e.target.value)
+                                }
+                                required
+                                className='focus:ring-primary focus:ring-2'
+                                placeholder='https://checkout.example.com/offer-1'
+                              />
+                            </div>
+                            <div className='flex justify-end pt-2'>
+                              <Button
+                                variant='outline'
+                                size='sm'
+                                onClick={() => removeOffer(idx)}
+                                className='text-destructive hover:text-destructive'
+                              >
+                                Remove Offer
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                      <Button
+                        type='button'
+                        onClick={addOffer}
+                        variant='outline'
+                        className='w-full'
+                      >
+                        + Add New Offer
+                      </Button>
+                    </div>
+                    {fieldHasError('offers') && (
+                      <div className='mt-3 text-xs text-red-500'>
+                        At least one Offer is required
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Discount Coupons Section */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className='text-lg'>Discount Coupons</CardTitle>
+                    <CardDescription>
+                      Create discount coupons to boost sales and customer
+                      acquisition
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div ref={refs.coupons} className='space-y-4'>
+                      {form.coupons.length > 0 && (
+                        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                          {form.coupons.map((coupon, idx) => (
+                            <Card key={idx} className='bg-muted/30 border'>
+                              <CardHeader className='pb-4'>
+                                <CardTitle className='text-base'>
+                                  Coupon {idx + 1}
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent className='space-y-4'>
+                                <div className='space-y-2'>
+                                  <label
+                                    htmlFor={`coupon_title_${idx}`}
+                                    className='text-sm font-medium'
+                                  >
+                                    Title
+                                  </label>
+                                  <Input
+                                    id={`coupon_title_${idx}`}
+                                    name={`coupon_title_${idx}`}
+                                    value={coupon.title}
+                                    onChange={(e) =>
+                                      handleCouponChange(
+                                        idx,
+                                        'title',
+                                        e.target.value
+                                      )
+                                    }
+                                    className='focus:ring-primary focus:ring-2'
+                                    placeholder='e.g., Early Bird Special'
+                                  />
+                                </div>
+                                <div className='space-y-2'>
+                                  <label
+                                    htmlFor={`coupon_discount_${idx}`}
+                                    className='text-sm font-medium'
+                                  >
+                                    Discount Value
+                                  </label>
+                                  <Input
+                                    id={`coupon_discount_${idx}`}
+                                    name={`coupon_discount_${idx}`}
+                                    value={coupon.discount}
+                                    onChange={(e) =>
+                                      handleCouponChange(
+                                        idx,
+                                        'discount',
+                                        e.target.value
+                                      )
+                                    }
+                                    className='focus:ring-primary focus:ring-2'
+                                    placeholder='e.g., 20% or $50'
+                                  />
+                                </div>
+                                <div className='space-y-2'>
+                                  <label
+                                    htmlFor={`coupon_code_${idx}`}
+                                    className='text-sm font-medium'
+                                  >
+                                    Coupon Code
+                                  </label>
+                                  <Input
+                                    id={`coupon_code_${idx}`}
+                                    name={`coupon_code_${idx}`}
+                                    value={coupon.code}
+                                    onChange={(e) =>
+                                      handleCouponChange(
+                                        idx,
+                                        'code',
+                                        e.target.value
+                                      )
+                                    }
+                                    className='focus:ring-primary focus:ring-2'
+                                    placeholder='e.g., SAVE20'
+                                  />
+                                </div>
+                                <div className='flex justify-end pt-2'>
+                                  <Button
+                                    variant='outline'
+                                    size='sm'
+                                    onClick={() => removeCoupon(idx)}
+                                    className='text-destructive hover:text-destructive'
+                                  >
+                                    Remove Coupon
+                                  </Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      )}
+                      <Button
+                        type='button'
+                        onClick={addCoupon}
+                        variant='outline'
+                        className='w-full'
+                      >
+                        + Add New Coupon
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </TabsContent>
             <TabsContent value='integrations'>

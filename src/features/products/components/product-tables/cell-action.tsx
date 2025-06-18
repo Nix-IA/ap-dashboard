@@ -45,7 +45,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     }
     let initialData = null;
     try {
-      initialData = mapProductSchemaToForm(JSON.parse(kbData.content));
+      initialData = mapProductSchemaToForm(
+        JSON.parse(kbData.content),
+        data.status
+      );
     } catch (e) {
       initialData = null;
     }

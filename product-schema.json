@@ -139,21 +139,8 @@
                             }
                         },
                         "faq": {
-                            "type": "array",
+                            "type": "string",
                             "description": "Perguntas frequentes com respostas. Preencher SOMENTE se estiver claramente estruturado como FAQ. Deve estar dentro de sales_info.sales_support.",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "question": {
-                                        "type": "string",
-                                        "description": "Texto da pergunta."
-                                    },
-                                    "answer": {
-                                        "type": "string",
-                                        "description": "Texto da resposta."
-                                    }
-                                }
-                            }
                         },
                         "other_relevant_urls": {
                             "type": "array",

@@ -38,6 +38,7 @@ const DEFAULT_PRODUCT: {
   name: string;
   description: string;
   landing_page: string;
+  image_url: string;
   objective: string;
   benefits: string;
   target_audience: string;
@@ -59,6 +60,7 @@ const DEFAULT_PRODUCT: {
   name: '',
   description: '',
   landing_page: '',
+  image_url: '',
   objective: '',
   benefits: '',
   target_audience: '',
@@ -84,6 +86,7 @@ export function mapProductSchemaToForm(
     name: data.product?.basic_info?.name || '',
     description: data.product?.basic_info?.description || '',
     landing_page: data.product?.basic_info?.landing_page_url || '',
+    image_url: data.product?.basic_info?.image_url || '',
     objective: data.product?.product_details?.goal || '',
     benefits: data.product?.product_details?.main_benefits || '',
     target_audience: data.product?.product_details?.target_audience || '',
@@ -92,11 +95,10 @@ export function mapProductSchemaToForm(
       data.sales_info?.sales_support?.payment_methods?.map((m: string) =>
         m.toLowerCase()
       ) || [],
-    faq: Array.isArray(data.sales_info?.sales_support?.faq)
-      ? data.sales_info.sales_support.faq
-          .map((f: any) => `${f.question}\n${f.answer}`)
-          .join('\n\n')
-      : '',
+    faq:
+      typeof data.sales_info?.sales_support?.faq === 'string'
+        ? data.sales_info.sales_support.faq
+        : '',
     offers: Array.isArray(data.sales_info?.sales_offers?.offers)
       ? data.sales_info.sales_offers.offers.map((o: any) => ({
           title: o.title || '',
@@ -165,6 +167,7 @@ export default function ProductForm({
   const refs = {
     name: useRef<HTMLInputElement>(null),
     landing_page: useRef<HTMLInputElement>(null),
+    image_url: useRef<HTMLInputElement>(null),
     description: descriptionRef,
     objective: useRef<HTMLTextAreaElement>(null),
     benefits: useRef<HTMLTextAreaElement>(null),
@@ -174,6 +177,8 @@ export default function ProductForm({
     offers: useRef<HTMLDivElement>(null),
     platform: useRef<HTMLSelectElement>(null),
     delivery_information: useRef<HTMLTextAreaElement>(null),
+    faq: useRef<HTMLTextAreaElement>(null),
+    other_relevant_urls: useRef<HTMLDivElement>(null),
     coupons: useRef<HTMLDivElement>(null)
   };
 
@@ -371,6 +376,32 @@ export default function ProductForm({
       coupons: prev.coupons.filter((_, i) => i !== idx)
     }));
 
+  // Other Relevant URLs
+  const handleOtherUrlChange = (
+    idx: number,
+    field: keyof (typeof DEFAULT_PRODUCT)['other_relevant_urls'][0],
+    value: string
+  ) => {
+    setForm((prev) => {
+      const urls = [...prev.other_relevant_urls];
+      urls[idx] = { ...urls[idx], [field]: value };
+      return { ...prev, other_relevant_urls: urls };
+    });
+  };
+  const addOtherUrl = () =>
+    setForm((prev) => ({
+      ...prev,
+      other_relevant_urls: [
+        ...prev.other_relevant_urls,
+        { page_title: '', description: '', url: '' }
+      ]
+    }));
+  const removeOtherUrl = (idx: number) =>
+    setForm((prev) => ({
+      ...prev,
+      other_relevant_urls: prev.other_relevant_urls.filter((_, i) => i !== idx)
+    }));
+
   // Description field: update state only on blur and submit
   const handleDescriptionBlur = () => {
     if (descriptionRef.current) {
@@ -452,6 +483,26 @@ export default function ProductForm({
       );
     }
     if (!form.platform) errors.push('Platform');
+
+    // Validate other_relevant_urls - if any field is filled, page_title and url are required
+    form.other_relevant_urls.forEach((urlObj, idx) => {
+      const anyFieldFilled = !!(
+        urlObj.page_title?.trim() ||
+        urlObj.url?.trim() ||
+        urlObj.description?.trim()
+      );
+      if (anyFieldFilled) {
+        if (!urlObj.page_title?.trim()) {
+          errors.push(`Other URL ${idx + 1}: Page title is required`);
+        }
+        if (!urlObj.url?.trim()) {
+          errors.push(`Other URL ${idx + 1}: URL is required`);
+        } else if (!isValidUrl(urlObj.url)) {
+          errors.push(`Other URL ${idx + 1}: Must be a valid URL`);
+        }
+      }
+    });
+
     return errors;
   }
 
@@ -558,7 +609,7 @@ export default function ProductForm({
           name: form.name,
           description: form.description,
           landing_page_url: form.landing_page,
-          image_url: ''
+          image_url: form.image_url
         },
         product_details: {
           goal: form.objective,
@@ -592,7 +643,7 @@ export default function ProductForm({
             if (m === 'billet') return 'BILLET';
             return m;
           }),
-          faq: form.faq ? JSON.parse(form.faq) : [],
+          faq: form.faq || '',
           other_relevant_urls: form.other_relevant_urls
         }
       }
@@ -860,6 +911,25 @@ export default function ProductForm({
                 </div>
                 <div className='flex flex-col'>
                   <label
+                    htmlFor='image_url'
+                    className='mb-1 block text-sm font-medium'
+                  >
+                    Product Image URL
+                  </label>
+                  <Input
+                    id='image_url'
+                    name='image_url'
+                    value={form.image_url}
+                    onChange={handleChange}
+                    ref={refs.image_url}
+                    className='focus:ring-primary focus:ring-2'
+                    placeholder='https://example.com/product-image.jpg'
+                  />
+                </div>
+              </div>
+              <div className='mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
+                <div className='flex flex-col'>
+                  <label
                     htmlFor='objective'
                     className='mb-1 block text-sm font-medium'
                   >
@@ -961,6 +1031,133 @@ export default function ProductForm({
                   {fieldHasError('delivery_information') && (
                     <span className='text-xs text-red-500'>Required</span>
                   )}
+                </div>
+              </div>
+
+              {/* FAQ Section */}
+              <div className='mt-6 flex flex-col'>
+                <label htmlFor='faq' className='mb-1 block text-sm font-medium'>
+                  FAQ (Frequently Asked Questions)
+                </label>
+                <Textarea
+                  id='faq'
+                  name='faq'
+                  value={form.faq}
+                  onChange={handleChange}
+                  ref={refs.faq}
+                  className='focus:ring-primary focus:ring-2'
+                  placeholder='Enter FAQ content here (optional)'
+                  rows={4}
+                />
+              </div>
+
+              {/* Other Relevant URLs Section */}
+              <div className='mt-6'>
+                <div className='mb-4'>
+                  <label className='block text-sm font-medium'>
+                    Other Relevant URLs
+                  </label>
+                  <p className='text-muted-foreground mt-1 text-xs'>
+                    Add links to bonus content, support pages, terms, etc.
+                    (optional)
+                  </p>
+                </div>
+                <div ref={refs.other_relevant_urls} className='space-y-4'>
+                  {form.other_relevant_urls.map((urlObj, idx) => (
+                    <Card key={idx} className='bg-muted/30 border'>
+                      <CardHeader className='pb-4'>
+                        <CardTitle className='text-base'>
+                          URL {idx + 1}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className='space-y-4'>
+                        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                          <div className='space-y-2'>
+                            <label
+                              htmlFor={`url_title_${idx}`}
+                              className='text-sm font-medium'
+                            >
+                              Page Title <span className='text-red-500'>*</span>
+                            </label>
+                            <Input
+                              id={`url_title_${idx}`}
+                              name={`url_title_${idx}`}
+                              value={urlObj.page_title}
+                              onChange={(e) =>
+                                handleOtherUrlChange(
+                                  idx,
+                                  'page_title',
+                                  e.target.value
+                                )
+                              }
+                              className='focus:ring-primary focus:ring-2'
+                              placeholder='e.g., Bonus Materials'
+                            />
+                          </div>
+                          <div className='space-y-2'>
+                            <label
+                              htmlFor={`url_link_${idx}`}
+                              className='text-sm font-medium'
+                            >
+                              URL <span className='text-red-500'>*</span>
+                            </label>
+                            <Input
+                              id={`url_link_${idx}`}
+                              name={`url_link_${idx}`}
+                              value={urlObj.url}
+                              onChange={(e) =>
+                                handleOtherUrlChange(idx, 'url', e.target.value)
+                              }
+                              className='focus:ring-primary focus:ring-2'
+                              placeholder='https://example.com/bonus'
+                            />
+                          </div>
+                        </div>
+                        <div className='space-y-2'>
+                          <label
+                            htmlFor={`url_description_${idx}`}
+                            className='text-sm font-medium'
+                          >
+                            Description
+                          </label>
+                          <Textarea
+                            id={`url_description_${idx}`}
+                            name={`url_description_${idx}`}
+                            value={urlObj.description}
+                            onChange={(e) =>
+                              handleOtherUrlChange(
+                                idx,
+                                'description',
+                                e.target.value
+                              )
+                            }
+                            className='focus:ring-primary focus:ring-2'
+                            placeholder='Brief description of this URL (optional)'
+                            rows={2}
+                          />
+                        </div>
+                        <div className='flex justify-end pt-2'>
+                          <Button
+                            type='button'
+                            variant='outline'
+                            size='sm'
+                            onClick={() => removeOtherUrl(idx)}
+                            className='text-destructive hover:text-destructive'
+                          >
+                            Remove URL
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                  <Button
+                    type='button'
+                    onClick={addOtherUrl}
+                    variant='outline'
+                    className='w-full'
+                  >
+                    + Add New URL
+                  </Button>
                 </div>
               </div>
             </TabsContent>

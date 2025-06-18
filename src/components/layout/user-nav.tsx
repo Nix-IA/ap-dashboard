@@ -10,9 +10,9 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { UserAvatarProfile } from '@/components/user-avatar-profile';
-import { useEffect, useState } from 'react';
 import { createSupabaseClient } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export function UserNav() {
   const [user, setUser] = useState<any>(null);
@@ -56,9 +56,6 @@ export function UserNav() {
             <DropdownMenuItem onClick={() => router.push('/dashboard/profile')}>
               Profile
             </DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>New Team</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -68,7 +65,7 @@ export function UserNav() {
               router.push('/login');
             }}
           >
-            Sair
+            Log out
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

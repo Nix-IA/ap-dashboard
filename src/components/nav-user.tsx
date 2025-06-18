@@ -1,13 +1,15 @@
 'use client';
 
 import {
-  IconCircleCheck,
   IconBell,
   IconChevronsDown,
+  IconCircleCheck,
   IconCreditCard,
   IconLogout,
-  IconSparkles
+  IconSparkles,
+  IconUser
 } from '@tabler/icons-react';
+import Link from 'next/link';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -84,6 +86,12 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link href='/dashboard/profile'>
+                  <IconUser className='mr-2 h-4 w-4' />
+                  Profile
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconCircleCheck className='mr-2 h-4 w-4' />
                 Account

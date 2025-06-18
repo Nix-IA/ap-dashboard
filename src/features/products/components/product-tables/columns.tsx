@@ -90,6 +90,4 @@ export const columns: ColumnDef<any>[] = [
   }
 ];
 
-// Filter out rows with status 'removed' before passing to the table
-export const filterProductRows = (rows: any[]) =>
-  rows.filter((row) => String(row.status).toLowerCase() !== 'removed');
+// Note: Products with status 'removed' are filtered at database level in the query

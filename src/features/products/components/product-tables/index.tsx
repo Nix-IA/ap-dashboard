@@ -17,6 +17,15 @@ export function ProductTable<TData extends { id?: string | number }, TValue>({
   pageSize = 10,
   onPageChange
 }: ProductTableParams<TData, TValue>) {
+  // Debug logging for table rendering
+  console.log('ProductTable rendering:', {
+    dataLength: data.length,
+    totalItems,
+    page,
+    pageSize,
+    dataIds: data.map((item) => (item as any).id || 'no-id').slice(0, 5) // First 5 IDs
+  });
+
   // Helper to get value from row for a column
   const getValue = (row: TData, col: ColumnDef<TData, TValue>) => {
     // @ts-ignore

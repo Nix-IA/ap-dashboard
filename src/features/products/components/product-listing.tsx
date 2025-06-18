@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { ProductOnboardingDialog } from './product-onboarding-dialog';
 import { ProductTable } from './product-tables';
-import { columns, filterProductRows } from './product-tables/columns';
+import { columns } from './product-tables/columns';
 
 const PAGE_SIZE = 10;
 
@@ -23,20 +23,24 @@ export default function ProductListingPage() {
 
   const fetchProducts = useCallback(
     async (page: number, search: string, status: string) => {
+      console.log('fetchProducts called with:', { page, search, status });
       setLoading(true);
       const {
         data: { session }
       } = await supabase.auth.getSession();
       if (!session?.user?.id) {
+        console.log('No session found, returning empty results');
         setProducts([]);
         setTotalProducts(0);
         setLoading(false);
         return;
       }
+      console.log('Session found, user ID:', session.user.id);
       let query = supabase
         .from('products')
         .select('*', { count: 'exact' })
-        .eq('seller_id', session.user.id);
+        .eq('seller_id', session.user.id)
+        .neq('status', 'removed'); // Filter out removed products at database level
       if (search) {
         query = query.ilike('name', `%${search}%`);
       }
@@ -45,10 +49,33 @@ export default function ProductListingPage() {
       }
       query = query.range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
       const { data, error, count } = await query;
+
+      // Debug logging to understand pagination issue
+      console.log('Pagination Debug:', {
+        page,
+        PAGE_SIZE,
+        rangeStart: (page - 1) * PAGE_SIZE,
+        rangeEnd: page * PAGE_SIZE - 1,
+        dataLength: data?.length || 0,
+        totalCount: count || 0,
+        status,
+        search
+      });
+
       if (error) {
+        console.error('Query error:', error);
         setProducts([]);
         setTotalProducts(0);
       } else {
+        console.log('Query successful:', {
+          dataReceived: data?.length || 0,
+          totalCount: count || 0,
+          actualData: data?.map((p) => ({
+            id: p.id,
+            name: p.name,
+            status: p.status
+          }))
+        });
         setProducts(data || []);
         setTotalProducts(count || 0);
       }
@@ -63,9 +90,9 @@ export default function ProductListingPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, search, status]);
 
-  // Always filter out removed products and update total accordingly
-  const filteredProducts = filterProductRows(products);
-  const filteredTotal = filteredProducts.length;
+  // No need to filter products on client side since we filter at database level
+  const filteredProducts = products;
+  const filteredTotal = totalProducts;
 
   if (loading)
     return (
@@ -173,13 +200,13 @@ export default function ProductListingPage() {
 
       <ProductTable
         data={filteredProducts}
-        totalItems={filteredTotal}
+        totalItems={totalProducts}
         columns={columns}
         page={page}
         pageSize={PAGE_SIZE}
         onPageChange={setPage}
       />
-      {Math.ceil(filteredTotal / PAGE_SIZE) > 1 && (
+      {Math.ceil(totalProducts / PAGE_SIZE) > 1 && (
         <div className='mt-4 flex justify-center gap-2'>
           <button
             onClick={() => setPage(page - 1)}
@@ -189,11 +216,11 @@ export default function ProductListingPage() {
             Previous
           </button>
           <span>
-            Page {page} of {Math.max(1, Math.ceil(filteredTotal / PAGE_SIZE))}
+            Page {page} of {Math.max(1, Math.ceil(totalProducts / PAGE_SIZE))}
           </span>
           <button
             onClick={() => setPage(page + 1)}
-            disabled={page * PAGE_SIZE >= filteredTotal}
+            disabled={page * PAGE_SIZE >= totalProducts}
             className='rounded border px-3 py-1 disabled:opacity-50'
           >
             Next

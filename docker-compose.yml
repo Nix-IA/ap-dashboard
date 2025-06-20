@@ -1,9 +1,13 @@
 version: '3.8'
+
 services:
   app:
     image: ${FRONTEND_IMAGE:-785874436221.dkr.ecr.us-east-1.amazonaws.com/ap-platform-frontend}:${FRONTEND_TAG:-latest}
     container_name: ap-dashboard-frontend
     restart: unless-stopped
+    networks:
+      - agent_network
+      - traefik_public
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
@@ -11,4 +15,27 @@ services:
       - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
-    # Set additional environment variables in Portainer UI
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.frontend.rule=Host(`app.agentpay.com.br`)
+        - traefik.http.routers.frontend.entrypoints=websecure
+        - traefik.http.routers.frontend.tls=true
+        - traefik.http.routers.frontend.tls.certresolver=le
+        - traefik.http.routers.frontend.service=frontend
+        - traefik.http.services.frontend.loadbalancer.server.port=3000
+
+networks:
+  agent_network:
+    external: true
+  traefik_public:
+    external: true

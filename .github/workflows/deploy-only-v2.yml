@@ -1,0 +1,160 @@
+name: Deploy Only to Portainer V2
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker image tag to deploy'
+        required: false
+        default: 'latest'
+        type: string
+      force_pull:
+        description: 'Force pull latest image'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    environment: production
+    
+    env:
+      AWS_REGION: us-east-1
+      ECR_REPOSITORY: ap-platform-frontend
+      
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Check if Docker image exists in ECR
+        run: |
+          echo "🔍 Verificando se a imagem existe no ECR..."
+          ECR_REGISTRY=$(aws sts get-caller-identity --query Account --output text).dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          IMAGE_URI="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ inputs.image_tag }}"
+          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+          
+          # Check if image exists
+          aws ecr describe-images \
+            --repository-name ${{ env.ECR_REPOSITORY }} \
+            --image-ids imageTag=${{ inputs.image_tag }} \
+            --region ${{ env.AWS_REGION }} \
+            --output table
+          
+          if [ $? -eq 0 ]; then
+            echo "✅ Imagem encontrada: $IMAGE_URI"
+          else
+            echo "❌ Imagem não encontrada no ECR!"
+            echo "Available images:"
+            aws ecr describe-images --repository-name ${{ env.ECR_REPOSITORY }} --region ${{ env.AWS_REGION }} --query 'imageDetails[*].imageTags' --output table
+            exit 1
+          fi
+
+      - name: Restart Portainer Stack (Pull Latest)
+        run: |
+          echo "🚀 Reiniciando stack do Portainer..."
+          echo "Image URI: ${{ env.IMAGE_URI }}"
+          
+          # Test connectivity first
+          echo "🔍 Testando conectividade..."
+          STACK_INFO=$(curl -s -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+            "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}")
+          
+          if [[ $? -ne 0 ]] || [[ -z "$STACK_INFO" ]]; then
+            echo "❌ Erro de conectividade com Portainer"
+            exit 1
+          fi
+          
+          echo "✅ Stack encontrado"
+          
+          # Try to restart the stack services to pull latest images
+          echo "🔄 Tentando reiniciar serviços do stack..."
+          
+          # Get stack services
+          SERVICES=$(curl -s -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+            "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/services")
+          
+          if [[ $? -eq 0 ]] && [[ "$SERVICES" != "null" ]]; then
+            echo "📋 Serviços encontrados no stack"
+            
+            # Force service update to pull latest image
+            # This is a more reliable method than git redeploy
+            RESPONSE=$(curl -s -w "%{http_code}" -X POST \
+              "${{ secrets.PORTAINER_URL }}/api/endpoints/1/docker/services/update" \
+              -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "Name": "ap-dashboard-frontend",
+                "Labels": {},
+                "TaskTemplate": {
+                  "ForceUpdate": 1
+                }
+              }')
+              
+            HTTP_CODE="${RESPONSE: -3}"
+            RESPONSE_BODY="${RESPONSE%???}"
+            
+            echo "HTTP Status Code: $HTTP_CODE"
+            echo "Response: $RESPONSE_BODY"
+            
+            if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
+              echo "✅ Força atualização dos serviços realizada com sucesso!"
+            else
+              echo "⚠️  Força atualização falhou, tentando método alternativo..."
+              
+              # Alternative: Stop and start the stack
+              echo "🛑 Parando stack..."
+              curl -s -X POST "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/stop" \
+                -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}"
+              
+              echo "⏳ Aguardando 10 segundos..."
+              sleep 10
+              
+              echo "▶️  Iniciando stack..."
+              RESPONSE=$(curl -s -w "%{http_code}" -X POST \
+                "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/start" \
+                -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}")
+              
+              HTTP_CODE="${RESPONSE: -3}"
+              RESPONSE_BODY="${RESPONSE%???}"
+              
+              if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
+                echo "✅ Stack reiniciado com sucesso!"
+              else
+                echo "❌ Falha ao reiniciar stack"
+                echo "Response: $RESPONSE_BODY"
+                exit 1
+              fi
+            fi
+          else
+            echo "❌ Não foi possível obter serviços do stack"
+            exit 1
+          fi
+
+      - name: Verify deployment
+        run: |
+          echo "🔍 Verificando deploy..."
+          echo "⏳ Aguardando containers reiniciarem (30s)..."
+          sleep 30
+          
+          # Basic health check if URL is available
+          if [[ -n "${{ secrets.FRONTEND_DOMAIN }}" ]]; then
+            echo "🌐 Testando acesso ao frontend..."
+            for i in {1..5}; do
+              if curl -f -s "https://${{ secrets.FRONTEND_DOMAIN }}" > /dev/null; then
+                echo "✅ Frontend acessível!"
+                break
+              else
+                echo "⏳ Tentativa $i/5 - aguardando..."
+                sleep 10
+              fi
+            done
+          fi
+          
+          echo "🎉 Deploy concluído!"
+          echo "🌐 URL: https://${{ secrets.FRONTEND_DOMAIN }}"

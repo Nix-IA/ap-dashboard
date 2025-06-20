@@ -1,0 +1,151 @@
+name: Deploy Only to Portainer
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Image tag to deploy (default: latest)'
+        required: false
+        default: 'latest'
+        type: string
+      force_pull:
+        description: 'Force pull new image from ECR'
+        required: false
+        default: true
+        type: boolean
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: ap-platform-frontend
+
+jobs:
+  deploy:
+    name: Deploy to Portainer
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Verify ECR image exists
+        run: |
+          ECR_REGISTRY=$(aws sts get-caller-identity --query Account --output text).dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          IMAGE_TAG="${{ inputs.image_tag }}"
+          
+          echo "🔍 Verificando se a imagem existe no ECR..."
+          echo "Registry: $ECR_REGISTRY"
+          echo "Repository: ${{ env.ECR_REPOSITORY }}"
+          echo "Tag: $IMAGE_TAG"
+          
+          # Check if image exists
+          if aws ecr describe-images --repository-name ${{ env.ECR_REPOSITORY }} --image-ids imageTag=$IMAGE_TAG --region ${{ env.AWS_REGION }} > /dev/null 2>&1; then
+            echo "✅ Imagem encontrada no ECR!"
+            echo "IMAGE_URI=$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG" >> $GITHUB_ENV
+          else
+            echo "❌ Imagem não encontrada no ECR!"
+            echo "Available images:"
+            aws ecr describe-images --repository-name ${{ env.ECR_REPOSITORY }} --region ${{ env.AWS_REGION }} --query 'imageDetails[*].imageTags' --output table
+            exit 1
+          fi
+
+      - name: Deploy to Portainer
+        run: |
+          echo "🚀 Iniciando deploy no Portainer..."
+          echo "Image URI: ${{ env.IMAGE_URI }}"
+          
+          # Get ECR registry URL
+          ECR_REGISTRY=$(aws sts get-caller-identity --query Account --output text).dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          IMAGE_TAG="${{ inputs.image_tag }}"
+          
+          # Update Portainer stack
+          RESPONSE=$(curl -s -w "%{http_code}" -X POST "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/git/redeploy" \
+            -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "env": [
+                {
+                  "name": "FRONTEND_IMAGE",
+                  "value": "'$ECR_REGISTRY'/${{ env.ECR_REPOSITORY }}"
+                },
+                {
+                  "name": "FRONTEND_TAG", 
+                  "value": "'$IMAGE_TAG'"
+                },
+                {
+                  "name": "NEXT_PUBLIC_SUPABASE_URL",
+                  "value": "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}"
+                },
+                {
+                  "name": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+                  "value": "${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}"
+                },
+                {
+                  "name": "NEXT_PUBLIC_APP_URL",
+                  "value": "${{ secrets.NEXT_PUBLIC_APP_URL }}"
+                },
+                {
+                  "name": "FRONTEND_DOMAIN",
+                  "value": "${{ secrets.FRONTEND_DOMAIN }}"
+                },
+                {
+                  "name": "FRONTEND_PORT",
+                  "value": "3000"
+                }
+              ],
+              "prune": true,
+              "pullImage": ${{ inputs.force_pull }}
+            }')
+          
+          HTTP_CODE="${RESPONSE: -3}"
+          RESPONSE_BODY="${RESPONSE%???}"
+          
+          echo "HTTP Status Code: $HTTP_CODE"
+          echo "Response: $RESPONSE_BODY"
+          
+          if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
+            echo "✅ Deploy realizado com sucesso!"
+            echo "🔍 Aguarde alguns segundos para o container reiniciar..."
+          else
+            echo "❌ Deploy falhou!"
+            echo "Response: $RESPONSE_BODY"
+            exit 1
+          fi
+
+      - name: Verify deployment
+        run: |
+          echo "⏳ Aguardando 30 segundos para o container inicializar..."
+          sleep 30
+          
+          echo "🔍 Verificando se o serviço está respondendo..."
+          
+          # Try to get application health
+          if curl -f -s --connect-timeout 10 --max-time 30 "${{ secrets.FRONTEND_DOMAIN }}/api/health" > /dev/null 2>&1; then
+            echo "✅ Aplicação está respondendo corretamente!"
+            echo "🌐 Aplicação disponível em: ${{ secrets.FRONTEND_DOMAIN }}"
+          else
+            echo "⚠️  Aplicação ainda não está respondendo (pode levar alguns minutos para inicializar completamente)"
+            echo "🔍 Verifique manualmente: ${{ secrets.FRONTEND_DOMAIN }}"
+          fi
+
+  notify:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: always()
+    
+    steps:
+      - name: Notify deployment result
+        run: |
+          if [[ "${{ needs.deploy.result }}" == "success" ]]; then
+            echo "✅ Deploy manual realizado com sucesso!"
+            echo "🏷️  Tag deployada: ${{ inputs.image_tag }}"
+            echo "🌐 URL: ${{ secrets.FRONTEND_DOMAIN }}"
+          else
+            echo "❌ Deploy manual falhou!"
+            echo "🔍 Verifique os logs acima para mais detalhes"
+          fi

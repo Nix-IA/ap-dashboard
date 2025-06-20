@@ -1,0 +1,113 @@
+name: Quick Deploy Only
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker image tag to deploy'
+        required: false
+        default: 'latest'
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    environment: production
+    
+    env:
+      AWS_REGION: us-east-1
+      ECR_REPOSITORY: ap-platform-frontend
+      
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Check if Docker image exists in ECR
+        run: |
+          echo "🔍 Verificando se a imagem existe no ECR..."
+          ECR_REGISTRY=$(aws sts get-caller-identity --query Account --output text).dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          IMAGE_URI="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ inputs.image_tag }}"
+          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+          
+          # Check if image exists
+          aws ecr describe-images \
+            --repository-name ${{ env.ECR_REPOSITORY }} \
+            --image-ids imageTag=${{ inputs.image_tag }} \
+            --region ${{ env.AWS_REGION }} \
+            --output table
+          
+          if [ $? -eq 0 ]; then
+            echo "✅ Imagem encontrada: $IMAGE_URI"
+          else
+            echo "❌ Imagem não encontrada no ECR!"
+            exit 1
+          fi
+
+      - name: Deploy to Portainer
+        run: |
+          echo "🚀 Fazendo deploy no Portainer..."
+          echo "Image URI: ${{ env.IMAGE_URI }}"
+          
+          # Get ECR registry URL (exactly like the main workflow)
+          ECR_REGISTRY=$(aws sts get-caller-identity --query Account --output text).dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          
+          # Update Portainer stack (exactly like the main workflow)
+          curl -X POST "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/git/redeploy" \
+            -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "env": [
+                {
+                  "name": "FRONTEND_IMAGE",
+                  "value": "'$ECR_REGISTRY'/${{ env.ECR_REPOSITORY }}"
+                },
+                {
+                  "name": "FRONTEND_TAG", 
+                  "value": "${{ inputs.image_tag }}"
+                },
+                {
+                  "name": "NEXT_PUBLIC_SUPABASE_URL",
+                  "value": "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}"
+                },
+                {
+                  "name": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+                  "value": "${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}"
+                },
+                {
+                  "name": "NEXT_PUBLIC_APP_URL",
+                  "value": "${{ secrets.NEXT_PUBLIC_APP_URL }}"
+                },
+                {
+                  "name": "FRONTEND_DOMAIN",
+                  "value": "${{ secrets.FRONTEND_DOMAIN }}"
+                },
+                {
+                  "name": "FRONTEND_PORT",
+                  "value": "3000"
+                }
+              ],
+              "prune": true,
+              "pullImage": true
+            }'
+            
+          if [ $? -eq 0 ]; then
+            echo "✅ Deploy realizado com sucesso!"
+            echo "🔍 Aguarde alguns segundos para o container reiniciar..."
+          else
+            echo "❌ Deploy falhou!"
+            exit 1
+          fi
+
+      - name: Verify deployment
+        run: |
+          echo "🔍 Verificando deploy..."
+          echo "⏳ Aguardando containers reiniciarem (30s)..."
+          sleep 30
+          
+          echo "🎉 Deploy concluído!"
+          echo "🌐 URL: https://${{ secrets.FRONTEND_DOMAIN }}"

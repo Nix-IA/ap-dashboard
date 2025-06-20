@@ -7,11 +7,15 @@ on:
       - 'apps/frontend/**'
       - 'packages/**'
       - '.github/workflows/ci-cd.yml'
+      - '.dockerignore'
+      - 'pnpm-workspace.yaml'
   pull_request:
     branches: [main]
     paths:
       - 'apps/frontend/**'
       - 'packages/**'
+      - '.dockerignore'
+      - 'pnpm-workspace.yaml'
 
 env:
   AWS_REGION: us-east-1

@@ -9,6 +9,7 @@ on:
       - '.github/workflows/ci-cd.yml'
       - '.dockerignore'
       - 'pnpm-workspace.yaml'
+      - 'pnpm-lock.yaml'
   pull_request:
     branches: [main]
     paths:
@@ -16,6 +17,7 @@ on:
       - 'packages/**'
       - '.dockerignore'
       - 'pnpm-workspace.yaml'
+      - 'pnpm-lock.yaml'
 
 env:
   AWS_REGION: us-east-1

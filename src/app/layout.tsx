@@ -21,7 +21,7 @@ const SITE_CONFIG = {
   description:
     'Empower your business with intelligent AI sales agents. Automate customer interactions, qualify leads, and close deals 24/7 through WhatsApp and multiple channels. Create your account and start using today.',
   url: 'https://app.agentpay.com.br',
-  ogImage: '/og-image.png',
+  ogImage: '/og-image.svg',
   keywords: [
     'AI sales agents',
     'sales automation',

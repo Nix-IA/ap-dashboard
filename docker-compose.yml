@@ -23,25 +23,25 @@ services:
       - /app/node_modules
       - /app/.next
 
-  # Backend API service (to be implemented)
-  # backend-api:
-  #   build:
-  #     context: .
-  #     dockerfile: apps/backend-api/Dockerfile
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - ap-platform-network
+# Backend API service (to be implemented)
+# backend-api:
+#   build:
+#     context: .
+#     dockerfile: apps/backend-api/Dockerfile
+#   ports:
+#     - "8080:8080"
+#   networks:
+#     - ap-platform-network
 
-  # Webhook service (to be implemented)
-  # webhook-service:
-  #   build:
-  #     context: .
-  #     dockerfile: apps/webhook-service/Dockerfile
-  #   ports:
-  #     - "8081:8081"
-  #   networks:
-  #     - ap-platform-network
+# Webhook service (to be implemented)
+# webhook-service:
+#   build:
+#     context: .
+#     dockerfile: apps/webhook-service/Dockerfile
+#   ports:
+#     - "8081:8081"
+#   networks:
+#     - ap-platform-network
 
 networks:
   ap-platform-network:

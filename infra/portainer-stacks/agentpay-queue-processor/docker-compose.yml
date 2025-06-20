@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  queue-processor:
+    image: ${QUEUE_PROCESSOR_IMAGE:-785874436221.dkr.ecr.us-east-1.amazonaws.com/ap-platform-queue-processor}:${QUEUE_PROCESSOR_TAG:-latest}
+    networks:
+      - agent_network
+    environment:
+      - GO_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+      placement:
+        constraints:
+          - node.role == manager
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  agent_network:
+    external: true

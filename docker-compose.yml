@@ -1,46 +1,48 @@
+# Main docker-compose.yml for local development
+# For production deployment, use individual stacks in infra/portainer-stacks/
+
 version: '3.8'
 
 services:
-  ap-platform-frontend:
-    image: ${FRONTEND_IMAGE:-785874436221.dkr.ecr.us-east-1.amazonaws.com/ap-platform-frontend}:${FRONTEND_TAG:-latest}
-    networks:
-      - agent_network
-      - traefik_public
+  # Frontend service
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    ports:
+      - "3000:3000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
       - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-      - NEXT_PUBLIC_SENTRY_DSN=${NEXT_PUBLIC_SENTRY_DSN}
-      - NEXT_PUBLIC_SENTRY_ORG=${NEXT_PUBLIC_SENTRY_ORG}
-      - NEXT_PUBLIC_SENTRY_PROJECT=${NEXT_PUBLIC_SENTRY_PROJECT}
-      - NEXT_PUBLIC_SENTRY_DISABLED=${NEXT_PUBLIC_SENTRY_DISABLED}
-    deploy:
-      mode: replicated
-      replicas: 1
-      resources:
-        limits:
-          cpus: "1"
-          memory: 1024M
-      placement:
-        constraints:
-          - node.role == manager
-      labels:
-        - traefik.enable=true
-        - traefik.http.routers.ap-platform-frontend.rule=Host(`app.agentpay.com.br`)
-        - traefik.http.routers.ap-platform-frontend.entrypoints=websecure
-        - traefik.http.routers.ap-platform-frontend.tls.certresolver=letsencrypt
-        - traefik.http.services.ap-platform-frontend.loadbalancer.server.port=3000
-        - traefik.docker.network=traefik_public
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    networks:
+      - ap-platform-network
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
+      - /app/.next
+
+  # Backend API service (to be implemented)
+  # backend-api:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/backend-api/Dockerfile
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - ap-platform-network
+
+  # Webhook service (to be implemented)
+  # webhook-service:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/webhook-service/Dockerfile
+  #   ports:
+  #     - "8081:8081"
+  #   networks:
+  #     - ap-platform-network
 
 networks:
-  agent_network:
-    external: true
-  traefik_public:
-    external: true
+  ap-platform-network:
+    driver: bridge

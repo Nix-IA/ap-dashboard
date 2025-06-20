@@ -1,0 +1,191 @@
+name: Force Redeploy Stack
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker image tag to deploy'
+        required: false
+        default: 'latest'
+        type: string
+      method:
+        description: 'Deploy method'
+        required: false
+        default: 'service-update'
+        type: choice
+        options:
+          - 'service-update'
+          - 'stack-restart'
+          - 'git-redeploy'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    environment: production
+    
+    env:
+      AWS_REGION: us-east-1
+      ECR_REPOSITORY: ap-platform-frontend
+      
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Check if Docker image exists in ECR
+        run: |
+          echo "🔍 Verificando se a imagem existe no ECR..."
+          ECR_REGISTRY=$(aws sts get-caller-identity --query Account --output text).dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          IMAGE_URI="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ inputs.image_tag }}"
+          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+          
+          # Check if image exists
+          aws ecr describe-images \
+            --repository-name ${{ env.ECR_REPOSITORY }} \
+            --image-ids imageTag=${{ inputs.image_tag }} \
+            --region ${{ env.AWS_REGION }} \
+            --output table
+          
+          if [ $? -eq 0 ]; then
+            echo "✅ Imagem encontrada: $IMAGE_URI"
+          else
+            echo "❌ Imagem não encontrada no ECR!"
+            exit 1
+          fi
+
+      - name: Force Deploy to Portainer
+        run: |
+          echo "🚀 Forçando redeploy no Portainer usando método: ${{ inputs.method }}"
+          echo "Image URI: ${{ env.IMAGE_URI }}"
+          
+          case "${{ inputs.method }}" in
+            "service-update")
+              echo "🔄 Método: Atualização forçada de serviços"
+              
+              # Get all services in the stack
+              echo "📋 Obtendo serviços do stack..."
+              SERVICES=$(curl -s -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+                "${{ secrets.PORTAINER_URL }}/api/endpoints/1/docker/services" | \
+                jq -r '.[] | select(.Spec.Labels."com.docker.stack.namespace" == "agentpay-frontend") | .ID')
+              
+              if [[ -z "$SERVICES" ]]; then
+                echo "❌ Nenhum serviço encontrado. Tentando buscar por outro método..."
+                
+                # Alternative: try to get services directly
+                SERVICES=$(curl -s -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+                  "${{ secrets.PORTAINER_URL }}/api/endpoints/1/docker/services" | \
+                  jq -r '.[] | select(.Spec.Name | contains("frontend")) | .ID')
+              fi
+              
+              if [[ -n "$SERVICES" ]]; then
+                echo "✅ Serviços encontrados:"
+                echo "$SERVICES"
+                
+                # Force update each service
+                for SERVICE_ID in $SERVICES; do
+                  echo "🔄 Atualizando serviço: $SERVICE_ID"
+                  
+                  # Get current service spec
+                  SERVICE_SPEC=$(curl -s -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+                    "${{ secrets.PORTAINER_URL }}/api/endpoints/1/docker/services/$SERVICE_ID")
+                  
+                  # Extract version for optimistic locking
+                  VERSION=$(echo "$SERVICE_SPEC" | jq -r '.Version.Index')
+                  
+                  # Force update with incremented ForceUpdate
+                  RESPONSE=$(curl -s -w "%{http_code}" -X POST \
+                    "${{ secrets.PORTAINER_URL }}/api/endpoints/1/docker/services/$SERVICE_ID/update?version=$VERSION" \
+                    -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+                    -H "Content-Type: application/json" \
+                    -d '{
+                      "TaskTemplate": {
+                        "ForceUpdate": 1
+                      }
+                    }')
+                  
+                  HTTP_CODE="${RESPONSE: -3}"
+                  echo "Serviço $SERVICE_ID - HTTP: $HTTP_CODE"
+                done
+              else
+                echo "❌ Nenhum serviço encontrado para atualizar"
+                exit 1
+              fi
+              ;;
+              
+            "stack-restart")
+              echo "🔄 Método: Restart completo do stack"
+              
+              # Stop stack
+              echo "🛑 Parando stack..."
+              RESPONSE=$(curl -s -w "%{http_code}" -X POST \
+                "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/stop?endpointId=1" \
+                -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}")
+              
+              HTTP_CODE="${RESPONSE: -3}"
+              echo "Stop stack - HTTP: $HTTP_CODE"
+              
+              if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
+                echo "⏳ Aguardando 15 segundos..."
+                sleep 15
+                
+                # Start stack
+                echo "▶️  Iniciando stack..."
+                RESPONSE=$(curl -s -w "%{http_code}" -X POST \
+                  "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/start?endpointId=1" \
+                  -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}")
+                
+                HTTP_CODE="${RESPONSE: -3}"
+                echo "Start stack - HTTP: $HTTP_CODE"
+                
+                if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
+                  echo "✅ Stack reiniciado com sucesso!"
+                else
+                  echo "❌ Falha ao iniciar stack"
+                  exit 1
+                fi
+              else
+                echo "❌ Falha ao parar stack"
+                exit 1
+              fi
+              ;;
+              
+            "git-redeploy")
+              echo "🔄 Método: Git redeploy (apenas para stacks Git)"
+              
+              RESPONSE=$(curl -s -w "%{http_code}" -X POST \
+                "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/git/redeploy" \
+                -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+                -H "Content-Type: application/json" \
+                -d '{
+                  "pullImage": true,
+                  "prune": true
+                }')
+              
+              HTTP_CODE="${RESPONSE: -3}"
+              RESPONSE_BODY="${RESPONSE%???}"
+              
+              echo "Git redeploy - HTTP: $HTTP_CODE"
+              echo "Response: $RESPONSE_BODY"
+              
+              if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
+                echo "✅ Git redeploy realizado!"
+              else
+                echo "❌ Git redeploy falhou"
+                exit 1
+              fi
+              ;;
+          esac
+
+      - name: Verify deployment
+        run: |
+          echo "🔍 Verificando deploy..."
+          echo "⏳ Aguardando containers reiniciarem (45s)..."
+          sleep 45
+          
+          echo "🎉 Processo de redeploy concluído!"
+          echo "🌐 Verifique: https://${{ secrets.FRONTEND_DOMAIN }}"
+          echo "🐳 Verifique no Portainer se o timestamp 'Last Update' mudou"

@@ -1,10 +1,11 @@
 version: '3.8'
 
 services:
-  ap-platform-frontend:
-    image: ${FRONTEND_IMAGE}:${FRONTEND_TAG}
-    container_name: ap-platform-frontend
-    restart: unless-stopped
+  frontend:
+    image: ${FRONTEND_IMAGE:-785874436221.dkr.ecr.us-east-1.amazonaws.com/ap-platform-frontend}:${FRONTEND_TAG:-latest}
+    networks:
+      - agent_network
+      - traefik_public
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
@@ -14,17 +15,23 @@ services:
       - NEXT_PUBLIC_SENTRY_ORG=${NEXT_PUBLIC_SENTRY_ORG}
       - NEXT_PUBLIC_SENTRY_PROJECT=${NEXT_PUBLIC_SENTRY_PROJECT}
       - NEXT_PUBLIC_SENTRY_DISABLED=${NEXT_PUBLIC_SENTRY_DISABLED}
-    ports:
-      - "${FRONTEND_PORT}:3000"
-    networks:
-      - ap-platform-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.ap-platform-frontend.rule=Host(`${FRONTEND_DOMAIN}`)"
-      - "traefik.http.routers.ap-platform-frontend.entrypoints=websecure"
-      - "traefik.http.routers.ap-platform-frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.ap-platform-frontend.loadbalancer.server.port=3000"
-      - "traefik.docker.network=ap-platform-network"
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1024M
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.frontend.rule=Host(`app.agentpay.com.br`)
+        - traefik.http.routers.frontend.entrypoints=websecure
+        - traefik.http.routers.frontend.tls.certresolver=letsencrypt
+        - traefik.http.services.frontend.loadbalancer.server.port=3000
+        - traefik.docker.network=traefik_public
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
       interval: 30s
@@ -33,5 +40,7 @@ services:
       start_period: 40s
 
 networks:
-  ap-platform-network:
+  agent_network:
+    external: true
+  traefik_public:
     external: true

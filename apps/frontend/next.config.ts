@@ -1,5 +1,5 @@
-import type { NextConfig } from 'next';
 import { withSentryConfig } from '@sentry/nextjs';
+import type { NextConfig } from 'next';
 
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
@@ -12,7 +12,8 @@ const baseConfig: NextConfig = {
       }
     ]
   },
-  transpilePackages: ['geist']
+  transpilePackages: ['geist'],
+  output: 'standalone'
 };
 
 let configWithPlugins = baseConfig;

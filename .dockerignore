@@ -1,6 +1,5 @@
 node_modules
 .next
-pnpm-workspace.yaml
 .env.local
 .env.development
 .git

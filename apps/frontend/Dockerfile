@@ -87,11 +87,11 @@ ENV HOSTNAME="0.0.0.0"
 
 # Start the application - try different paths for server.js
 CMD if [ -f "/app/server.js" ]; then \
-        node server.js; \
+    node server.js; \
     elif [ -f "/app/apps/frontend/server.js" ]; then \
-        node apps/frontend/server.js; \
+    node apps/frontend/server.js; \
     else \
-        echo "ERROR: server.js not found in expected locations" && \
-        find /app -name "server.js" -type f && \
-        exit 1; \
+    echo "ERROR: server.js not found in expected locations" && \
+    find /app -name "server.js" -type f && \
+    exit 1; \
     fi

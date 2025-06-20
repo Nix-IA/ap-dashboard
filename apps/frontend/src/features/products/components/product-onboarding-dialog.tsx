@@ -44,7 +44,7 @@ export function ProductOnboardingDialog({
         JSON.stringify({ status: 'pending' })
       );
     }
-    // Mostra loading no modal por 3s, depois fecha
+    // Show loading in modal for 3s, then close
     setTimeout(() => {
       setLoading(false);
       onClose();
@@ -86,7 +86,7 @@ export function ProductOnboardingDialog({
     }
   };
 
-  // Handler para fechar o modal (cancelar extração)
+  // Handler to close modal (cancel extraction)
   const handleRequestClose = (open: boolean) => {
     if (!open && loading) {
       setConfirmCancel(true);
@@ -95,7 +95,7 @@ export function ProductOnboardingDialog({
     }
   };
 
-  // Handler para confirmar o cancelamento
+  // Handler to confirm cancellation
   const confirmCancelExtraction = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();

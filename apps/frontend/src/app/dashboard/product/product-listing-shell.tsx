@@ -64,7 +64,7 @@ export default function ProductListingShell() {
     }
     router.push('/dashboard/product/new');
   };
-  // Handler para mostrar resultado extraído
+  // Handler to show extracted result
   const handleShowExtracted = (data: any) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('agentpay_product_onboarding', JSON.stringify(data));

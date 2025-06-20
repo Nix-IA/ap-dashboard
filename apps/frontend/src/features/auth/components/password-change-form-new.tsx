@@ -263,7 +263,7 @@ export default function PasswordChangeForm() {
             {/* Password Requirements */}
             <div className='rounded-md bg-gray-50 p-4 dark:bg-gray-800'>
               <h4 className='mb-2 text-sm font-medium text-gray-900 dark:text-gray-100'>
-                Requisitos da senha:
+                Password Requirements:
               </h4>
               <ul className='space-y-1 text-sm text-gray-600 dark:text-gray-400'>
                 <li
@@ -274,7 +274,7 @@ export default function PasswordChangeForm() {
                   }`}
                 >
                   <span className='h-1 w-1 rounded-full bg-current' />
-                  Pelo menos 6 caracteres
+                  At least 6 characters
                 </li>
                 <li
                   className={`flex items-center gap-2 ${
@@ -284,7 +284,7 @@ export default function PasswordChangeForm() {
                   }`}
                 >
                   <span className='h-1 w-1 rounded-full bg-current' />
-                  Uma letra minúscula
+                  One lowercase letter
                 </li>
                 <li
                   className={`flex items-center gap-2 ${
@@ -294,7 +294,7 @@ export default function PasswordChangeForm() {
                   }`}
                 >
                   <span className='h-1 w-1 rounded-full bg-current' />
-                  Uma letra maiúscula
+                  One uppercase letter
                 </li>
                 <li
                   className={`flex items-center gap-2 ${
@@ -304,7 +304,7 @@ export default function PasswordChangeForm() {
                   }`}
                 >
                   <span className='h-1 w-1 rounded-full bg-current' />
-                  Um número
+                  One number
                 </li>
               </ul>
             </div>
@@ -316,7 +316,7 @@ export default function PasswordChangeForm() {
               className='w-full'
               size='lg'
             >
-              {loading ? 'Alterando senha...' : 'Alterar Senha'}
+              {loading ? 'Changing Password...' : 'Change Password'}
             </Button>
           </form>
         </Form>

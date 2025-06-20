@@ -337,7 +337,7 @@ function ActionCell({ row }: { row: any }) {
         setLoading(false);
         return;
       }
-      // Mostra tela de processando por 2s antes de atualizar a lista
+      // Show processing screen for 2s before updating the list
       setTimeout(() => {
         window.location.reload();
       }, 2000);

@@ -2205,9 +2205,9 @@
 [7m3[0m import { supabase } from '@/lib/supabase';
 [7m [0m [91m                         ~~~~~~~~~~~~~~~~[0m
 
-[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-onboarding.tsx[0m:[93m4[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-onboarding.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
 
-[7m4[0m import { supabase } from '@/lib/supabase';
+[7m2[0m import { supabase } from '@/lib/supabase';
 [7m [0m [91m                         ~~~~~~~~~~~~~~~~[0m
 
 [96m../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/alert-dialog' or its corresponding type declarations.
@@ -2477,7 +2477,7 @@ Errors  Files
      3  ../../apps/frontend/src/features/profile/components/profile-view-page.tsx[90m:1[0m
      1  ../../apps/frontend/src/features/whatsapp/components/whatsapp-form.tsx[90m:4[0m
      1  ../../apps/frontend/src/features/whatsapp/components/whatsapp-listing.tsx[90m:3[0m
-     1  ../../apps/frontend/src/features/whatsapp/components/whatsapp-onboarding.tsx[90m:4[0m
+     1  ../../apps/frontend/src/features/whatsapp/components/whatsapp-onboarding.tsx[90m:2[0m
      7  ../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[90m:10[0m
      1  ../../apps/frontend/src/hooks/use-controllable-state.tsx[90m:3[0m
      5  ../../apps/frontend/src/hooks/use-data-table.ts[90m:32[0m

@@ -1,0 +1,6 @@
+
+
+> @ap-dashboard/shared-types@1.0.0 lint /Users/amarczew/workspace/ap-dashboard/packages/shared-types
+> eslint src --ext .ts
+
+Pages directory cannot be found at /Users/amarczew/workspace/ap-dashboard/packages/shared-types/pages or /Users/amarczew/workspace/ap-dashboard/packages/shared-types/src/pages. If using a custom path, please configure with the `no-html-link-for-pages` rule in your eslint config file.

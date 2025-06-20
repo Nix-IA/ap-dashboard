@@ -135,6 +135,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64
+          build-args: |
+            NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         env:
           IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
 
@@ -222,14 +225,9 @@ jobs:
               "pullImage": true
             }'
 
-      - name: Wait for deployment
-        run: |
-          echo "Waiting for deployment to complete..."
-          sleep 30
-
       - name: Health check
         run: |
-          # Wait for the service to be healthy
+          # Wait for the service to be ready
           for i in {1..10}; do
             if curl -f "${{ secrets.NEXT_PUBLIC_APP_URL }}/api/health"; then
               echo "✅ Health check passed!"

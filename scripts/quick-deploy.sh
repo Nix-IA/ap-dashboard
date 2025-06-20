@@ -51,10 +51,10 @@ if [ $? -eq 0 ]; then
   echo "🔄 Triggering Portainer redeploy..."
   WEBHOOK_RESPONSE=$(curl -s -w "%{http_code}" \
     -X POST \
-    "https://portainer.agentpay.com.br/api/stacks/webhooks/01JGJCNHP6MNBZR4ZRJZDWDGNR" \
+    "https://portainer.agentpay.com.br/api/stacks/webhooks/d70f163c-675f-40b8-9769-8c37b3399cc2" \
     -o /tmp/webhook_response.txt)
   
-  if [ "$WEBHOOK_RESPONSE" = "200" ]; then
+  if [ "$WEBHOOK_RESPONSE" = "204" ]; then
     echo "✅ Portainer redeploy triggered successfully!"
     echo "🌐 Check the app at: https://app.agentpay.com.br"
   else

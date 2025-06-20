@@ -111,3 +111,31 @@ jobs:
           
           echo "🎉 Deploy concluído!"
           echo "🌐 URL: https://${{ secrets.FRONTEND_DOMAIN }}"
+
+      - name: Trigger Portainer GitOps Webhook
+        run: |
+          echo "🔄 Disparando webhook do Portainer para redeploy..."
+          
+          # Trigger Portainer GitOps webhook
+          RESPONSE=$(curl -s -w "%{http_code}" -X POST \
+            "https://portainer.agentpay.com.br/api/stacks/webhooks/d70f163c-675f-40b8-9769-8c37b3399cc2" \
+            -o /tmp/webhook_response.txt)
+          
+          HTTP_CODE="$RESPONSE"
+          
+          echo "Portainer Webhook Status: $HTTP_CODE"
+          if [ -f /tmp/webhook_response.txt ]; then
+            echo "Response: $(cat /tmp/webhook_response.txt)"
+          fi
+          
+          if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
+            echo "✅ Portainer webhook disparado com sucesso!"
+            echo "🔄 Portainer está fazendo pull das mudanças do Git..."
+            echo "🌐 App disponível em: https://app.agentpay.com.br"
+          else
+            echo "⚠️  Webhook do Portainer retornou código: $HTTP_CODE"
+            echo "🔍 Verifique se o GitOps está configurado corretamente"
+          fi
+          
+          # Clean up temp file
+          rm -f /tmp/webhook_response.txt

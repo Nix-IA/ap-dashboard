@@ -290,28 +290,27 @@ jobs:
           # Trigger Portainer GitOps webhook to pull latest docker-compose.yml
           RESPONSE=$(curl -s -w "%{http_code}" -X POST \
             "https://portainer.agentpay.com.br/api/stacks/webhooks/d70f163c-675f-40b8-9769-8c37b3399cc2" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "ref": "refs/heads/main",
-              "repository": {
-                "clone_url": "https://github.com/Nix-IA/ap-dashboard.git"
-              }
-            }')
+            -o /tmp/webhook_response.txt)
           
-          HTTP_CODE="${RESPONSE: -3}"
-          RESPONSE_BODY="${RESPONSE%???}"
+          HTTP_CODE="$RESPONSE"
           
           echo "Portainer Webhook Status: $HTTP_CODE"
-          echo "Response: $RESPONSE_BODY"
+          if [ -f /tmp/webhook_response.txt ]; then
+            echo "Response: $(cat /tmp/webhook_response.txt)"
+          fi
           
           if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
             echo "✅ Portainer webhook disparado com sucesso!"
             echo "🔄 Portainer está fazendo pull das mudanças do Git..."
+            echo "🌐 App disponível em: https://app.agentpay.com.br"
           else
             echo "⚠️  Webhook do Portainer falhou (código: $HTTP_CODE)"
             echo "🔍 Verifique se o GitOps está configurado corretamente no Portainer"
             # Don't fail the entire workflow for webhook issues
           fi
+          
+          # Clean up temp file
+          rm -f /tmp/webhook_response.txt
 
       - name: Notify failure
         if: needs.deploy.result == 'failure'

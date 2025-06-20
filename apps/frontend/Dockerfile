@@ -56,16 +56,21 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy built application
+# Copy built application - for monorepo with standalone output
+# The public folder needs to be copied to the right location
 COPY --from=builder /app/apps/frontend/public ./public
 
 # Set the correct permission for prerender cache
-RUN mkdir .next
+RUN mkdir -p .next
 RUN chown nextjs:nodejs .next
 
-# Automatically leverage output traces to reduce image size
+# Copy the standalone server and static files
+# For monorepo setup, the server.js might be in a nested path
 COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/static ./.next/static
+
+# Debug: List files to see structure (remove this in production)
+RUN ls -la /app/ && echo "--- server.js location ---" && find /app -name "server.js" -type f
 
 USER nextjs
 

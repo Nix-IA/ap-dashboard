@@ -29,6 +29,8 @@ RUN npm install -g pnpm
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/frontend/node_modules ./apps/frontend/node_modules
+COPY --from=deps /app/packages/shared-types/node_modules ./packages/shared-types/node_modules
+COPY --from=deps /app/packages/supabase/node_modules ./packages/supabase/node_modules
 
 # Copy source code
 COPY . .

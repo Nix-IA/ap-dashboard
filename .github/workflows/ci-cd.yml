@@ -30,6 +30,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -37,20 +42,15 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: 'pnpm-lock.yaml'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Run linting
         run: |
-          # Run lint for frontend with warnings allowed
-          cd apps/frontend && pnpm lint-ci
-          # Run lint for shared-types
-          cd packages/shared-types && pnpm lint || true
-          # Run lint for supabase
-          cd packages/supabase && pnpm lint || true
+          # Run lint for each package individually  
+          pnpm --filter=@ap-dashboard/frontend run lint-ci
+          pnpm --filter=@ap-dashboard/shared-types run lint || true
+          pnpm --filter=@ap-dashboard/supabase run lint || true
         env:
           CI: true
 

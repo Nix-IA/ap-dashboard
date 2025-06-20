@@ -1,0 +1,17 @@
+{
+  "name": "@ap-dashboard/backend-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend API service for AP Dashboard",
+  "scripts": {
+    "dev": "go run cmd/api/main.go",
+    "build": "go build -o dist/api cmd/api/main.go",
+    "start": "go run cmd/api/main.go",
+    "test": "go test ./...",
+    "lint": "golangci-lint run",
+    "clean": "rm -rf dist",
+    "docker:build": "docker build -t ap-dashboard-backend .",
+    "docker:run": "docker run -p 8080:8080 ap-dashboard-backend"
+  },
+  "main": "cmd/api/main.go"
+}

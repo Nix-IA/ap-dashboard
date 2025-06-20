@@ -1,5 +1,5 @@
 {
-    "name": "next-shadcn-dashboard-starter",
+    "name": "@ap-dashboard/frontend",
     "version": "1.0.0",
     "private": true,
     "author": {
@@ -7,15 +7,15 @@
         "url": "https://github.com/Kiranism"
     },
     "scripts": {
-        "dev": "next dev --turbopack",
+        "dev": "next dev --turbopack --port 3000",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
         "lint:fix": "eslint src --fix && pnpm format",
-        "lint:strict": "eslint src",
+        "type-check": "tsc --noEmit",
         "format": "prettier --write .",
         "format:check": "prettier -c -w .",
-        "prepare": "husky"
+        "clean": "rm -rf .next dist"
     },
     "lint-staged": {
         "**/*.{js,jsx,tsx,ts,css,less,scss,sass}": [

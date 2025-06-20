@@ -1,0 +1,27 @@
+{
+  "name": "@ap-dashboard/supabase",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Supabase configuration and utilities for AP Dashboard",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:migrate": "supabase db push",
+    "db:generate-types": "supabase gen types typescript --local > src/database.types.ts",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "supabase": "^1.0.0"
+  }
+}

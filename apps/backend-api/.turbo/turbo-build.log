@@ -1,0 +1,8 @@
+
+
+> @ap-dashboard/backend-api@1.0.0 build /Users/amarczew/workspace/ap-dashboard/apps/backend-api
+> go build -o dist/api cmd/api/main.go
+
+sh: go: command not found
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed.[39m
+[43m[30m WARN [39m[49m  Local package.json exists, but node_modules missing, did you mean to install?

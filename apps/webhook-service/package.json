@@ -1,0 +1,17 @@
+{
+  "name": "@ap-dashboard/webhook-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Webhook processing service for AP Dashboard",
+  "scripts": {
+    "dev": "go run cmd/webhook/main.go",
+    "build": "go build -o dist/webhook cmd/webhook/main.go",
+    "start": "go run cmd/webhook/main.go",
+    "test": "go test ./...",
+    "lint": "golangci-lint run",
+    "clean": "rm -rf dist",
+    "docker:build": "docker build -t ap-dashboard-webhook .",
+    "docker:run": "docker run -p 8081:8081 ap-dashboard-webhook"
+  },
+  "main": "cmd/webhook/main.go"
+}

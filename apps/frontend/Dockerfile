@@ -65,12 +65,18 @@ RUN mkdir -p .next
 RUN chown nextjs:nodejs .next
 
 # Copy the standalone server and static files
-# For monorepo setup, the server.js might be in a nested path
+# For monorepo setup, the server.js is in the app root after standalone build
 COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/static ./.next/static
 
-# Debug: List files to see structure (remove this in production)
-RUN ls -la /app/ && echo "--- server.js location ---" && find /app -name "server.js" -type f
+# The standalone build puts server.js in the root of the standalone folder
+# But in monorepo, we need to check the actual structure
+RUN echo "=== Checking standalone structure ===" && \
+    find /app -name "server.js" -type f && \
+    echo "=== Contents of /app ===" && \
+    ls -la /app/ && \
+    echo "=== Contents of apps/frontend ===" && \
+    ls -la /app/apps/frontend/ 2>/dev/null || echo "No apps/frontend dir"
 
 USER nextjs
 
@@ -79,5 +85,13 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Start the application
-CMD ["node", "server.js"]
+# Start the application - try different paths for server.js
+CMD if [ -f "/app/server.js" ]; then \
+        node server.js; \
+    elif [ -f "/app/apps/frontend/server.js" ]; then \
+        node apps/frontend/server.js; \
+    else \
+        echo "ERROR: server.js not found in expected locations" && \
+        find /app -name "server.js" -type f && \
+        exit 1; \
+    fi

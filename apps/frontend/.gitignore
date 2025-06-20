@@ -1,0 +1,6 @@
+
+# Build artifacts
+.next/
+.turbo/
+dist/
+build/

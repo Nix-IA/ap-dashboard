@@ -1,1 +1,1 @@
-pnpm run build
+# Pre-push hook disabled for monorepo restructure

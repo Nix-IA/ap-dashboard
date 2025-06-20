@@ -41,6 +41,29 @@ if [ $? -eq 0 ]; then
   echo "   gh run watch"
   echo ""
   echo "💡 This uses the EXACT same deploy method as the main CI/CD workflow"
+  
+  # Wait a bit for the workflow to complete
+  echo ""
+  echo "⏳ Waiting 30 seconds for workflow to complete..."
+  sleep 30
+  
+  # Trigger Portainer redeploy via webhook
+  echo "🔄 Triggering Portainer redeploy..."
+  WEBHOOK_RESPONSE=$(curl -s -w "%{http_code}" \
+    -X POST \
+    "https://portainer.agentpay.com.br/api/stacks/webhooks/01JGJCNHP6MNBZR4ZRJZDWDGNR" \
+    -o /tmp/webhook_response.txt)
+  
+  if [ "$WEBHOOK_RESPONSE" = "200" ]; then
+    echo "✅ Portainer redeploy triggered successfully!"
+    echo "🌐 Check the app at: https://app.agentpay.com.br"
+  else
+    echo "⚠️  Portainer webhook returned status: $WEBHOOK_RESPONSE"
+    echo "Response: $(cat /tmp/webhook_response.txt 2>/dev/null || echo 'No response body')"
+  fi
+  
+  # Clean up temp file
+  rm -f /tmp/webhook_response.txt
 else
   echo "❌ Failed to trigger workflow"
   exit 1

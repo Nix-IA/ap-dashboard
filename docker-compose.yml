@@ -1,10 +1,8 @@
 version: '3.8'
 
 services:
-  app:
+  frontend:
     image: ${FRONTEND_IMAGE:-785874436221.dkr.ecr.us-east-1.amazonaws.com/ap-platform-frontend}:${FRONTEND_TAG:-latest}
-    container_name: ap-dashboard-frontend
-    restart: unless-stopped
     networks:
       - agent_network
       - traefik_public
@@ -13,8 +11,6 @@ services:
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
       - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-    ports:
-      - "${FRONTEND_PORT:-3000}:3000"
     deploy:
       mode: replicated
       replicas: 1

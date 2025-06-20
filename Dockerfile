@@ -12,12 +12,12 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile
 # NÃO copie .env.production!
 RUN pnpm build
 
-# Etapa de produção
+# Production stage
 FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Instala pnpm na imagem final
+# Install pnpm in final image
 RUN npm install -g pnpm
 
 COPY --from=builder /app/.next .next

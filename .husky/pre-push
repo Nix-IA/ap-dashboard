@@ -1,1 +1,30 @@
-pnpm run build
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running pre-push validations..."
+
+# Run linting for frontend and TypeScript packages only
+echo "🧹 Linting..."
+pnpm lint --filter=@ap-dashboard/frontend --filter=@ap-dashboard/shared-types --filter=@ap-dashboard/supabase
+if [ $? -ne 0 ]; then
+  echo "❌ Linting failed. Please fix linting errors before pushing."
+  exit 1
+fi
+
+# Run tests for packages that have tests
+echo "🧪 Running tests..."
+pnpm test --filter=@ap-dashboard/frontend --filter=@ap-dashboard/shared-types --filter=@ap-dashboard/supabase
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed. Please fix failing tests before pushing."
+  exit 1
+fi
+
+# Build the frontend to ensure it compiles (this includes type checking during build)
+echo "🏗️ Building frontend..."
+pnpm build --filter=@ap-dashboard/frontend
+if [ $? -ne 0 ]; then
+  echo "❌ Frontend build failed. Please fix build errors before pushing."
+  exit 1
+fi
+
+echo "✅ All pre-push validations passed!"

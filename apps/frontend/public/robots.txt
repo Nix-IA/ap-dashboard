@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Block access to private dashboard areas
+Disallow: /dashboard/
+Disallow: /auth/
+Disallow: /api/
+
+# Allow crawling of marketing pages
+Allow: /
+Allow: /about
+Allow: /features
+Allow: /pricing
+
+# Sitemap
+Sitemap: https://agentpay.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

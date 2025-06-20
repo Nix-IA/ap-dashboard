@@ -1,0 +1,6 @@
+
+
+> @ap-dashboard/supabase@1.0.0 lint /Users/amarczew/workspace/ap-dashboard/packages/supabase
+> eslint src --ext .ts
+
+Pages directory cannot be found at /Users/amarczew/workspace/ap-dashboard/packages/supabase/pages or /Users/amarczew/workspace/ap-dashboard/packages/supabase/src/pages. If using a custom path, please configure with the `no-html-link-for-pages` rule in your eslint config file.

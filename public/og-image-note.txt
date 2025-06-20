@@ -1,2 +1,0 @@
-# Este arquivo será usado como fallback se a conversão SVG não funcionar
-# O SVG já criado deve funcionar para a maioria dos casos de Open Graph

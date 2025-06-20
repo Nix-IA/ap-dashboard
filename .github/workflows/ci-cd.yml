@@ -1,0 +1,257 @@
+name: Frontend CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths: 
+      - 'apps/frontend/**'
+      - 'packages/**'
+      - '.github/workflows/ci-cd.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/frontend/**'
+      - 'packages/**'
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: ap-platform-frontend
+
+jobs:
+  # Quality Gates - Lint, Test, Type Check
+  quality-gates:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - name: Setup Node.js with pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run linting
+        run: |
+          # Run lint for frontend with warnings allowed
+          cd apps/frontend && pnpm lint-ci
+          # Run lint for shared-types
+          cd packages/shared-types && pnpm lint || true
+          # Run lint for supabase
+          cd packages/supabase && pnpm lint || true
+        env:
+          CI: true
+
+      - name: Run type checking
+        run: pnpm type-check --filter=@ap-dashboard/frontend
+
+      - name: Run tests
+        run: pnpm test --filter=@ap-dashboard/frontend --filter=@ap-dashboard/shared-types --filter=@ap-dashboard/supabase
+
+      - name: Build application
+        run: pnpm build --filter=@ap-dashboard/frontend
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+  # Build and Push Docker Image
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: quality-gates
+    if: github.ref == 'refs/heads/main'
+    outputs:
+      image-digest: ${{ steps.build.outputs.digest }}
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-uri: ${{ steps.build.outputs.image }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+          labels: |
+            org.opencontainers.image.title=AP Dashboard Frontend
+            org.opencontainers.image.description=Frontend application for AP Dashboard
+            org.opencontainers.image.vendor=Nix-IA
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./apps/frontend/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+        env:
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+
+  # Security Scanning
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ needs.build-and-push.outputs.image-tag }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # Deploy to Portainer
+  deploy:
+    name: Deploy to Portainer
+    runs-on: ubuntu-latest
+    needs: [build-and-push, security-scan]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy to Portainer
+        run: |
+          # Get ECR registry URL
+          ECR_REGISTRY=$(aws sts get-caller-identity --query Account --output text).dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+          
+          # Update Portainer stack
+          curl -X POST "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/git/redeploy" \
+            -H "X-API-Key: ${{ secrets.PORTAINER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "env": [
+                {
+                  "name": "FRONTEND_IMAGE",
+                  "value": "'$ECR_REGISTRY'/${{ env.ECR_REPOSITORY }}"
+                },
+                {
+                  "name": "FRONTEND_TAG",
+                  "value": "latest"
+                },
+                {
+                  "name": "NEXT_PUBLIC_SUPABASE_URL",
+                  "value": "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}"
+                },
+                {
+                  "name": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+                  "value": "${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}"
+                },
+                {
+                  "name": "NEXT_PUBLIC_APP_URL",
+                  "value": "${{ secrets.NEXT_PUBLIC_APP_URL }}"
+                },
+                {
+                  "name": "FRONTEND_DOMAIN",
+                  "value": "${{ secrets.FRONTEND_DOMAIN }}"
+                },
+                {
+                  "name": "FRONTEND_PORT",
+                  "value": "3000"
+                }
+              ],
+              "prune": true,
+              "pullImage": true
+            }'
+
+      - name: Wait for deployment
+        run: |
+          echo "Waiting for deployment to complete..."
+          sleep 30
+
+      - name: Health check
+        run: |
+          # Wait for the service to be healthy
+          for i in {1..10}; do
+            if curl -f "${{ secrets.NEXT_PUBLIC_APP_URL }}/api/health"; then
+              echo "✅ Health check passed!"
+              exit 0
+            fi
+            echo "⏳ Waiting for service to be ready... (attempt $i/10)"
+            sleep 30
+          done
+          echo "❌ Health check failed after 10 attempts"
+          exit 1
+
+  # Notification
+  notify:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: always() && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Notify success
+        if: needs.deploy.result == 'success'
+        run: |
+          echo "🚀 Deployment successful!"
+          echo "Frontend is now live at: ${{ secrets.NEXT_PUBLIC_APP_URL }}"
+
+      - name: Notify failure
+        if: needs.deploy.result == 'failure'
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Please check the logs and try again."
+          exit 1

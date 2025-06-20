@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  ap-platform-frontend:
+    image: ${FRONTEND_IMAGE}:${FRONTEND_TAG}
+    container_name: ap-platform-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+      - NEXT_PUBLIC_SENTRY_DSN=${NEXT_PUBLIC_SENTRY_DSN}
+      - NEXT_PUBLIC_SENTRY_ORG=${NEXT_PUBLIC_SENTRY_ORG}
+      - NEXT_PUBLIC_SENTRY_PROJECT=${NEXT_PUBLIC_SENTRY_PROJECT}
+      - NEXT_PUBLIC_SENTRY_DISABLED=${NEXT_PUBLIC_SENTRY_DISABLED}
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    networks:
+      - ap-platform-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ap-platform-frontend.rule=Host(`${FRONTEND_DOMAIN}`)"
+      - "traefik.http.routers.ap-platform-frontend.entrypoints=websecure"
+      - "traefik.http.routers.ap-platform-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ap-platform-frontend.loadbalancer.server.port=3000"
+      - "traefik.docker.network=ap-platform-network"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  ap-platform-network:
+    external: true

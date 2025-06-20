@@ -1,0 +1,2490 @@
+
+
+> @ap-dashboard/supabase@1.0.0 type-check /Users/amarczew/workspace/ap-dashboard/packages/supabase
+> tsc --noEmit
+
+[96m../../apps/frontend/src/app/auth/reset-password/page.tsx[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/auth/components/reset-password-view.tsx' is not a module.
+
+[7m1[0m import ResetPasswordView from '@/features/auth/components/reset-password-view';
+[7m [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/auth/sign-in/[[...sign-in]]/page.tsx[0m:[93m1[0m:[93m28[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/auth/components/sign-in-view.tsx' is not a module.
+
+[7m1[0m import SignInViewPage from '@/features/auth/components/sign-in-view';
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/auth/sign-up/[[...sign-up]]/page.tsx[0m:[93m1[0m:[93m28[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/auth/components/sign-up-view.tsx' is not a module.
+
+[7m1[0m import SignUpViewPage from '@/features/auth/components/sign-up-view';
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/kanban/page.tsx[0m:[93m1[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/kanban/components/kanban-view-page' or its corresponding type declarations.
+
+[7m1[0m import KanbanViewPage from '@/features/kanban/components/kanban-view-page';
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/layout.tsx[0m:[93m3[0m:[93m18[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/kbar' or its corresponding type declarations.
+
+[7m3[0m import KBar from '@/components/kbar';
+[7m [0m [91m                 ~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/layout.tsx[0m:[93m4[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/app-sidebar.tsx' is not a module.
+
+[7m4[0m import AppSidebar from '@/components/layout/app-sidebar';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/layout.tsx[0m:[93m5[0m:[93m20[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/header.tsx' is not a module.
+
+[7m5[0m import Header from '@/components/layout/header';
+[7m [0m [91m                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/layout.tsx[0m:[93m6[0m:[93m47[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/sidebar' or its corresponding type declarations.
+
+[7m6[0m import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+[7m [0m [91m                                              ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/layout.tsx[0m:[93m7[0m:[93m41[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/products/components/product-extraction-status.tsx' is not a module.
+
+[7m7[0m import { ProductExtractionStatus } from '@/features/products/components/product-extraction-status';
+[7m [0m [91m                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/layout.tsx[0m:[93m8[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m8[0m import { supabase } from '@/lib/supabase';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/layout.tsx[0m:[93m40[0m:[93m8[0m - [91merror[0m[90m TS7006: [0mParameter '_event' implicitly has an 'any' type.
+
+[7m40[0m       (_event, session) => {
+[7m  [0m [91m       ~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/layout.tsx[0m:[93m40[0m:[93m16[0m - [91merror[0m[90m TS7006: [0mParameter 'session' implicitly has an 'any' type.
+
+[7m40[0m       (_event, session) => {
+[7m  [0m [91m               ~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@area_stats/error.tsx[0m:[93m3[0m:[93m53[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/alert.tsx' is not a module.
+
+[7m3[0m import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@area_stats/loading.tsx[0m:[93m1[0m:[93m35[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/overview/components/area-graph-skeleton' or its corresponding type declarations.
+
+[7m1[0m import { AreaGraphSkeleton } from '@/features/overview/components/area-graph-skeleton';
+[7m [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@area_stats/page.tsx[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/constants/mock-api' or its corresponding type declarations.
+
+[7m1[0m import { delay } from '@/constants/mock-api';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@area_stats/page.tsx[0m:[93m2[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/overview/components/area-graph' or its corresponding type declarations.
+
+[7m2[0m import { AreaGraph } from '@/features/overview/components/area-graph';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@bar_stats/error.tsx[0m:[93m3[0m:[93m53[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/alert.tsx' is not a module.
+
+[7m3[0m import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@bar_stats/error.tsx[0m:[93m4[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m4[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@bar_stats/error.tsx[0m:[93m5[0m:[93m47[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m5[0m import { Card, CardContent, CardHeader } from '@/components/ui/card';
+[7m [0m [91m                                              ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@bar_stats/loading.tsx[0m:[93m1[0m:[93m34[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/overview/components/bar-graph-skeleton' or its corresponding type declarations.
+
+[7m1[0m import { BarGraphSkeleton } from '@/features/overview/components/bar-graph-skeleton';
+[7m [0m [91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@bar_stats/page.tsx[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/constants/mock-api' or its corresponding type declarations.
+
+[7m1[0m import { delay } from '@/constants/mock-api';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@bar_stats/page.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/overview/components/bar-graph' or its corresponding type declarations.
+
+[7m2[0m import { BarGraph } from '@/features/overview/components/bar-graph';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@pie_stats/error.tsx[0m:[93m3[0m:[93m53[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/alert.tsx' is not a module.
+
+[7m3[0m import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@pie_stats/loading.tsx[0m:[93m1[0m:[93m34[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/overview/components/pie-graph-skeleton' or its corresponding type declarations.
+
+[7m1[0m import { PieGraphSkeleton } from '@/features/overview/components/pie-graph-skeleton';
+[7m [0m [91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@pie_stats/page.tsx[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/constants/mock-api' or its corresponding type declarations.
+
+[7m1[0m import { delay } from '@/constants/mock-api';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@pie_stats/page.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/overview/components/pie-graph' or its corresponding type declarations.
+
+[7m2[0m import { PieGraph } from '@/features/overview/components/pie-graph';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@sales/error.tsx[0m:[93m3[0m:[93m53[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/alert.tsx' is not a module.
+
+[7m3[0m import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@sales/loading.tsx[0m:[93m1[0m:[93m37[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/overview/components/recent-sales-skeleton' or its corresponding type declarations.
+
+[7m1[0m import { RecentSalesSkeleton } from '@/features/overview/components/recent-sales-skeleton';
+[7m [0m [91m                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@sales/page.tsx[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/constants/mock-api' or its corresponding type declarations.
+
+[7m1[0m import { delay } from '@/constants/mock-api';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/@sales/page.tsx[0m:[93m2[0m:[93m29[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/overview/components/recent-sales' or its corresponding type declarations.
+
+[7m2[0m import { RecentSales } from '@/features/overview/components/recent-sales';
+[7m [0m [91m                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/error.tsx[0m:[93m3[0m:[93m53[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/alert.tsx' is not a module.
+
+[7m3[0m import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/layout.tsx[0m:[93m1[0m:[93m27[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/page-container.tsx' is not a module.
+
+[7m1[0m import PageContainer from '@/components/layout/page-container';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/layout.tsx[0m:[93m2[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/badge' or its corresponding type declarations.
+
+[7m2[0m import { Badge } from '@/components/ui/badge';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/layout.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/card';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/page.tsx[0m:[93m3[0m:[93m31[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewCards.tsx' is not a module.
+
+[7m3[0m import { OverviewCards } from '@/features/overview/components/OverviewCards';
+[7m [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/page.tsx[0m:[93m7[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewCharts.tsx' is not a module.
+
+[7m7[0m } from '@/features/overview/components/OverviewCharts';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/page.tsx[0m:[93m11[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewExtraCharts.tsx' is not a module.
+
+[7m11[0m } from '@/features/overview/components/OverviewExtraCharts';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/page.tsx[0m:[93m12[0m:[93m33[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewFilters.tsx' is not a module.
+
+[7m12[0m import { OverviewFilters } from '@/features/overview/components/OverviewFilters';
+[7m  [0m [91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/page.tsx[0m:[93m17[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewTables.tsx' is not a module.
+
+[7m17[0m } from '@/features/overview/components/OverviewTables';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/overview/page.tsx[0m:[93m18[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m18[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m3[0m:[93m27[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/page-container.tsx' is not a module.
+
+[7m3[0m import PageContainer from '@/components/layout/page-container';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m4[0m:[93m31[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewCards.tsx' is not a module.
+
+[7m4[0m import { OverviewCards } from '@/features/overview/components/OverviewCards';
+[7m [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m5[0m:[93m39[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewCardsSkeleton.tsx' is not a module.
+
+[7m5[0m import { OverviewCardsSkeleton } from '@/features/overview/components/OverviewCardsSkeleton';
+[7m [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m9[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewCharts.tsx' is not a module.
+
+[7m9[0m } from '@/features/overview/components/OverviewCharts';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m10[0m:[93m40[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewChartsSkeleton.tsx' is not a module.
+
+[7m10[0m import { OverviewChartsSkeleton } from '@/features/overview/components/OverviewChartsSkeleton';
+[7m  [0m [91m                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m11[0m:[93m45[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewEventsTableSkeleton.tsx' is not a module.
+
+[7m11[0m import { OverviewEventsTableSkeleton } from '@/features/overview/components/OverviewEventsTableSkeleton';
+[7m  [0m [91m                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m15[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewExtraCharts.tsx' is not a module.
+
+[7m15[0m } from '@/features/overview/components/OverviewExtraCharts';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m16[0m:[93m45[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewExtraChartsSkeleton.tsx' is not a module.
+
+[7m16[0m import { OverviewExtraChartsSkeleton } from '@/features/overview/components/OverviewExtraChartsSkeleton';
+[7m  [0m [91m                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m17[0m:[93m33[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewFilters.tsx' is not a module.
+
+[7m17[0m import { OverviewFilters } from '@/features/overview/components/OverviewFilters';
+[7m  [0m [91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m18[0m:[93m35[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/overview/components/OverviewTables.tsx' is not a module.
+
+[7m18[0m import { RecentEventsTable } from '@/features/overview/components/OverviewTables';
+[7m  [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/page.tsx[0m:[93m19[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m19[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/platforms/page.tsx[0m:[93m1[0m:[93m27[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/page-container.tsx' is not a module.
+
+[7m1[0m import PageContainer from '@/components/layout/page-container';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/platforms/page.tsx[0m:[93m2[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/heading' or its corresponding type declarations.
+
+[7m2[0m import { Heading } from '@/components/ui/heading';
+[7m [0m [91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/platforms/page.tsx[0m:[93m3[0m:[93m30[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/integrations/components/platforms-section.tsx' is not a module.
+
+[7m3[0m import PlatformsSection from '@/features/integrations/components/platforms-section';
+[7m [0m [91m                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/[productId]/page.tsx[0m:[93m1[0m:[93m30[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/form-card-skeleton' or its corresponding type declarations.
+
+[7m1[0m import FormCardSkeleton from '@/components/form-card-skeleton';
+[7m [0m [91m                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/[productId]/page.tsx[0m:[93m2[0m:[93m27[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/page-container.tsx' is not a module.
+
+[7m2[0m import PageContainer from '@/components/layout/page-container';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/[productId]/page.tsx[0m:[93m4[0m:[93m29[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/products/components/product-view-page.tsx' is not a module.
+
+[7m4[0m import ProductViewPage from '@/features/products/components/product-view-page';
+[7m [0m [91m                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/new/page.tsx[0m:[93m3[0m:[93m25[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/products/components/product-form.tsx' is not a module.
+
+[7m3[0m import ProductForm from '@/features/products/components/product-form';
+[7m [0m [91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/page.tsx[0m:[93m1[0m:[93m27[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/page-container.tsx' is not a module.
+
+[7m1[0m import PageContainer from '@/components/layout/page-container';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[0m:[93m2[0m:[93m32[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m2[0m import { buttonVariants } from '@/components/ui/button';
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m10[0m } from '@/components/ui/dialog';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[0m:[93m11[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/heading' or its corresponding type declarations.
+
+[7m11[0m import { Heading } from '@/components/ui/heading';
+[7m  [0m [91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[0m:[93m12[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/separator' or its corresponding type declarations.
+
+[7m12[0m import { Separator } from '@/components/ui/separator';
+[7m  [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[0m:[93m13[0m:[93m35[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/table/data-table-skeleton' or its corresponding type declarations.
+
+[7m13[0m import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
+[7m  [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[0m:[93m14[0m:[93m41[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/products/components/product-extraction-status.tsx' is not a module.
+
+[7m14[0m import { ProductExtractionStatus } from '@/features/products/components/product-extraction-status';
+[7m  [0m [91m                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[0m:[93m15[0m:[93m32[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/products/components/product-listing.tsx' is not a module.
+
+[7m15[0m import ProductListingPage from '@/features/products/components/product-listing';
+[7m  [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[0m:[93m16[0m:[93m41[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/products/components/product-onboarding-dialog.tsx' is not a module.
+
+[7m16[0m import { ProductOnboardingDialog } from '@/features/products/components/product-onboarding-dialog';
+[7m  [0m [91m                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[0m:[93m17[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m17[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/profile/[[...profile]]/page.tsx[0m:[93m1[0m:[93m29[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/profile/components/profile-view-page.tsx' is not a module.
+
+[7m1[0m import ProfileViewPage from '@/features/profile/components/profile-view-page';
+[7m [0m [91m                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/whatsapp/new/page.tsx[0m:[93m3[0m:[93m27[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/page-container.tsx' is not a module.
+
+[7m3[0m import PageContainer from '@/components/layout/page-container';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/whatsapp/new/page.tsx[0m:[93m4[0m:[93m39[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m4[0m import { Dialog, DialogContent } from '@/components/ui/dialog';
+[7m [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/whatsapp/new/page.tsx[0m:[93m5[0m:[93m32[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/features/whatsapp/components/whatsapp-onboarding' or its corresponding type declarations.
+
+[7m5[0m import WhatsappOnboarding from '@/features/whatsapp/components/whatsapp-onboarding';
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/whatsapp/new/page.tsx[0m:[93m6[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m6[0m import { supabase } from '@/lib/supabase';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/whatsapp/new/page.tsx[0m:[93m14[0m:[93m48[0m - [91merror[0m[90m TS7031: [0mBinding element 'session' implicitly has an 'any' type.
+
+[7m14[0m     supabase.auth.getSession().then(({ data: { session } }) => {
+[7m  [0m [91m                                               ~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/whatsapp/page.tsx[0m:[93m1[0m:[93m27[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/page-container.tsx' is not a module.
+
+[7m1[0m import PageContainer from '@/components/layout/page-container';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/whatsapp/page.tsx[0m:[93m2[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/heading' or its corresponding type declarations.
+
+[7m2[0m import { Heading } from '@/components/ui/heading';
+[7m [0m [91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/whatsapp/page.tsx[0m:[93m3[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/separator' or its corresponding type declarations.
+
+[7m3[0m import { Separator } from '@/components/ui/separator';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/dashboard/whatsapp/page.tsx[0m:[93m4[0m:[93m35[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/whatsapp/components/whatsapp-listing.tsx' is not a module.
+
+[7m4[0m import WhatsappInstancesPage from '@/features/whatsapp/components/whatsapp-listing';
+[7m [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/layout.tsx[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/providers.tsx' is not a module.
+
+[7m1[0m import Providers from '@/components/layout/providers';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/layout.tsx[0m:[93m2[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/layout/ThemeToggle/theme-provider' or its corresponding type declarations.
+
+[7m2[0m import ThemeProvider from '@/components/layout/ThemeToggle/theme-provider';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/layout.tsx[0m:[93m3[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/sonner' or its corresponding type declarations.
+
+[7m3[0m import { Toaster } from '@/components/ui/sonner';
+[7m [0m [91m                        ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/layout.tsx[0m:[93m4[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/font' or its corresponding type declarations.
+
+[7m4[0m import { fontVariables } from '@/lib/font';
+[7m [0m [91m                              ~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/layout.tsx[0m:[93m5[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m5[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/app/not-found.tsx[0m:[93m5[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m5[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/breadcrumbs.tsx[0m:[93m9[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/breadcrumb' or its corresponding type declarations.
+
+[7m9[0m } from '@/components/ui/breadcrumb';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/breadcrumbs.tsx[0m:[93m10[0m:[93m32[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/hooks/use-breadcrumbs' or its corresponding type declarations.
+
+[7m10[0m import { useBreadcrumbs } from '@/hooks/use-breadcrumbs';
+[7m  [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/breadcrumbs.tsx[0m:[93m21[0m:[93m21[0m - [91merror[0m[90m TS7006: [0mParameter 'item' implicitly has an 'any' type.
+
+[7m21[0m         {items.map((item, index) => (
+[7m  [0m [91m                    ~~~~[0m
+
+[96m../../apps/frontend/src/components/breadcrumbs.tsx[0m:[93m21[0m:[93m27[0m - [91merror[0m[90m TS7006: [0mParameter 'index' implicitly has an 'any' type.
+
+[7m21[0m         {items.map((item, index) => (
+[7m  [0m [91m                          ~~~~~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m12[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m12[0m import { Button } from '@/components/ui/button';
+[7m  [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m13[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/progress' or its corresponding type declarations.
+
+[7m13[0m import { Progress } from '@/components/ui/progress';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m14[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/scroll-area' or its corresponding type declarations.
+
+[7m14[0m import { ScrollArea } from '@/components/ui/scroll-area';
+[7m  [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m15[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/hooks/use-controllable-state' or its corresponding type declarations.
+
+[7m15[0m import { useControllableState } from '@/hooks/use-controllable-state';
+[7m  [0m [91m                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m16[0m:[93m33[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m16[0m import { cn, formatBytes } from '@/lib/utils';
+[7m  [0m [91m                                ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m167[0m:[93m36[0m - [91merror[0m[90m TS7006: [0mParameter '_' implicitly has an 'any' type.
+
+[7m167[0m     const newFiles = files.filter((_, i) => i !== index);
+[7m   [0m [91m                                   ~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m167[0m:[93m39[0m - [91merror[0m[90m TS7006: [0mParameter 'i' implicitly has an 'any' type.
+
+[7m167[0m     const newFiles = files.filter((_, i) => i !== index);
+[7m   [0m [91m                                      ~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m176[0m:[93m22[0m - [91merror[0m[90m TS7006: [0mParameter 'file' implicitly has an 'any' type.
+
+[7m176[0m       files.forEach((file) => {
+[7m   [0m [91m                     ~~~~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m250[0m:[93m26[0m - [91merror[0m[90m TS7006: [0mParameter 'file' implicitly has an 'any' type.
+
+[7m250[0m             {files?.map((file, index) => (
+[7m   [0m [91m                         ~~~~[0m
+
+[96m../../apps/frontend/src/components/file-uploader.tsx[0m:[93m250[0m:[93m32[0m - [91merror[0m[90m TS7006: [0mParameter 'index' implicitly has an 'any' type.
+
+[7m250[0m             {files?.map((file, index) => (
+[7m   [0m [91m                               ~~~~~[0m
+
+[96m../../apps/frontend/src/components/kbar/index.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/constants/data.ts' is not a module.
+
+[7m2[0m import { navItems } from '@/constants/data';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/kbar/index.tsx[0m:[93m25[0m:[93m30[0m - [91merror[0m[90m TS7006: [0mParameter 'navItem' implicitly has an 'any' type.
+
+[7m25[0m     return navItems.flatMap((navItem) => {
+[7m  [0m [91m                             ~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/kbar/index.tsx[0m:[93m42[0m:[93m29[0m - [91merror[0m[90m TS7006: [0mParameter 'childItem' implicitly has an 'any' type.
+
+[7m42[0m         navItem.items?.map((childItem) => ({
+[7m  [0m [91m                            ~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m6[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/collapsible' or its corresponding type declarations.
+
+[7m6[0m } from '@/components/ui/collapsible';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m14[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/dropdown-menu' or its corresponding type declarations.
+
+[7m14[0m } from '@/components/ui/dropdown-menu';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m29[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/sidebar' or its corresponding type declarations.
+
+[7m29[0m } from '@/components/ui/sidebar';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m30[0m:[93m35[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/user-avatar-profile' or its corresponding type declarations.
+
+[7m30[0m import { UserAvatarProfile } from '@/components/user-avatar-profile';
+[7m  [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m31[0m:[93m26[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/constants/data.ts' is not a module.
+
+[7m31[0m import { navItems } from '@/constants/data';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m32[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/hooks/use-media-query' or its corresponding type declarations.
+
+[7m32[0m import { useMediaQuery } from '@/hooks/use-media-query';
+[7m  [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m33[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m33[0m import { createSupabaseClient } from '@/lib/supabase';
+[7m  [0m [91m                                     ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m83[0m:[93m28[0m - [91merror[0m[90m TS7006: [0mParameter 'item' implicitly has an 'any' type.
+
+[7m83[0m             {navItems.map((item) => {
+[7m  [0m [91m                           ~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m84[0m:[93m40[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ dashboard: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>; logo: ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>; ... 31 more ...; platforms: ForwardRefExoticComponent<...>; }'.
+
+[7m84[0m               const Icon = item.icon ? Icons[item.icon] : Icons.logo;
+[7m  [0m [91m                                       ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/app-sidebar.tsx[0m:[93m105[0m:[93m43[0m - [91merror[0m[90m TS7006: [0mParameter 'subItem' implicitly has an 'any' type.
+
+[7m105[0m                         {item.items?.map((subItem) => (
+[7m   [0m [91m                                          ~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/cta-github.tsx[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m2[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/page-container.tsx[0m:[93m1[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/scroll-area' or its corresponding type declarations.
+
+[7m1[0m import { ScrollArea } from '@/components/ui/scroll-area';
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/ThemeToggle/theme-toggle.tsx[0m:[93m7[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m7[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/user-nav.tsx[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m2[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/user-nav.tsx[0m:[93m11[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/dropdown-menu' or its corresponding type declarations.
+
+[7m11[0m } from '@/components/ui/dropdown-menu';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/user-nav.tsx[0m:[93m12[0m:[93m35[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/user-avatar-profile' or its corresponding type declarations.
+
+[7m12[0m import { UserAvatarProfile } from '@/components/user-avatar-profile';
+[7m  [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/layout/user-nav.tsx[0m:[93m13[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m13[0m import { createSupabaseClient } from '@/lib/supabase';
+[7m  [0m [91m                                     ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/modal/alert-modal.tsx[0m:[93m3[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m3[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/modal/alert-modal.tsx[0m:[93m4[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/modal' or its corresponding type declarations.
+
+[7m4[0m import { Modal } from '@/components/ui/modal';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/nav-main.tsx[0m:[93m9[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/collapsible' or its corresponding type declarations.
+
+[7m9[0m } from '@/components/ui/collapsible';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/nav-main.tsx[0m:[93m20[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/sidebar' or its corresponding type declarations.
+
+[7m20[0m } from '@/components/ui/sidebar';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/nav-main.tsx[0m:[93m21[0m:[93m22[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/icons.tsx' is not a module.
+
+[7m21[0m import { Icon } from '@/components/icons';
+[7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/nav-projects.tsx[0m:[93m16[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/dropdown-menu' or its corresponding type declarations.
+
+[7m16[0m } from '@/components/ui/dropdown-menu';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/nav-projects.tsx[0m:[93m25[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/sidebar' or its corresponding type declarations.
+
+[7m25[0m } from '@/components/ui/sidebar';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/nav-projects.tsx[0m:[93m26[0m:[93m22[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/icons.tsx' is not a module.
+
+[7m26[0m import { Icon } from '@/components/icons';
+[7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/nav-user.tsx[0m:[93m14[0m:[93m53[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/avatar' or its corresponding type declarations.
+
+[7m14[0m import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+[7m  [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/nav-user.tsx[0m:[93m23[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/dropdown-menu' or its corresponding type declarations.
+
+[7m23[0m } from '@/components/ui/dropdown-menu';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/nav-user.tsx[0m:[93m29[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/sidebar' or its corresponding type declarations.
+
+[7m29[0m } from '@/components/ui/sidebar';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/org-switcher.tsx[0m:[93m11[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/dropdown-menu' or its corresponding type declarations.
+
+[7m11[0m } from '@/components/ui/dropdown-menu';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/org-switcher.tsx[0m:[93m16[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/sidebar' or its corresponding type declarations.
+
+[7m16[0m } from '@/components/ui/sidebar';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/theme-selector.tsx[0m:[93m3[0m:[93m32[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/active-theme.tsx' is not a module.
+
+[7m3[0m import { useThemeConfig } from '@/components/active-theme';
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/theme-selector.tsx[0m:[93m4[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/label' or its corresponding type declarations.
+
+[7m4[0m import { Label } from '@/components/ui/label';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/theme-selector.tsx[0m:[93m14[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/select' or its corresponding type declarations.
+
+[7m14[0m } from '@/components/ui/select';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/accordion.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/alert-dialog.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/alert-dialog.tsx[0m:[93m7[0m:[93m32[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m7[0m import { buttonVariants } from '@/components/ui/button';
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/alert.tsx[0m:[93m4[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m4[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/avatar.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/badge.tsx[0m:[93m5[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m5[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/breadcrumb.tsx[0m:[93m5[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m5[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/button.tsx[0m:[93m5[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m5[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/calendar.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/calendar.tsx[0m:[93m8[0m:[93m32[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m8[0m import { buttonVariants } from '@/components/ui/button';
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/card.tsx[0m:[93m3[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m3[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/chart.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/checkbox.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/command.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/command.tsx[0m:[93m14[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m14[0m } from '@/components/ui/dialog';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/context-menu.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/dialog.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/drawer.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/dropdown-menu.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/form.tsx[0m:[93m16[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m16[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/form.tsx[0m:[93m17[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/label' or its corresponding type declarations.
+
+[7m17[0m import { Label } from '@/components/ui/label';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/hover-card.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/input-otp.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/input.tsx[0m:[93m3[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m3[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/label.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/menubar.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/modal.tsx[0m:[93m8[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m8[0m } from '@/components/ui/dialog';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/navigation-menu.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/pagination.tsx[0m:[93m8[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m8[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/pagination.tsx[0m:[93m9[0m:[93m40[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m9[0m import { Button, buttonVariants } from '@/components/ui/button';
+[7m [0m [91m                                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/pagination.tsx[0m:[93m75[0m:[93m7[0m - [91merror[0m[90m TS2783: [0m'size' is specified more than once, so this usage will be overwritten.
+
+[7m75[0m       size='default'
+[7m  [0m [91m      ~~~~~~~~~~~~~~[0m
+
+  [96m../../apps/frontend/src/components/ui/pagination.tsx[0m:[93m77[0m:[93m7[0m
+    [7m77[0m       {...props}
+    [7m  [0m [96m      ~~~~~~~~~~[0m
+    This spread always overwrites this property.
+
+[96m../../apps/frontend/src/components/ui/pagination.tsx[0m:[93m92[0m:[93m7[0m - [91merror[0m[90m TS2783: [0m'size' is specified more than once, so this usage will be overwritten.
+
+[7m92[0m       size='default'
+[7m  [0m [91m      ~~~~~~~~~~~~~~[0m
+
+  [96m../../apps/frontend/src/components/ui/pagination.tsx[0m:[93m94[0m:[93m7[0m
+    [7m94[0m       {...props}
+    [7m  [0m [96m      ~~~~~~~~~~[0m
+    This spread always overwrites this property.
+
+[96m../../apps/frontend/src/components/ui/popover.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/progress.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/radio-group.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/resizable.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/scroll-area.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/select.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/separator.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sheet.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sidebar.tsx[0m:[93m7[0m:[93m29[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/hooks/use-mobile' or its corresponding type declarations.
+
+[7m7[0m import { useIsMobile } from '@/hooks/use-mobile';
+[7m [0m [91m                            ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sidebar.tsx[0m:[93m8[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m8[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sidebar.tsx[0m:[93m9[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m9[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sidebar.tsx[0m:[93m10[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m10[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sidebar.tsx[0m:[93m11[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/separator' or its corresponding type declarations.
+
+[7m11[0m import { Separator } from '@/components/ui/separator';
+[7m  [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sidebar.tsx[0m:[93m18[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/sheet' or its corresponding type declarations.
+
+[7m18[0m } from '@/components/ui/sheet';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sidebar.tsx[0m:[93m19[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m19[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sidebar.tsx[0m:[93m25[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/tooltip' or its corresponding type declarations.
+
+[7m25[0m } from '@/components/ui/tooltip';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/sidebar.tsx[0m:[93m269[0m:[93m17[0m - [91merror[0m[90m TS7006: [0mParameter 'event' implicitly has an 'any' type.
+
+[7m269[0m       onClick={(event) => {
+[7m   [0m [91m                ~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/skeleton.tsx[0m:[93m1[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m1[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/slider.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/switch.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table.tsx[0m:[93m5[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m5[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-column-header.tsx[0m:[93m12[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/dropdown-menu' or its corresponding type declarations.
+
+[7m12[0m } from '@/components/ui/dropdown-menu';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-column-header.tsx[0m:[93m13[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m13[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-column-header.tsx[0m:[93m30[0m:[93m3[0m - [91merror[0m[90m TS2339: [0mProperty 'className' does not exist on type 'DataTableColumnHeaderProps<TData, TValue>'.
+
+[7m30[0m   className,
+[7m  [0m [91m  ~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-date-filter.tsx[0m:[93m8[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m8[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-date-filter.tsx[0m:[93m9[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/calendar' or its corresponding type declarations.
+
+[7m9[0m import { Calendar } from '@/components/ui/calendar';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-date-filter.tsx[0m:[93m14[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/popover' or its corresponding type declarations.
+
+[7m14[0m } from '@/components/ui/popover';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-date-filter.tsx[0m:[93m15[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/separator' or its corresponding type declarations.
+
+[7m15[0m import { Separator } from '@/components/ui/separator';
+[7m  [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-date-filter.tsx[0m:[93m16[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/format' or its corresponding type declarations.
+
+[7m16[0m import { formatDate } from '@/lib/format';
+[7m  [0m [91m                           ~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-faceted-filter.tsx[0m:[93m3[0m:[93m29[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/types/data-table' or its corresponding type declarations.
+
+[7m3[0m import type { Option } from '@/types/data-table';
+[7m [0m [91m                            ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-faceted-filter.tsx[0m:[93m7[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/badge' or its corresponding type declarations.
+
+[7m7[0m import { Badge } from '@/components/ui/badge';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-faceted-filter.tsx[0m:[93m8[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m8[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-faceted-filter.tsx[0m:[93m17[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/command' or its corresponding type declarations.
+
+[7m17[0m } from '@/components/ui/command';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-faceted-filter.tsx[0m:[93m22[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/popover' or its corresponding type declarations.
+
+[7m22[0m } from '@/components/ui/popover';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-faceted-filter.tsx[0m:[93m23[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/separator' or its corresponding type declarations.
+
+[7m23[0m import { Separator } from '@/components/ui/separator';
+[7m  [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-faceted-filter.tsx[0m:[93m24[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m24[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-pagination.tsx[0m:[93m4[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m4[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-pagination.tsx[0m:[93m11[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/select' or its corresponding type declarations.
+
+[7m11[0m } from '@/components/ui/select';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-pagination.tsx[0m:[93m12[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m12[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-pagination.tsx[0m:[93m49[0m:[93m29[0m - [91merror[0m[90m TS7006: [0mParameter 'value' implicitly has an 'any' type.
+
+[7m49[0m             onValueChange={(value) => {
+[7m  [0m [91m                            ~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-skeleton.tsx[0m:[93m1[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m1[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-skeleton.tsx[0m:[93m9[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/table' or its corresponding type declarations.
+
+[7m9[0m } from '@/components/ui/table';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-skeleton.tsx[0m:[93m10[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m10[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-slider-filter.tsx[0m:[93m6[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m6[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-slider-filter.tsx[0m:[93m7[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m7[0m import { Input } from '@/components/ui/input';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-slider-filter.tsx[0m:[93m8[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/label' or its corresponding type declarations.
+
+[7m8[0m import { Label } from '@/components/ui/label';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-slider-filter.tsx[0m:[93m13[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/popover' or its corresponding type declarations.
+
+[7m13[0m } from '@/components/ui/popover';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-slider-filter.tsx[0m:[93m14[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/separator' or its corresponding type declarations.
+
+[7m14[0m import { Separator } from '@/components/ui/separator';
+[7m  [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-slider-filter.tsx[0m:[93m15[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/slider' or its corresponding type declarations.
+
+[7m15[0m import { Slider } from '@/components/ui/slider';
+[7m  [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-slider-filter.tsx[0m:[93m16[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m16[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[0m:[93m6[0m:[93m37[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/table/data-table-date-filter' or its corresponding type declarations.
+
+[7m6[0m import { DataTableDateFilter } from '@/components/ui/table/data-table-date-filter';
+[7m [0m [91m                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[0m:[93m7[0m:[93m40[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/table/data-table-faceted-filter' or its corresponding type declarations.
+
+[7m7[0m import { DataTableFacetedFilter } from '@/components/ui/table/data-table-faceted-filter';
+[7m [0m [91m                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[0m:[93m8[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/table/data-table-slider-filter' or its corresponding type declarations.
+
+[7m8[0m import { DataTableSliderFilter } from '@/components/ui/table/data-table-slider-filter';
+[7m [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[0m:[93m9[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/table/data-table-view-options' or its corresponding type declarations.
+
+[7m9[0m import { DataTableViewOptions } from '@/components/ui/table/data-table-view-options';
+[7m [0m [91m                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[0m:[93m10[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m10[0m import { Button } from '@/components/ui/button';
+[7m  [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[0m:[93m11[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m11[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[0m:[93m12[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m12[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[0m:[93m89[0m:[93m26[0m - [91merror[0m[90m TS7006: [0mParameter 'event' implicitly has an 'any' type.
+
+[7m89[0m               onChange={(event) => column.setFilterValue(event.target.value)}
+[7m  [0m [91m                         ~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[0m:[93m102[0m:[93m28[0m - [91merror[0m[90m TS7006: [0mParameter 'event' implicitly has an 'any' type.
+
+[7m102[0m                 onChange={(event) => column.setFilterValue(event.target.value)}
+[7m   [0m [91m                           ~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-view-options.tsx[0m:[93m6[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m6[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-view-options.tsx[0m:[93m14[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/command' or its corresponding type declarations.
+
+[7m14[0m } from '@/components/ui/command';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-view-options.tsx[0m:[93m19[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/popover' or its corresponding type declarations.
+
+[7m19[0m } from '@/components/ui/popover';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table-view-options.tsx[0m:[93m20[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m20[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table.tsx[0m:[93m4[0m:[93m37[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/table/data-table-pagination' or its corresponding type declarations.
+
+[7m4[0m import { DataTablePagination } from '@/components/ui/table/data-table-pagination';
+[7m [0m [91m                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table.tsx[0m:[93m12[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/table' or its corresponding type declarations.
+
+[7m12[0m } from '@/components/ui/table';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table.tsx[0m:[93m13[0m:[93m40[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/data-table' or its corresponding type declarations.
+
+[7m13[0m import { getCommonPinningStyles } from '@/lib/data-table';
+[7m  [0m [91m                                       ~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/table/data-table.tsx[0m:[93m14[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/scroll-area' or its corresponding type declarations.
+
+[7m14[0m import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+[7m  [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/tabs.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/textarea.tsx[0m:[93m3[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m3[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/toggle-group.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/toggle-group.tsx[0m:[93m8[0m:[93m32[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/toggle' or its corresponding type declarations.
+
+[7m8[0m import { toggleVariants } from '@/components/ui/toggle';
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/toggle.tsx[0m:[93m7[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m7[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/ui/tooltip.tsx[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m6[0m import { cn } from '@/lib/utils';
+[7m [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/components/user-avatar-profile.tsx[0m:[93m1[0m:[93m53[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/avatar' or its corresponding type declarations.
+
+[7m1[0m import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/constants/data.ts[0m:[93m1[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/types' or its corresponding type declarations.
+
+[7m1[0m import { NavItem } from '@/types';
+[7m [0m [91m                        ~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/forgot-password-form.tsx[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m2[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/forgot-password-form.tsx[0m:[93m8[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m8[0m } from '@/components/ui/card';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/forgot-password-form.tsx[0m:[93m16[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/form' or its corresponding type declarations.
+
+[7m16[0m } from '@/components/ui/form';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/forgot-password-form.tsx[0m:[93m17[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m17[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/forgot-password-form.tsx[0m:[93m18[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m18[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/forgot-password-form.tsx[0m:[93m275[0m:[93m28[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m275[0m                 render={({ field }) => (
+[7m   [0m [91m                           ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/github-auth-button.tsx[0m:[93m4[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m4[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/github-auth-button.tsx[0m:[93m5[0m:[93m23[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/icons.tsx' is not a module.
+
+[7m5[0m import { Icons } from '@/components/icons';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form-new.tsx[0m:[93m3[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m3[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form-new.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/card';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form-new.tsx[0m:[93m18[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/form' or its corresponding type declarations.
+
+[7m18[0m } from '@/components/ui/form';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form-new.tsx[0m:[93m19[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m19[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form-new.tsx[0m:[93m20[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m20[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form-new.tsx[0m:[93m134[0m:[93m26[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m134[0m               render={({ field }) => (
+[7m   [0m [91m                         ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form-new.tsx[0m:[93m173[0m:[93m26[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m173[0m               render={({ field }) => (
+[7m   [0m [91m                         ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form-new.tsx[0m:[93m231[0m:[93m26[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m231[0m               render={({ field }) => (
+[7m   [0m [91m                         ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form.tsx[0m:[93m3[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m3[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/card';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form.tsx[0m:[93m18[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/form' or its corresponding type declarations.
+
+[7m18[0m } from '@/components/ui/form';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form.tsx[0m:[93m19[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m19[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form.tsx[0m:[93m20[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m20[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form.tsx[0m:[93m133[0m:[93m26[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m133[0m               render={({ field }) => (
+[7m   [0m [91m                         ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form.tsx[0m:[93m172[0m:[93m26[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m172[0m               render={({ field }) => (
+[7m   [0m [91m                         ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/password-change-form.tsx[0m:[93m230[0m:[93m26[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m230[0m               render={({ field }) => (
+[7m   [0m [91m                         ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/reset-password-form.tsx[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m2[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/reset-password-form.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/form' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/form';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/reset-password-form.tsx[0m:[93m11[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m11[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/reset-password-form.tsx[0m:[93m12[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m12[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/reset-password-form.tsx[0m:[93m113[0m:[93m24[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m113[0m             render={({ field }) => (
+[7m   [0m [91m                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/reset-password-form.tsx[0m:[93m132[0m:[93m24[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m132[0m             render={({ field }) => (
+[7m   [0m [91m                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/reset-password-view.tsx[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/icons.tsx' is not a module.
+
+[7m1[0m import { Icons } from '@/components/icons';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/reset-password-view.tsx[0m:[93m2[0m:[93m28[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/ThemeToggle/theme-toggle.tsx' is not a module.
+
+[7m2[0m import { ModeToggle } from '@/components/layout/ThemeToggle/theme-toggle';
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/sign-in-view.tsx[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/icons.tsx' is not a module.
+
+[7m1[0m import { Icons } from '@/components/icons';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/sign-in-view.tsx[0m:[93m2[0m:[93m28[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/ThemeToggle/theme-toggle.tsx' is not a module.
+
+[7m2[0m import { ModeToggle } from '@/components/layout/ThemeToggle/theme-toggle';
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/sign-up-view.tsx[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/icons.tsx' is not a module.
+
+[7m1[0m import { Icons } from '@/components/icons';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/sign-up-view.tsx[0m:[93m2[0m:[93m28[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/ThemeToggle/theme-toggle.tsx' is not a module.
+
+[7m2[0m import { ModeToggle } from '@/components/layout/ThemeToggle/theme-toggle';
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-auth-form.tsx[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m2[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-auth-form.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/form' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/form';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-auth-form.tsx[0m:[93m11[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m11[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-auth-form.tsx[0m:[93m12[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m12[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-auth-form.tsx[0m:[93m197[0m:[93m24[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m197[0m             render={({ field }) => (
+[7m   [0m [91m                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-auth-form.tsx[0m:[93m215[0m:[93m24[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m215[0m             render={({ field }) => (
+[7m   [0m [91m                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-signup-form.tsx[0m:[93m3[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m3[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-signup-form.tsx[0m:[93m11[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/form' or its corresponding type declarations.
+
+[7m11[0m } from '@/components/ui/form';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-signup-form.tsx[0m:[93m12[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m12[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-signup-form.tsx[0m:[93m18[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m18[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-signup-form.tsx[0m:[93m68[0m:[93m22[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m68[0m           render={({ field }) => (
+[7m  [0m [91m                     ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-signup-form.tsx[0m:[93m86[0m:[93m22[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m86[0m           render={({ field }) => (
+[7m  [0m [91m                     ~~~~~[0m
+
+[96m../../apps/frontend/src/features/auth/components/user-signup-form.tsx[0m:[93m104[0m:[93m22[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m104[0m           render={({ field }) => (
+[7m   [0m [91m                     ~~~~~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/integrations-section.tsx[0m:[93m25[0m:[93m41[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m25[0m       const { supabase } = await import('@/lib/supabase');
+[7m  [0m [91m                                        ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/platforms-section.tsx[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m2[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/platforms-section.tsx[0m:[93m9[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m9[0m } from '@/components/ui/dialog';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/platforms-section.tsx[0m:[93m10[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m10[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/platforms-section.tsx[0m:[93m44[0m:[93m41[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m44[0m       const { supabase } = await import('@/lib/supabase');
+[7m  [0m [91m                                        ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/platforms-section.tsx[0m:[93m83[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m83[0m     const { supabase } = await import('@/lib/supabase');
+[7m  [0m [91m                                      ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/platforms-section.tsx[0m:[93m116[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m116[0m     const { supabase } = await import('@/lib/supabase');
+[7m   [0m [91m                                      ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/platforms-section.tsx[0m:[93m201[0m:[93m31[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m201[0m                     onClick={(e) => {
+[7m   [0m [91m                              ~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/platforms-section.tsx[0m:[93m225[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'open' implicitly has an 'any' type.
+
+[7m225[0m         onOpenChange={(open) => {
+[7m   [0m [91m                       ~~~~[0m
+
+[96m../../apps/frontend/src/features/integrations/components/platforms-section.tsx[0m:[93m260[0m:[93m30[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m260[0m                   onChange={(e) => setToken(e.target.value)}
+[7m   [0m [91m                             ~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/board-column.tsx[0m:[93m8[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m8[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/board-column.tsx[0m:[93m9[0m:[93m47[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m9[0m import { Card, CardContent, CardHeader } from '@/components/ui/card';
+[7m [0m [91m                                              ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/board-column.tsx[0m:[93m12[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/scroll-area' or its corresponding type declarations.
+
+[7m12[0m import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+[7m  [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/column-action.tsx[0m:[93m13[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/alert-dialog' or its corresponding type declarations.
+
+[7m13[0m } from '@/components/ui/alert-dialog';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/column-action.tsx[0m:[93m14[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m14[0m import { Button } from '@/components/ui/button';
+[7m  [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/column-action.tsx[0m:[93m21[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/dropdown-menu' or its corresponding type declarations.
+
+[7m21[0m } from '@/components/ui/dropdown-menu';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/column-action.tsx[0m:[93m24[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m24[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/column-action.tsx[0m:[93m53[0m:[93m22[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m53[0m           onChange={(e) => setName(e.target.value)}
+[7m  [0m [91m                     ~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/kanban-view-page.tsx[0m:[93m1[0m:[93m27[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/page-container.tsx' is not a module.
+
+[7m1[0m import PageContainer from '@/components/layout/page-container';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/kanban-view-page.tsx[0m:[93m2[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/heading' or its corresponding type declarations.
+
+[7m2[0m import { Heading } from '@/components/ui/heading';
+[7m [0m [91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/new-section-dialog.tsx[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m2[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/new-section-dialog.tsx[0m:[93m11[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m11[0m } from '@/components/ui/dialog';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/new-section-dialog.tsx[0m:[93m12[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m12[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/new-task-dialog.tsx[0m:[93m3[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m3[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/new-task-dialog.tsx[0m:[93m12[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m12[0m } from '@/components/ui/dialog';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/new-task-dialog.tsx[0m:[93m13[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m13[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/new-task-dialog.tsx[0m:[93m14[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/textarea' or its corresponding type declarations.
+
+[7m14[0m import { Textarea } from '@/components/ui/textarea';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/task-card.tsx[0m:[93m1[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m1[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/task-card.tsx[0m:[93m2[0m:[93m47[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m2[0m import { Card, CardContent, CardHeader } from '@/components/ui/card';
+[7m [0m [91m                                              ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/kanban/components/task-card.tsx[0m:[93m8[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/badge' or its corresponding type declarations.
+
+[7m8[0m import { Badge } from '@/components/ui/badge';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/area-graph-skeleton.tsx[0m:[93m1[0m:[93m47[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader } from '@/components/ui/card';
+[7m [0m [91m                                              ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/area-graph-skeleton.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m2[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/area-graph.tsx[0m:[93m13[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m13[0m } from '@/components/ui/card';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/area-graph.tsx[0m:[93m19[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/chart.tsx' is not a module.
+
+[7m19[0m } from '@/components/ui/chart';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/bar-graph-skeleton.tsx[0m:[93m1[0m:[93m47[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader } from '@/components/ui/card';
+[7m [0m [91m                                              ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/bar-graph-skeleton.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m2[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/bar-graph.tsx[0m:[93m12[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m12[0m } from '@/components/ui/card';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/bar-graph.tsx[0m:[93m18[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/chart.tsx' is not a module.
+
+[7m18[0m } from '@/components/ui/chart';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/bar-graph.tsx[0m:[93m180[0m:[93m17[0m - [91merror[0m[90m TS2322: [0mType 'string | number | symbol' is not assignable to type 'Key | null | undefined'.
+  Type 'symbol' is not assignable to type 'Key | null | undefined'.
+
+[7m180[0m                 key={chart}
+[7m   [0m [91m                ~~~[0m
+
+  [96m../../node_modules/.pnpm/@types+react@19.0.1/node_modules/@types/react/index.d.ts[0m:[93m249[0m:[93m9[0m
+    [7m249[0m         key?: Key | null | undefined;
+    [7m   [0m [96m        ~~~[0m
+    The expected type comes from property 'key' which is declared here on type 'DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>'
+
+[96m../../apps/frontend/src/features/overview/components/bar-graph.tsx[0m:[93m243[0m:[93m36[0m - [91merror[0m[90m TS7006: [0mParameter 'value' implicitly has an 'any' type.
+
+[7m243[0m                   labelFormatter={(value) => {
+[7m   [0m [91m                                   ~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/bar-graph.tsx[0m:[93m254[0m:[93m15[0m - [91merror[0m[90m TS2322: [0mType 'string | number | symbol' is not assignable to type 'DataKey<any>'.
+  Type 'symbol' is not assignable to type 'DataKey<any>'.
+
+[7m254[0m               dataKey={activeChart}
+[7m   [0m [91m              ~~~~~~~[0m
+
+  [96m../../node_modules/.pnpm/recharts@2.15.3_react-dom@19.0.0_react@19.0.0__react@19.0.0/node_modules/recharts/types/cartesian/Bar.d.ts[0m:[93m49[0m:[93m5[0m
+    [7m49[0m     dataKey: DataKey<any>;
+    [7m  [0m [96m    ~~~~~~~[0m
+    The expected type comes from property 'dataKey' which is declared here on type 'IntrinsicAttributes & IntrinsicClassAttributes<Bar> & Pick<Readonly<Props>, "string" | "path" | "href" | ... 499 more ... | "yAxis"> & InexactPartial<...> & InexactPartial<...>'
+
+[96m../../apps/frontend/src/features/overview/components/overview.tsx[0m:[93m1[0m:[93m27[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/layout/page-container.tsx' is not a module.
+
+[7m1[0m import PageContainer from '@/components/layout/page-container';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/overview.tsx[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m2[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/overview.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/card';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/overview.tsx[0m:[93m11[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/tabs' or its corresponding type declarations.
+
+[7m11[0m import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+[7m  [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/overview.tsx[0m:[93m17[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/badge' or its corresponding type declarations.
+
+[7m17[0m import { Badge } from '@/components/ui/badge';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCards.tsx[0m:[93m1[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+[7m [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCardsSkeleton.tsx[0m:[93m1[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+[7m [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCardsSkeleton.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m2[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCharts.tsx[0m:[93m1[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+[7m [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCharts.tsx[0m:[93m2[0m:[93m53[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/chart.tsx' is not a module.
+
+[7m2[0m import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCharts.tsx[0m:[93m47[0m:[93m35[0m - [91merror[0m[90m TS7006: [0mParameter 'value' implicitly has an 'any' type.
+
+[7m47[0m                       formatter={(value, name, props) => {
+[7m  [0m [91m                                  ~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCharts.tsx[0m:[93m47[0m:[93m42[0m - [91merror[0m[90m TS7006: [0mParameter 'name' implicitly has an 'any' type.
+
+[7m47[0m                       formatter={(value, name, props) => {
+[7m  [0m [91m                                         ~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCharts.tsx[0m:[93m47[0m:[93m48[0m - [91merror[0m[90m TS7006: [0mParameter 'props' implicitly has an 'any' type.
+
+[7m47[0m                       formatter={(value, name, props) => {
+[7m  [0m [91m                                               ~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCharts.tsx[0m:[93m102[0m:[93m35[0m - [91merror[0m[90m TS7006: [0mParameter 'value' implicitly has an 'any' type.
+
+[7m102[0m                       formatter={(value, name, props) => {
+[7m   [0m [91m                                  ~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCharts.tsx[0m:[93m102[0m:[93m42[0m - [91merror[0m[90m TS7006: [0mParameter 'name' implicitly has an 'any' type.
+
+[7m102[0m                       formatter={(value, name, props) => {
+[7m   [0m [91m                                         ~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewCharts.tsx[0m:[93m102[0m:[93m48[0m - [91merror[0m[90m TS7006: [0mParameter 'props' implicitly has an 'any' type.
+
+[7m102[0m                       formatter={(value, name, props) => {
+[7m   [0m [91m                                               ~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewChartsSkeleton.tsx[0m:[93m1[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+[7m [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewChartsSkeleton.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m2[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewEventsTableSkeleton.tsx[0m:[93m1[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+[7m [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewEventsTableSkeleton.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m2[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewExtraCharts.tsx[0m:[93m1[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+[7m [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewExtraCharts.tsx[0m:[93m2[0m:[93m53[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/chart.tsx' is not a module.
+
+[7m2[0m import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewExtraCharts.tsx[0m:[93m139[0m:[93m35[0m - [91merror[0m[90m TS7006: [0mParameter 'value' implicitly has an 'any' type.
+
+[7m139[0m                       formatter={(value, name, props) => {
+[7m   [0m [91m                                  ~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewExtraCharts.tsx[0m:[93m139[0m:[93m42[0m - [91merror[0m[90m TS7006: [0mParameter 'name' implicitly has an 'any' type.
+
+[7m139[0m                       formatter={(value, name, props) => {
+[7m   [0m [91m                                         ~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewExtraCharts.tsx[0m:[93m139[0m:[93m48[0m - [91merror[0m[90m TS7006: [0mParameter 'props' implicitly has an 'any' type.
+
+[7m139[0m                       formatter={(value, name, props) => {
+[7m   [0m [91m                                               ~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewExtraChartsSkeleton.tsx[0m:[93m1[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+[7m [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewExtraChartsSkeleton.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m2[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewFilters.tsx[0m:[93m1[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/calendar' or its corresponding type declarations.
+
+[7m1[0m import { Calendar } from '@/components/ui/calendar';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewFilters.tsx[0m:[93m337[0m:[93m26[0m - [91merror[0m[90m TS7006: [0mParameter 'range' implicitly has an 'any' type.
+
+[7m337[0m               onSelect={(range) => {
+[7m   [0m [91m                         ~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewFilters.tsx[0m:[93m379[0m:[93m36[0m - [91merror[0m[90m TS7006: [0mParameter 'date' implicitly has an 'any' type.
+
+[7m379[0m                         onSelect={(date) => {
+[7m   [0m [91m                                   ~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewFilters.tsx[0m:[93m414[0m:[93m36[0m - [91merror[0m[90m TS7006: [0mParameter 'date' implicitly has an 'any' type.
+
+[7m414[0m                         onSelect={(date) => {
+[7m   [0m [91m                                   ~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewTables.tsx[0m:[93m1[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m1[0m import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+[7m [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/OverviewTables.tsx[0m:[93m9[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/table' or its corresponding type declarations.
+
+[7m9[0m } from '@/components/ui/table';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/pie-graph-skeleton.tsx[0m:[93m1[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m1[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/pie-graph-skeleton.tsx[0m:[93m2[0m:[93m47[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m2[0m import { Card, CardContent, CardHeader } from '@/components/ui/card';
+[7m [0m [91m                                              ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/pie-graph.tsx[0m:[93m14[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m14[0m } from '@/components/ui/card';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/pie-graph.tsx[0m:[93m20[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/chart.tsx' is not a module.
+
+[7m20[0m } from '@/components/ui/chart';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/recent-sales-skeleton.tsx[0m:[93m1[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m1[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/recent-sales-skeleton.tsx[0m:[93m2[0m:[93m47[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m2[0m import { Card, CardContent, CardHeader } from '@/components/ui/card';
+[7m [0m [91m                                              ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/recent-sales.tsx[0m:[93m1[0m:[93m53[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/avatar' or its corresponding type declarations.
+
+[7m1[0m import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/overview/components/recent-sales.tsx[0m:[93m8[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m8[0m } from '@/components/ui/card';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-extraction-status.tsx[0m:[93m1[0m:[93m53[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/alert.tsx' is not a module.
+
+[7m1[0m import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m3[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m3[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/card';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m17[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m17[0m } from '@/components/ui/dialog';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m18[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m18[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m19[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/switch' or its corresponding type declarations.
+
+[7m19[0m import { Switch } from '@/components/ui/switch';
+[7m  [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m20[0m:[93m58[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/tabs' or its corresponding type declarations.
+
+[7m20[0m import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+[7m  [0m [91m                                                         ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m21[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/textarea' or its corresponding type declarations.
+
+[7m21[0m import { Textarea } from '@/components/ui/textarea';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m22[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m22[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m884[0m:[93m41[0m - [91merror[0m[90m TS7006: [0mParameter 'checked' implicitly has an 'any' type.
+
+[7m884[0m                       onCheckedChange={(checked) =>
+[7m   [0m [91m                                        ~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1094[0m:[93m42[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1094[0m                               onChange={(e) =>
+[7m    [0m [91m                                         ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1116[0m:[93m42[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1116[0m                               onChange={(e) =>
+[7m    [0m [91m                                         ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1135[0m:[93m40[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1135[0m                             onChange={(e) =>
+[7m    [0m [91m                                       ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1254[0m:[93m46[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1254[0m                                   onChange={(e) =>
+[7m    [0m [91m                                             ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1277[0m:[93m46[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1277[0m                                   onChange={(e) =>
+[7m    [0m [91m                                             ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1301[0m:[93m44[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1301[0m                                 onChange={(e) =>
+[7m    [0m [91m                                           ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1325[0m:[93m44[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1325[0m                                 onChange={(e) =>
+[7m    [0m [91m                                           ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1395[0m:[93m48[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1395[0m                                     onChange={(e) =>
+[7m    [0m [91m                                               ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1417[0m:[93m48[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1417[0m                                     onChange={(e) =>
+[7m    [0m [91m                                               ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1439[0m:[93m48[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m1439[0m                                     onChange={(e) =>
+[7m    [0m [91m                                               ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-form.tsx[0m:[93m1584[0m:[93m24[0m - [91merror[0m[90m TS7006: [0mParameter 'open' implicitly has an 'any' type.
+
+[7m1584[0m         onOpenChange={(open) => {
+[7m    [0m [91m                       ~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-listing.tsx[0m:[93m3[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m3[0m import { supabase } from '@/lib/supabase';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-onboarding-dialog.tsx[0m:[93m3[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m3[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-onboarding-dialog.tsx[0m:[93m11[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m11[0m } from '@/components/ui/dialog';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-onboarding-dialog.tsx[0m:[93m12[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m12[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-onboarding-dialog.tsx[0m:[93m109[0m:[93m42[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m109[0m       <DialogContent onInteractOutside={(e) => e.preventDefault()}>
+[7m   [0m [91m                                         ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-onboarding-dialog.tsx[0m:[93m189[0m:[93m26[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m189[0m               onChange={(e) => setUrl(e.target.value)}
+[7m   [0m [91m                         ~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-tables/cell-action.tsx[0m:[93m2[0m:[93m28[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/modal/alert-modal' or its corresponding type declarations.
+
+[7m2[0m import { AlertModal } from '@/components/modal/alert-modal';
+[7m [0m [91m                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-tables/cell-action.tsx[0m:[93m3[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m3[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-tables/cell-action.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/dropdown-menu' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/dropdown-menu';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-tables/cell-action.tsx[0m:[93m11[0m:[93m25[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/constants/data.ts' is not a module.
+
+[7m11[0m import { Product } from '@/constants/data';
+[7m  [0m [91m                        ~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-tables/cell-action.tsx[0m:[93m12[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m12[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-tables/columns.tsx[0m:[93m2[0m:[93m39[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/table/data-table-column-header.tsx' is not a module.
+
+[7m2[0m import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-header';
+[7m [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-tables/columns.tsx[0m:[93m3[0m:[93m25[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/constants/data.ts' is not a module.
+
+[7m3[0m import { Product } from '@/constants/data';
+[7m [0m [91m                        ~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/products/components/product-view-page.tsx[0m:[93m1[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m1[0m import { supabase } from '@/lib/supabase';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m7[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/accordion' or its corresponding type declarations.
+
+[7m7[0m } from '@/components/ui/accordion';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m8[0m:[93m24[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/button.tsx' is not a module.
+
+[7m8[0m import { Button } from '@/components/ui/button';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m16[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/form' or its corresponding type declarations.
+
+[7m16[0m } from '@/components/ui/form';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m17[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/heading' or its corresponding type declarations.
+
+[7m17[0m import { Heading } from '@/components/ui/heading';
+[7m  [0m [91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m18[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m18[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m25[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/select' or its corresponding type declarations.
+
+[7m25[0m } from '@/components/ui/select';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m26[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/separator' or its corresponding type declarations.
+
+[7m26[0m import { Separator } from '@/components/ui/separator';
+[7m  [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m28[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m28[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m210[0m:[93m30[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m210[0m                   render={({ field }) => (
+[7m   [0m [91m                             ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m227[0m:[93m30[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m227[0m                   render={({ field }) => (
+[7m   [0m [91m                             ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m244[0m:[93m30[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m244[0m                   render={({ field }) => (
+[7m   [0m [91m                             ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m261[0m:[93m30[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m261[0m                   render={({ field }) => (
+[7m   [0m [91m                             ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m279[0m:[93m30[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m279[0m                   render={({ field }) => (
+[7m   [0m [91m                             ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m312[0m:[93m30[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m312[0m                   render={({ field }) => (
+[7m   [0m [91m                             ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m385[0m:[93m40[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m385[0m                             render={({ field }) => (
+[7m   [0m [91m                                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m402[0m:[93m40[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m402[0m                             render={({ field }) => (
+[7m   [0m [91m                                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m419[0m:[93m40[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m419[0m                             render={({ field }) => (
+[7m   [0m [91m                                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m436[0m:[93m40[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m436[0m                             render={({ field }) => (
+[7m   [0m [91m                                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m453[0m:[93m40[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m453[0m                             render={({ field }) => (
+[7m   [0m [91m                                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-create-form.tsx[0m:[93m488[0m:[93m40[0m - [91merror[0m[90m TS7031: [0mBinding element 'field' implicitly has an 'any' type.
+
+[7m488[0m                             render={({ field }) => (
+[7m   [0m [91m                                       ~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-info-section.tsx[0m:[93m3[0m:[93m53[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/avatar' or its corresponding type declarations.
+
+[7m3[0m import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+[7m [0m [91m                                                    ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-info-section.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/card' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/card';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-info-section.tsx[0m:[93m11[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/skeleton' or its corresponding type declarations.
+
+[7m11[0m import { Skeleton } from '@/components/ui/skeleton';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-info-section.tsx[0m:[93m12[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m12[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-view-page.tsx[0m:[93m1[0m:[93m25[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/heading' or its corresponding type declarations.
+
+[7m1[0m import { Heading } from '@/components/ui/heading';
+[7m [0m [91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-view-page.tsx[0m:[93m2[0m:[93m27[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/separator' or its corresponding type declarations.
+
+[7m2[0m import { Separator } from '@/components/ui/separator';
+[7m [0m [91m                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/profile/components/profile-view-page.tsx[0m:[93m3[0m:[93m32[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/features/auth/components/password-change-form.tsx' is not a module.
+
+[7m3[0m import PasswordChangeForm from '@/features/auth/components/password-change-form';
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-form.tsx[0m:[93m4[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m4[0m import { supabase } from '@/lib/supabase';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-listing.tsx[0m:[93m3[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m3[0m import { supabase } from '@/lib/supabase';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-onboarding.tsx[0m:[93m2[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m2[0m import { supabase } from '@/lib/supabase';
+[7m [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[0m:[93m10[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/alert-dialog' or its corresponding type declarations.
+
+[7m10[0m } from '@/components/ui/alert-dialog';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[0m:[93m17[0m:[93m8[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/dialog.tsx' is not a module.
+
+[7m17[0m } from '@/components/ui/dialog';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[0m:[93m18[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[7m18[0m import { Input } from '@/components/ui/input';
+[7m  [0m [91m                      ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[0m:[93m19[0m:[93m39[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/ui/table/data-table-column-header.tsx' is not a module.
+
+[7m19[0m import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-header';
+[7m  [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[0m:[93m25[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/components/ui/tooltip' or its corresponding type declarations.
+
+[7m25[0m } from '@/components/ui/tooltip';
+[7m  [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[0m:[93m26[0m:[93m26[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/supabase' or its corresponding type declarations.
+
+[7m26[0m import { supabase } from '@/lib/supabase';
+[7m  [0m [91m                         ~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[0m:[93m91[0m:[93m26[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m91[0m               onChange={(e) => setEditValue(e.target.value)}
+[7m  [0m [91m                         ~[0m
+
+[96m../../apps/frontend/src/hooks/use-controllable-state.tsx[0m:[93m3[0m:[93m32[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/hooks/use-callback-ref' or its corresponding type declarations.
+
+[7m3[0m import { useCallbackRef } from '@/hooks/use-callback-ref';
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/hooks/use-data-table.ts[0m:[93m32[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/hooks/use-debounced-callback' or its corresponding type declarations.
+
+[7m32[0m import { useDebouncedCallback } from '@/hooks/use-debounced-callback';
+[7m  [0m [91m                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/hooks/use-data-table.ts[0m:[93m33[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/parsers' or its corresponding type declarations.
+
+[7m33[0m import { getSortingStateParser } from '@/lib/parsers';
+[7m  [0m [91m                                      ~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/hooks/use-data-table.ts[0m:[93m34[0m:[93m41[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/types/data-table' or its corresponding type declarations.
+
+[7m34[0m import type { ExtendedColumnSort } from '@/types/data-table';
+[7m  [0m [91m                                        ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/hooks/use-data-table.ts[0m:[93m160[0m:[93m43[0m - [91merror[0m[90m TS2345: [0mArgument of type '{}' is not assignable to parameter of type 'SortingState'.
+  Type '{}' is missing the following properties from type 'ColumnSort[]': length, pop, push, concat, and 35 more.
+
+[7m160[0m         const newSorting = updaterOrValue(sorting);
+[7m   [0m [91m                                          ~~~~~~~[0m
+
+[96m../../apps/frontend/src/hooks/use-data-table.ts[0m:[93m268[0m:[93m7[0m - [91merror[0m[90m TS2740: [0mType '{}' is missing the following properties from type 'ColumnSort[]': length, pop, push, concat, and 35 more.
+
+[7m268[0m       sorting,
+[7m   [0m [91m      ~~~~~~~[0m
+
+[96m../../apps/frontend/src/hooks/use-debounced-callback.ts[0m:[93m3[0m:[93m32[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/hooks/use-callback-ref' or its corresponding type declarations.
+
+[7m3[0m import { useCallbackRef } from '@/hooks/use-callback-ref';
+[7m [0m [91m                               ~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/lib/data-table.ts[0m:[93m5[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/types/data-table' or its corresponding type declarations.
+
+[7m5[0m } from '@/types/data-table';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/lib/data-table.ts[0m:[93m8[0m:[93m33[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/config/data-table' or its corresponding type declarations.
+
+[7m8[0m import { dataTableConfig } from '@/config/data-table';
+[7m [0m [91m                                ~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/lib/font.ts[0m:[93m10[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/utils' or its corresponding type declarations.
+
+[7m10[0m import { cn } from '@/lib/utils';
+[7m  [0m [91m                   ~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/lib/parsers.ts[0m:[93m4[0m:[93m33[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/config/data-table' or its corresponding type declarations.
+
+[7m4[0m import { dataTableConfig } from '@/config/data-table';
+[7m [0m [91m                                ~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/lib/parsers.ts[0m:[93m9[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/types/data-table' or its corresponding type declarations.
+
+[7m9[0m } from '@/types/data-table';
+[7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/lib/parsers.ts[0m:[93m79[0m:[93m68[0m - [91merror[0m[90m TS2345: [0mArgument of type 'unknown' is not assignable to parameter of type 'string'.
+
+[7m79[0m         if (validKeys && result.data.some((item) => !validKeys.has(item.id))) {
+[7m  [0m [91m                                                                   ~~~~~~~[0m
+
+[96m../../apps/frontend/src/types/data-table.ts[0m:[93m1[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/config/data-table' or its corresponding type declarations.
+
+[7m1[0m import type { DataTableConfig } from '@/config/data-table';
+[7m [0m [91m                                     ~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/types/data-table.ts[0m:[93m2[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '@/lib/parsers' or its corresponding type declarations.
+
+[7m2[0m import type { FilterItemSchema } from '@/lib/parsers';
+[7m [0m [91m                                      ~~~~~~~~~~~~~~~[0m
+
+[96m../../apps/frontend/src/types/index.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2306: [0mFile '/Users/amarczew/workspace/ap-dashboard/src/components/icons.tsx' is not a module.
+
+[7m1[0m import { Icons } from '@/components/icons';
+[7m [0m [91m                      ~~~~~~~~~~~~~~~~~~~~[0m
+
+
+Found 460 errors in 157 files.
+
+Errors  Files
+     1  ../../apps/frontend/src/app/auth/reset-password/page.tsx[90m:1[0m
+     1  ../../apps/frontend/src/app/auth/sign-in/[[...sign-in]]/page.tsx[90m:1[0m
+     1  ../../apps/frontend/src/app/auth/sign-up/[[...sign-up]]/page.tsx[90m:1[0m
+     1  ../../apps/frontend/src/app/dashboard/kanban/page.tsx[90m:1[0m
+     8  ../../apps/frontend/src/app/dashboard/layout.tsx[90m:3[0m
+     1  ../../apps/frontend/src/app/dashboard/overview/@area_stats/error.tsx[90m:3[0m
+     1  ../../apps/frontend/src/app/dashboard/overview/@area_stats/loading.tsx[90m:1[0m
+     2  ../../apps/frontend/src/app/dashboard/overview/@area_stats/page.tsx[90m:1[0m
+     3  ../../apps/frontend/src/app/dashboard/overview/@bar_stats/error.tsx[90m:3[0m
+     1  ../../apps/frontend/src/app/dashboard/overview/@bar_stats/loading.tsx[90m:1[0m
+     2  ../../apps/frontend/src/app/dashboard/overview/@bar_stats/page.tsx[90m:1[0m
+     1  ../../apps/frontend/src/app/dashboard/overview/@pie_stats/error.tsx[90m:3[0m
+     1  ../../apps/frontend/src/app/dashboard/overview/@pie_stats/loading.tsx[90m:1[0m
+     2  ../../apps/frontend/src/app/dashboard/overview/@pie_stats/page.tsx[90m:1[0m
+     1  ../../apps/frontend/src/app/dashboard/overview/@sales/error.tsx[90m:3[0m
+     1  ../../apps/frontend/src/app/dashboard/overview/@sales/loading.tsx[90m:1[0m
+     2  ../../apps/frontend/src/app/dashboard/overview/@sales/page.tsx[90m:1[0m
+     1  ../../apps/frontend/src/app/dashboard/overview/error.tsx[90m:3[0m
+     3  ../../apps/frontend/src/app/dashboard/overview/layout.tsx[90m:1[0m
+     6  ../../apps/frontend/src/app/dashboard/overview/page.tsx[90m:3[0m
+    11  ../../apps/frontend/src/app/dashboard/page.tsx[90m:3[0m
+     3  ../../apps/frontend/src/app/dashboard/platforms/page.tsx[90m:1[0m
+     3  ../../apps/frontend/src/app/dashboard/product/[productId]/page.tsx[90m:1[0m
+     1  ../../apps/frontend/src/app/dashboard/product/new/page.tsx[90m:3[0m
+     1  ../../apps/frontend/src/app/dashboard/product/page.tsx[90m:1[0m
+     9  ../../apps/frontend/src/app/dashboard/product/product-listing-shell.tsx[90m:2[0m
+     1  ../../apps/frontend/src/app/dashboard/profile/[[...profile]]/page.tsx[90m:1[0m
+     5  ../../apps/frontend/src/app/dashboard/whatsapp/new/page.tsx[90m:3[0m
+     4  ../../apps/frontend/src/app/dashboard/whatsapp/page.tsx[90m:1[0m
+     5  ../../apps/frontend/src/app/layout.tsx[90m:1[0m
+     1  ../../apps/frontend/src/app/not-found.tsx[90m:5[0m
+     4  ../../apps/frontend/src/components/breadcrumbs.tsx[90m:9[0m
+    10  ../../apps/frontend/src/components/file-uploader.tsx[90m:12[0m
+     3  ../../apps/frontend/src/components/kbar/index.tsx[90m:2[0m
+    10  ../../apps/frontend/src/components/layout/app-sidebar.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/layout/cta-github.tsx[90m:2[0m
+     1  ../../apps/frontend/src/components/layout/page-container.tsx[90m:1[0m
+     1  ../../apps/frontend/src/components/layout/ThemeToggle/theme-toggle.tsx[90m:7[0m
+     4  ../../apps/frontend/src/components/layout/user-nav.tsx[90m:2[0m
+     2  ../../apps/frontend/src/components/modal/alert-modal.tsx[90m:3[0m
+     3  ../../apps/frontend/src/components/nav-main.tsx[90m:9[0m
+     3  ../../apps/frontend/src/components/nav-projects.tsx[90m:16[0m
+     3  ../../apps/frontend/src/components/nav-user.tsx[90m:14[0m
+     2  ../../apps/frontend/src/components/org-switcher.tsx[90m:11[0m
+     3  ../../apps/frontend/src/components/theme-selector.tsx[90m:3[0m
+     1  ../../apps/frontend/src/components/ui/accordion.tsx[90m:7[0m
+     2  ../../apps/frontend/src/components/ui/alert-dialog.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/alert.tsx[90m:4[0m
+     1  ../../apps/frontend/src/components/ui/avatar.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/badge.tsx[90m:5[0m
+     1  ../../apps/frontend/src/components/ui/breadcrumb.tsx[90m:5[0m
+     1  ../../apps/frontend/src/components/ui/button.tsx[90m:5[0m
+     2  ../../apps/frontend/src/components/ui/calendar.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/card.tsx[90m:3[0m
+     1  ../../apps/frontend/src/components/ui/chart.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/checkbox.tsx[90m:7[0m
+     2  ../../apps/frontend/src/components/ui/command.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/context-menu.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/dialog.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/drawer.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/dropdown-menu.tsx[90m:7[0m
+     2  ../../apps/frontend/src/components/ui/form.tsx[90m:16[0m
+     1  ../../apps/frontend/src/components/ui/hover-card.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/input-otp.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/input.tsx[90m:3[0m
+     1  ../../apps/frontend/src/components/ui/label.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/menubar.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/modal.tsx[90m:8[0m
+     1  ../../apps/frontend/src/components/ui/navigation-menu.tsx[90m:6[0m
+     4  ../../apps/frontend/src/components/ui/pagination.tsx[90m:8[0m
+     1  ../../apps/frontend/src/components/ui/popover.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/progress.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/radio-group.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/resizable.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/scroll-area.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/select.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/separator.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/sheet.tsx[90m:7[0m
+     9  ../../apps/frontend/src/components/ui/sidebar.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/skeleton.tsx[90m:1[0m
+     1  ../../apps/frontend/src/components/ui/slider.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/switch.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/table.tsx[90m:5[0m
+     3  ../../apps/frontend/src/components/ui/table/data-table-column-header.tsx[90m:12[0m
+     5  ../../apps/frontend/src/components/ui/table/data-table-date-filter.tsx[90m:8[0m
+     7  ../../apps/frontend/src/components/ui/table/data-table-faceted-filter.tsx[90m:3[0m
+     4  ../../apps/frontend/src/components/ui/table/data-table-pagination.tsx[90m:4[0m
+     3  ../../apps/frontend/src/components/ui/table/data-table-skeleton.tsx[90m:1[0m
+     7  ../../apps/frontend/src/components/ui/table/data-table-slider-filter.tsx[90m:6[0m
+     9  ../../apps/frontend/src/components/ui/table/data-table-toolbar.tsx[90m:6[0m
+     4  ../../apps/frontend/src/components/ui/table/data-table-view-options.tsx[90m:6[0m
+     4  ../../apps/frontend/src/components/ui/table/data-table.tsx[90m:4[0m
+     1  ../../apps/frontend/src/components/ui/tabs.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/ui/textarea.tsx[90m:3[0m
+     2  ../../apps/frontend/src/components/ui/toggle-group.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/toggle.tsx[90m:7[0m
+     1  ../../apps/frontend/src/components/ui/tooltip.tsx[90m:6[0m
+     1  ../../apps/frontend/src/components/user-avatar-profile.tsx[90m:1[0m
+     1  ../../apps/frontend/src/constants/data.ts[90m:1[0m
+     6  ../../apps/frontend/src/features/auth/components/forgot-password-form.tsx[90m:2[0m
+     2  ../../apps/frontend/src/features/auth/components/github-auth-button.tsx[90m:4[0m
+     8  ../../apps/frontend/src/features/auth/components/password-change-form-new.tsx[90m:3[0m
+     8  ../../apps/frontend/src/features/auth/components/password-change-form.tsx[90m:3[0m
+     6  ../../apps/frontend/src/features/auth/components/reset-password-form.tsx[90m:2[0m
+     2  ../../apps/frontend/src/features/auth/components/reset-password-view.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/auth/components/sign-in-view.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/auth/components/sign-up-view.tsx[90m:1[0m
+     6  ../../apps/frontend/src/features/auth/components/user-auth-form.tsx[90m:2[0m
+     7  ../../apps/frontend/src/features/auth/components/user-signup-form.tsx[90m:3[0m
+     1  ../../apps/frontend/src/features/integrations/components/integrations-section.tsx[90m:25[0m
+     9  ../../apps/frontend/src/features/integrations/components/platforms-section.tsx[90m:2[0m
+     3  ../../apps/frontend/src/features/kanban/components/board-column.tsx[90m:8[0m
+     5  ../../apps/frontend/src/features/kanban/components/column-action.tsx[90m:13[0m
+     2  ../../apps/frontend/src/features/kanban/components/kanban-view-page.tsx[90m:1[0m
+     3  ../../apps/frontend/src/features/kanban/components/new-section-dialog.tsx[90m:2[0m
+     4  ../../apps/frontend/src/features/kanban/components/new-task-dialog.tsx[90m:3[0m
+     3  ../../apps/frontend/src/features/kanban/components/task-card.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/area-graph-skeleton.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/area-graph.tsx[90m:13[0m
+     2  ../../apps/frontend/src/features/overview/components/bar-graph-skeleton.tsx[90m:1[0m
+     5  ../../apps/frontend/src/features/overview/components/bar-graph.tsx[90m:12[0m
+     5  ../../apps/frontend/src/features/overview/components/overview.tsx[90m:1[0m
+     1  ../../apps/frontend/src/features/overview/components/OverviewCards.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/OverviewCardsSkeleton.tsx[90m:1[0m
+     8  ../../apps/frontend/src/features/overview/components/OverviewCharts.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/OverviewChartsSkeleton.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/OverviewEventsTableSkeleton.tsx[90m:1[0m
+     5  ../../apps/frontend/src/features/overview/components/OverviewExtraCharts.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/OverviewExtraChartsSkeleton.tsx[90m:1[0m
+     4  ../../apps/frontend/src/features/overview/components/OverviewFilters.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/OverviewTables.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/pie-graph-skeleton.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/pie-graph.tsx[90m:14[0m
+     2  ../../apps/frontend/src/features/overview/components/recent-sales-skeleton.tsx[90m:1[0m
+     2  ../../apps/frontend/src/features/overview/components/recent-sales.tsx[90m:1[0m
+     1  ../../apps/frontend/src/features/products/components/product-extraction-status.tsx[90m:1[0m
+    20  ../../apps/frontend/src/features/products/components/product-form.tsx[90m:3[0m
+     1  ../../apps/frontend/src/features/products/components/product-listing.tsx[90m:3[0m
+     5  ../../apps/frontend/src/features/products/components/product-onboarding-dialog.tsx[90m:3[0m
+     5  ../../apps/frontend/src/features/products/components/product-tables/cell-action.tsx[90m:2[0m
+     2  ../../apps/frontend/src/features/products/components/product-tables/columns.tsx[90m:2[0m
+     1  ../../apps/frontend/src/features/products/components/product-view-page.tsx[90m:1[0m
+    20  ../../apps/frontend/src/features/profile/components/profile-create-form.tsx[90m:7[0m
+     4  ../../apps/frontend/src/features/profile/components/profile-info-section.tsx[90m:3[0m
+     3  ../../apps/frontend/src/features/profile/components/profile-view-page.tsx[90m:1[0m
+     1  ../../apps/frontend/src/features/whatsapp/components/whatsapp-form.tsx[90m:4[0m
+     1  ../../apps/frontend/src/features/whatsapp/components/whatsapp-listing.tsx[90m:3[0m
+     1  ../../apps/frontend/src/features/whatsapp/components/whatsapp-onboarding.tsx[90m:2[0m
+     7  ../../apps/frontend/src/features/whatsapp/components/whatsapp-tables/columns.tsx[90m:10[0m
+     1  ../../apps/frontend/src/hooks/use-controllable-state.tsx[90m:3[0m
+     5  ../../apps/frontend/src/hooks/use-data-table.ts[90m:32[0m
+     1  ../../apps/frontend/src/hooks/use-debounced-callback.ts[90m:3[0m
+     2  ../../apps/frontend/src/lib/data-table.ts[90m:5[0m
+     1  ../../apps/frontend/src/lib/font.ts[90m:10[0m
+     3  ../../apps/frontend/src/lib/parsers.ts[90m:4[0m
+     2  ../../apps/frontend/src/types/data-table.ts[90m:1[0m
+     1  ../../apps/frontend/src/types/index.ts[90m:1[0m
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m

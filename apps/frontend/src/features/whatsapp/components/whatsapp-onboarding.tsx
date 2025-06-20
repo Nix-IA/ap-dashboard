@@ -43,7 +43,7 @@ export default function WhatsappOnboarding({
           } catch {
             setStep({
               step: 'error',
-              error: 'QR code inválido retornado pelo backend.'
+              error: 'Invalid QR code returned from backend.'
             });
             return;
           }
@@ -51,7 +51,7 @@ export default function WhatsappOnboarding({
         if (!qrcodeObj || !qrcodeObj.code) {
           setStep({
             step: 'error',
-            error: 'QR code não encontrado na resposta do backend.'
+            error: 'QR code not found in backend response.'
           });
           return;
         }

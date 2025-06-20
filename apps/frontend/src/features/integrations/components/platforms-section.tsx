@@ -38,7 +38,7 @@ export default function PlatformsSection() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  // Carrega seller
+  // Load seller
   useEffect(() => {
     (async () => {
       const { supabase } = await import('@/lib/supabase');
@@ -56,26 +56,26 @@ export default function PlatformsSection() {
     })();
   }, []);
 
-  // Abre modal de configuração
+  // Open configuration modal
   const openConfig = (platform: any) => {
     setModal({ type: 'config', platform });
     setToken('');
     setError('');
   };
-  // Abre modal de detalhes
+  // Open details modal
   const openDetails = (platform: any) => {
     setModal({ type: 'details', platform });
     setToken(seller?.[platform.tokenField] || '');
     setError('');
   };
-  // Fecha modal
+  // Close modal
   const closeModal = () => {
     setModal(null);
     setToken('');
     setError('');
   };
 
-  // Salva token (configuração ou edição)
+  // Save token (configuration or editing)
   const handleSave = async () => {
     if (!modal?.platform) return;
     setSaving(true);
@@ -219,7 +219,7 @@ export default function PlatformsSection() {
           );
         })}
       </div>
-      {/* Modal de configuração/detalhes */}
+      {/* Configuration/details modal */}
       <Dialog
         open={!!modal}
         onOpenChange={(open) => {

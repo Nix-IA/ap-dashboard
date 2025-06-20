@@ -200,7 +200,7 @@ export default function ProductForm({
     if (onboardingData) {
       const mapped = mapProductSchemaToForm(onboardingData);
       setForm(mapped);
-      setInitialForm(DEFAULT_PRODUCT); // <- Corrigido: initialForm é o vazio!
+      setInitialForm(DEFAULT_PRODUCT); // Fixed: initialForm is empty!
     } else if (initialData) {
       // status vem do products
       const status = initialData.status || 'inactive';
@@ -807,7 +807,7 @@ export default function ProductForm({
     }
   }
 
-  // Ao fechar o modal, scroll/foco no primeiro campo faltante
+  // When closing modal, scroll/focus to first missing field
   useEffect(() => {
     if (
       !showValidationModal &&
@@ -819,7 +819,7 @@ export default function ProductForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showValidationModal]);
 
-  // Helpers para saber se cada campo está com erro
+  // Helpers to know if each field has an error
   const fieldHasError = (field: string) =>
     submitAttempted &&
     validationErrors.some((err) =>

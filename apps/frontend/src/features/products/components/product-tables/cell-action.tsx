@@ -39,7 +39,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       .single();
     setLoading(false);
     if (error || !kbData) {
-      // fallback: redireciona para edição normal
+      // fallback: redirect to normal editing
       router.push(`/dashboard/product/${data.id}`);
       return;
     }
@@ -52,9 +52,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     } catch (e) {
       initialData = null;
     }
-    // Redireciona para a página de edição, passando initialData via querystring (ou sessionStorage/localStorage)
+    // Redirect to edit page, passing initialData via querystring (or sessionStorage/localStorage)
     if (initialData) {
-      // Salva no sessionStorage para ser lido na tela de edição
+      // Save to sessionStorage to be read on edit screen
       if (typeof window !== 'undefined') {
         sessionStorage.setItem(
           'agentpay_product_edit',

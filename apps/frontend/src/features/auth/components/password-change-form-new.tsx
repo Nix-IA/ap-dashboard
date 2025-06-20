@@ -54,7 +54,7 @@ export default function PasswordChangeForm() {
       } = await supabase.auth.getUser();
 
       if (userError || !user?.email) {
-        toast.error('Erro ao obter informações do usuário');
+        toast.error('Error retrieving user information');
         return;
       }
 
@@ -65,10 +65,10 @@ export default function PasswordChangeForm() {
       });
 
       if (signInError) {
-        toast.error('Senha atual incorreta');
+        toast.error('Current password is incorrect');
         form.setError('currentPassword', {
           type: 'manual',
-          message: 'Senha atual incorreta'
+          message: 'Current password is incorrect'
         });
         return;
       }
@@ -79,14 +79,14 @@ export default function PasswordChangeForm() {
       });
 
       if (updateError) {
-        toast.error(`Erro ao alterar senha: ${updateError.message}`);
+        toast.error(`Error changing password: ${updateError.message}`);
       } else {
-        toast.success('Senha alterada com sucesso!');
+        toast.success('Password changed successfully!');
         form.reset();
       }
     } catch (err) {
       console.error('Password change error:', err);
-      toast.error('Erro inesperado ao alterar senha. Tente novamente.');
+      toast.error('Unexpected error changing password. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -104,9 +104,9 @@ export default function PasswordChangeForm() {
     if (/\d/.test(password)) score++;
     if (/[^a-zA-Z\d]/.test(password)) score++;
 
-    if (score <= 2) return { score, text: 'Fraca', color: 'text-red-500' };
-    if (score <= 4) return { score, text: 'Média', color: 'text-yellow-500' };
-    return { score, text: 'Forte', color: 'text-green-500' };
+    if (score <= 2) return { score, text: 'Weak', color: 'text-red-500' };
+    if (score <= 4) return { score, text: 'Medium', color: 'text-yellow-500' };
+    return { score, text: 'Strong', color: 'text-green-500' };
   };
 
   const newPassword = form.watch('newPassword');
@@ -117,11 +117,11 @@ export default function PasswordChangeForm() {
       <CardHeader>
         <CardTitle className='flex items-center gap-2'>
           <IconShield className='h-5 w-5' />
-          Segurança da Conta
+          Account Security
         </CardTitle>
         <CardDescription>
-          Altere sua senha para manter sua conta segura. Use uma senha forte e
-          única.
+          Change your password to keep your account secure. Use a strong and
+          unique password.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -135,13 +135,13 @@ export default function PasswordChangeForm() {
                 <FormItem>
                   <FormLabel className='flex items-center gap-2'>
                     <IconLock className='h-4 w-4' />
-                    Senha Atual
+                    Current Password
                   </FormLabel>
                   <FormControl>
                     <div className='relative'>
                       <Input
                         type={showCurrentPassword ? 'text' : 'password'}
-                        placeholder='Digite sua senha atual'
+                        placeholder='Enter your current password'
                         disabled={loading}
                         {...field}
                         className='pr-10'
@@ -172,12 +172,12 @@ export default function PasswordChangeForm() {
               name='newPassword'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nova Senha</FormLabel>
+                  <FormLabel>New Password</FormLabel>
                   <FormControl>
                     <div className='relative'>
                       <Input
                         type={showNewPassword ? 'text' : 'password'}
-                        placeholder='Digite a nova senha'
+                        placeholder='Enter new password'
                         disabled={loading}
                         {...field}
                         className='pr-10'
@@ -197,7 +197,7 @@ export default function PasswordChangeForm() {
                   </FormControl>
                   {newPassword && (
                     <div className='flex items-center gap-2 text-sm'>
-                      <span>Força da senha:</span>
+                      <span>Password strength:</span>
                       <span className={passwordStrength.color}>
                         {passwordStrength.text}
                       </span>
@@ -230,12 +230,12 @@ export default function PasswordChangeForm() {
               name='confirmPassword'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirmar Nova Senha</FormLabel>
+                  <FormLabel>Confirm New Password</FormLabel>
                   <FormControl>
                     <div className='relative'>
                       <Input
                         type={showConfirmPassword ? 'text' : 'password'}
-                        placeholder='Confirme a nova senha'
+                        placeholder='Confirm new password'
                         disabled={loading}
                         {...field}
                         className='pr-10'

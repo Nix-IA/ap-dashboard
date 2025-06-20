@@ -1,17 +1,17 @@
 {
-  "name": "@ap-dashboard/queue-processor",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Queue processing service for AP Dashboard",
-  "scripts": {
-    "dev": "go run cmd/main.go",
-    "build": "go build -o dist/queue-processor cmd/main.go",
-    "start": "go run cmd/main.go",
-    "test": "go test ./...",
-    "lint": "golangci-lint run",
-    "clean": "rm -rf dist",
-    "docker:build": "docker build -t ap-dashboard-queue .",
-    "docker:run": "docker run ap-dashboard-queue"
-  },
-  "main": "cmd/main.go"
+    "name": "@ap-dashboard/queue-processor",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Queue processing service for AP Dashboard",
+    "scripts": {
+        "dev": "go run cmd/main.go",
+        "build": "go build -o dist/queue-processor cmd/main.go",
+        "start": "go run cmd/main.go",
+        "test": "go test ./...",
+        "lint": "golangci-lint run",
+        "clean": "rm -rf dist",
+        "docker:build": "docker build -t ap-dashboard-queue .",
+        "docker:run": "docker run ap-dashboard-queue"
+    },
+    "main": "cmd/main.go"
 }

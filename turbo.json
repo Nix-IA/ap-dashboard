@@ -1,43 +1,81 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "ui": "tui",
-  "globalDependencies": ["**/.env*", "tsconfig.json"],
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "start": {
-      "cache": false,
-      "persistent": true
-    },
-    "lint": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".eslintrc*"]
-    },
-    "lint:fix": {
-      "cache": false
-    },
-    "test": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "jest.config.*", "vitest.config.*"],
-      "outputs": ["coverage/**"]
-    },
-    "type-check": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "tsconfig.json", "**/*.ts", "**/*.tsx"]
-    },
-    "clean": {
-      "cache": false
-    },
-    "docker:build": {
-      "dependsOn": ["build"],
-      "inputs": ["$TURBO_DEFAULT$", "Dockerfile*", "docker-compose*"]
+    "$schema": "https://turbo.build/schema.json",
+    "ui": "tui",
+    "globalDependencies": [
+        "**/.env*",
+        "tsconfig.json"
+    ],
+    "tasks": {
+        "build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "inputs": [
+                "$TURBO_DEFAULT$",
+                ".env*"
+            ],
+            "outputs": [
+                ".next/**",
+                "!.next/cache/**",
+                "dist/**"
+            ]
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "start": {
+            "cache": false,
+            "persistent": true
+        },
+        "lint": {
+            "dependsOn": [
+                "^build"
+            ],
+            "inputs": [
+                "$TURBO_DEFAULT$",
+                ".eslintrc*"
+            ]
+        },
+        "lint:fix": {
+            "cache": false
+        },
+        "test": {
+            "dependsOn": [
+                "^build"
+            ],
+            "inputs": [
+                "$TURBO_DEFAULT$",
+                "jest.config.*",
+                "vitest.config.*"
+            ],
+            "outputs": [
+                "coverage/**"
+            ]
+        },
+        "type-check": {
+            "dependsOn": [
+                "^build"
+            ],
+            "inputs": [
+                "$TURBO_DEFAULT$",
+                "tsconfig.json",
+                "**/*.ts",
+                "**/*.tsx"
+            ]
+        },
+        "clean": {
+            "cache": false
+        },
+        "docker:build": {
+            "dependsOn": [
+                "build"
+            ],
+            "inputs": [
+                "$TURBO_DEFAULT$",
+                "Dockerfile*",
+                "docker-compose*"
+            ]
+        }
     }
-  }
 }

@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
 import { supabase } from '@/lib/supabase';
 import { Loader2 } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Step {
   step: 'loading' | 'qrcode' | 'displayName' | 'done' | 'error';

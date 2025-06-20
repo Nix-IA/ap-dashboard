@@ -767,7 +767,7 @@ export default function ProductForm({
     return groups;
   }
 
-  // Função utilitária para navegar/focar no primeiro campo obrigatório
+  // Utility function to navigate/focus on the first required field
   function focusFirstValidationError() {
     if (validationErrors.length > 0) {
       const errorFieldOrder = [

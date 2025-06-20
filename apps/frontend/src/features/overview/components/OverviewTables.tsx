@@ -97,7 +97,7 @@ export function RecentEventsTable({
           <TableHeader>
             <TableRow>
               <TableHead>Tipo</TableHead>
-              <TableHead>Descrição</TableHead>
+              <TableHead>Description</TableHead>
               {showProduct && <TableHead>Produto</TableHead>}
               <TableHead>Data</TableHead>
             </TableRow>

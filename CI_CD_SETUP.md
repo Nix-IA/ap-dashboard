@@ -1,6 +1,6 @@
-# CI/CD Setup - AP Dashboard Frontend
+# CI/CD Setup - AP Platform Frontend
 
-Este documento descreve o fluxo completo de CI/CD implementado para o frontend do AP Dashboard, desde o merge na main até o deploy automático no Portainer.
+Este documento descreve o fluxo completo de CI/CD implementado para o frontend do AP Platform, desde o merge na main até o deploy automático no Portainer.
 
 ## 🚀 Fluxo de CI/CD
 

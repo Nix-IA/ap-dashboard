@@ -15,7 +15,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: ap-dashboard-frontend
+  ECR_REPOSITORY: ap-platform-frontend
 
 jobs:
   # Quality Gates - Lint, Test, Type Check

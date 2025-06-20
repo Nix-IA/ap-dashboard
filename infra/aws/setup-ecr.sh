@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# AWS ECR Setup Script for AP Dashboard
+# AWS ECR Setup Script for AP Platform
 # This script creates and configures ECR repository for the frontend
 
 set -e
 
-echo "🚀 AP Dashboard - AWS ECR Setup"
+echo "🚀 AP Platform - AWS ECR Setup"
 echo "==============================="
 echo ""
 
@@ -34,7 +34,7 @@ echo "Region: $AWS_REGION"
 echo ""
 
 # Repository name
-REPOSITORY_NAME="ap-dashboard-frontend"
+REPOSITORY_NAME="ap-platform-frontend"
 
 echo "🗃️ Creating ECR Repository"
 echo "=========================="

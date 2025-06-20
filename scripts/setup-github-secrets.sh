@@ -62,6 +62,12 @@ set_secret "PORTAINER_URL" "Your Portainer instance URL" "https://portainer.your
 set_secret "PORTAINER_API_KEY" "API key for Portainer access" ""
 set_secret "PORTAINER_STACK_ID" "Stack ID from Portainer (numeric)" ""
 
+# AWS Configuration
+echo "☁️ AWS CONFIGURATION"
+echo "===================="
+set_secret "AWS_ACCESS_KEY_ID" "AWS Access Key ID for ECR access" ""
+set_secret "AWS_SECRET_ACCESS_KEY" "AWS Secret Access Key for ECR access" ""
+
 # Supabase Configuration
 echo "🗃️ SUPABASE CONFIGURATION"
 echo "========================="

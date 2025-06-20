@@ -14,8 +14,8 @@ on:
       - 'packages/**'
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: nix-ia/ap-dashboard-frontend
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: ap-dashboard-frontend
 
 jobs:
   # Quality Gates - Lint, Test, Type Check
@@ -67,26 +67,31 @@ jobs:
     outputs:
       image-digest: ${{ steps.build.outputs.digest }}
       image-tag: ${{ steps.meta.outputs.tags }}
+      image-uri: ${{ steps.build.outputs.image }}
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -109,6 +114,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64
+        env:
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
 
   # Security Scanning
   security-scan:
@@ -143,10 +150,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
       - name: Deploy to Portainer
         run: |
-          # Extract image tag from build output
-          IMAGE_TAG="${{ needs.build-and-push.outputs.image-tag }}"
+          # Get ECR registry URL
+          ECR_REGISTRY=$(aws sts get-caller-identity --query Account --output text).dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
           
           # Update Portainer stack
           curl -X POST "${{ secrets.PORTAINER_URL }}/api/stacks/${{ secrets.PORTAINER_STACK_ID }}/git/redeploy" \
@@ -156,7 +170,7 @@ jobs:
               "env": [
                 {
                   "name": "FRONTEND_IMAGE",
-                  "value": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+                  "value": "'$ECR_REGISTRY'/${{ env.ECR_REPOSITORY }}"
                 },
                 {
                   "name": "FRONTEND_TAG",

@@ -26,7 +26,7 @@ O pipeline é executado quando:
 #### Stage 2: Build & Push Docker Image
 
 - Build multi-stage do Docker com otimizações
-- Push para GitHub Container Registry (GHCR)
+- Push para AWS Elastic Container Registry (ECR)
 - Tags: `latest`, `main-{sha}`, `main`
 - Suporte para multi-arquitetura (linux/amd64, linux/arm64)
 - Cache layers para builds mais rápidos
@@ -59,9 +59,15 @@ O pipeline é executado quando:
 
 ### GitHub Secrets
 
+### AWS Configuration
+
 Configure os seguintes secrets no repositório GitHub:
 
 ```bash
+# AWS Configuration
+AWS_ACCESS_KEY_ID=your-access-key-id
+AWS_SECRET_ACCESS_KEY=your-secret-access-key
+
 # Portainer Configuration
 PORTAINER_URL=https://your-portainer-url
 PORTAINER_API_KEY=your-portainer-api-key
@@ -87,11 +93,25 @@ NEXT_PUBLIC_SENTRY_PROJECT=your-sentry-project
 2. Configure as variáveis de ambiente baseadas no `.env.example`
 3. Anote o Stack ID para configurar no GitHub
 
+### AWS ECR Setup
+
+1. **Configure AWS ECR:**
+   ```bash
+   ./infra/aws/setup-ecr.sh
+   ```
+
+2. **Add AWS secrets to GitHub:**
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+
+3. **Update Portainer stack:**
+   - Use ECR repository URI in environment variables
+
 ### GitHub Container Registry
 
-1. O pipeline usa o `GITHUB_TOKEN` automático
-2. Certifique-se que o repositório tem permissões para write packages
-3. A imagem será publicada em: `ghcr.io/nix-ia/ap-dashboard-frontend`
+1. O pipeline usa credenciais AWS para ECR
+2. Certifique-se que as credenciais têm permissões ECR
+3. A imagem será publicada em: `YOUR_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/ap-dashboard-frontend`
 
 ## 📁 Arquivos do CI/CD
 
